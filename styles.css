@@ -17,9 +17,11 @@ header {
     margin-bottom: 2em;
 }
 header h1 {
-    font-size: 1.25em; /* Increased font size */
+    font-size: 2em; /* Increased font size */
     font-weight: 700;
     color: #222; /* Darker heading color */
+    line-height: 1.5em;
+    letter-spacing: -1px;
 }
 header span {
     font-size: .8em; /* Increased font size */
@@ -29,8 +31,6 @@ header span {
 nav {
     margin-top: 20px;
     font-size: .8em; /* Increased font size */
-    display: flex;
-    gap: 15px; /* Increased gap */
 }
 nav span {
     opacity: .5; /* Slightly less opaque */
@@ -39,19 +39,23 @@ nav span {
 }
 nav a {
     text-decoration: none;
-    opacity: .6;
-    color: #444; /* Darker link color */
+    color: #333;
+    border: 1px solid #333;
+    padding: .5rem;
+    border-radius: 5.5px;
+    display: block;
 }
 nav a:hover, .selected {
     opacity: 1;
-    text-decoration: underline;
-    color: #222; /* Stronger hover color */
+    text-decoration: none;
+    color: #f9f9f9;
+    background-color: #333;
 }
 main {
     text-align: left;
 }
 main article > a {
-    color: #0078d7;
+    color: rgb(217, 119, 87);
     font-size: .8em; /* Increased font size */
     margin-bottom: .5em;
     display: block;
@@ -74,9 +78,9 @@ h1, h2, h3, h4, h5, h6, p, li {
     line-height: 1.6em; /* Increased line height for better readability */
 }
 h2 {
-    color: #0078d7; /* Blue heading */
     margin-bottom: 1em;
     font-weight: 700;
+    font-size: 1em;
 }
 p + p {
     margin-top: 1.2em; /* Increased margin */
@@ -96,7 +100,7 @@ section:not(.about) p {
     opacity: .6;
 }
 section a {
-    color: #0078d7;
+    color: rgb(217, 119, 87);
 }
 article {
     position: relative;
