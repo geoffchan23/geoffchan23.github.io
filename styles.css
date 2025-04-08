@@ -31,6 +31,9 @@ header span {
 nav {
     margin-top: 20px;
     font-size: .8em; /* Increased font size */
+    display: flex;
+    align-items: start;
+    gap: 15px;
 }
 nav span {
     opacity: .5; /* Slightly less opaque */
