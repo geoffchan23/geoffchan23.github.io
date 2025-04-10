@@ -20,9 +20,27 @@ document.addEventListener('DOMContentLoaded', function() {
         const date = new Date(year, month - 1, day);
         return date.toLocaleDateString('en-US', { 
             year: 'numeric', 
-            month: 'long', 
+            month: 'short', 
             day: 'numeric' 
         });
+    }
+    
+    // Format any date string to YYYYMMDD format
+    function formatDateToYYYYMMDD(dateStr) {
+        if (!dateStr) return '';
+        
+        // If already in YYYYMMDD format
+        if (dateStr.match(/^\d{8}$/)) {
+            return dateStr;
+        }
+        
+        try {
+            const date = new Date(dateStr);
+            return formatDate(date);
+        } catch (e) {
+            console.error('Error formatting date:', e);
+            return '';
+        }
     }
     
     // Handle comics list page
@@ -35,8 +53,11 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     function loadTodaysComic() {
+        // Get yesterday's date instead of today
         const today = new Date();
-        const dateParam = formatDate(today);
+        const yesterday = new Date(today);
+        yesterday.setDate(today.getDate() - 1);
+        const dateParam = formatDate(yesterday);
         const url = `${API_BASE_URL}?action=get-comic&date=${dateParam}`;
         
         fetch(url)
@@ -206,14 +227,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     li.className = 'comic-list-item';
                     
                     const a = document.createElement('a');
-                    a.href = `/comic.html?date=${comic.date}`;
+                    a.href = `/comic.html?date=${formatDateToYYYYMMDD(comic.date)}`;
                     
                     const title = document.createElement('span');
                     title.textContent = comic.title || 'Untitled Comic';
                     
                     const date = document.createElement('span');
                     date.className = 'comic-date';
-                    date.textContent = formatDisplayDate(comic.date);
+                    date.textContent = formatDisplayDate(formatDateToYYYYMMDD(comic.date));
                     
                     a.appendChild(title);
                     a.appendChild(date);
