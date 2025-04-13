@@ -1,0 +1,11 @@
+title: Geoff Chan
+description: Personal website of Geoffrey Chan
+url: https://geoffchan23.github.io
+baseurl: ""
+
+# Latest comic
+latest_comic: 2025-04-09
+
+# Build settings
+markdown: kramdown
+permalink: pretty

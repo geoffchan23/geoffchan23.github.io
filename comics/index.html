@@ -1,0 +1,19 @@
+---
+layout: comic
+title: All Comics Archive - Daily Comics Inspired by The New Yorker
+---
+
+<main>
+    <h1 class="comic-title">All Comics</h1>
+    
+    <div id="comics-list" class="comic-list">
+        {% for comic in site.data.comics %}
+        <li class="comic-list-item">
+            <a href="/comics/{{ comic.date }}.html">
+                <span>{{ comic.title }}</span>
+                <span class="comic-date">{{ comic.display_date }}</span>
+            </a>
+        </li>
+        {% endfor %}
+    </div>
+</main>
