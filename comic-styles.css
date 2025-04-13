@@ -4,9 +4,9 @@
 
 .comic-title {
     text-align: center;
-    font-size: 1.8em;
+    font-size: 1.25em;
     font-weight: 700;
-    margin: 1.5rem 0;
+    margin: 2rem 0;
     line-height: 1.3;
 }
 
@@ -63,6 +63,10 @@
     margin-bottom: 0.8rem;
     line-height: 1.6;
     font-size: 0.9em;
+}
+
+.comic-metadata a {
+    text-decoration: underline;
 }
 
 .comic-source {
