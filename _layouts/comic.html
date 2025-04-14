@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Geoff Chan | {{ page.title }}</title>
+    <title>Comic Factory | {{ page.title }}</title>
     <meta name="description" content="{{ page.description | default: 'Daily comic inspired by articles from The New Yorker, created by Geoffrey Chan.' }}">
     <meta property="og:title" content="{{ page.title }} | Geoffrey Chan">
     <meta property="og:description" content="{{ page.description | default: 'Daily comic inspired by articles from The New Yorker.' }}">
@@ -28,19 +28,16 @@
     <div class="container comic-container">
         <header>
             <div>
-                <h1>Comic Factory</h1>
+                <a href="/"><h1>Comic Factory</h1></a>
                 <span>A New Yorker inspired AI-generated daily comic</span>
             </div>
             <nav>
                 <a href="/">Home</a>
-                <a href="/comics/{{ site.latest_comic | default: '2025-04-09' }}.html" class="selected">Today's Comic</a>
-                <a href="/comics/index.html">All Comics</a>
+                <a href="/comics/{{ site.latest_comic | default: '' }}">Today's Comic</a>
             </nav>
         </header>
         
         {{ content }}
     </div>
-
-    <script src="/comics-script.js"></script>
 </body>
 </html>

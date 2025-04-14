@@ -107,6 +107,8 @@
     list-style-type: none;
     padding: 0;
     margin: 2rem 0;
+    display: flex;
+    gap: 5px;
 }
 
 .comic-list-item {

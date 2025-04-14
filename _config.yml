@@ -4,7 +4,7 @@ url: https://geoffchan23.github.io
 baseurl: ""
 
 # Latest comic
-latest_comic: 2025-04-09
+latest_comic: 2025-04-06
 
 # Build settings
 markdown: kramdown
