@@ -125,3 +125,12 @@ li p, li h3 {
 .work > div {
     margin-bottom: 1.5em; /* Increased margin */
 }
+.work h3 {
+    font-size: 1em;
+    font-weight: 700;
+    margin-bottom: 0.3em;
+}
+.work h3 .tag {
+    font-weight: 400;
+    float: right;
+}
