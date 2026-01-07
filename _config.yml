@@ -9,3 +9,14 @@ latest_comic: 2025-04-06
 # Build settings
 markdown: kramdown
 permalink: pretty
+collections:
+  artjourney:
+    output: true
+    permalink: /artjourney/:title/
+
+defaults:
+  - scope:
+      path: ""
+      type: artjourney
+    values:
+      layout: artjourney
