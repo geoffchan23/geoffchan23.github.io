@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page.title }} | Geoff Chan</title>
+    <meta name="description" content="{{ page.content | strip_html | truncate: 160 }}">
+    <meta property="og:title" content="{{ page.title }} | Geoff Chan">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ site.url }}{{ page.url }}">
+    {% if page.images %}
+    {% assign slug = page.path | replace: '.md', '' | split: '/' | last %}
+    <meta property="og:image" content="{{ site.url }}/comics/images/{{ slug }}/{{ page.images.first }}">
+    {% endif %}
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="alternate" type="application/rss+xml" title="Geoff Chan's Comics" href="/comics/feed.xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/reset.css">
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/comics.css">
+</head>
+<body>
+    <div class="container comics-container">
+        <header>
+            <div>
+                <a href="/comics"><h1>comics</h1></a>
+                <span>by geoff chan</span>
+            </div>
+            <nav>
+                <a href="/">Home</a>
+                <a href="/comics">Grid</a>
+            </nav>
+        </header>
+
+        <main>
+            {% assign all_comics = site.comics | sort: 'date' | reverse %}
+
+            {% for comic in all_comics %}
+            {% assign slug = comic.path | replace: '.md', '' | split: '/' | last %}
+            <article class="comic-post" id="post-{{ slug }}">
+                <div class="comic-carousel" data-post="{{ slug }}">
+                    {% for image in comic.images %}
+                    <div class="carousel-slide{% if forloop.first %} active{% endif %}">
+                        <img src="/comics/images/{{ slug }}/{{ image }}" alt="{{ comic.title }}{% if comic.images.size > 1 %} - image {{ forloop.index }} of {{ comic.images.size }}{% endif %}" loading="lazy">
+                    </div>
+                    {% endfor %}
+
+                    {% if comic.images.size > 1 %}
+                    <button class="carousel-btn carousel-prev" aria-label="Previous image">&lsaquo;</button>
+                    <button class="carousel-btn carousel-next" aria-label="Next image">&rsaquo;</button>
+                    <div class="carousel-dots">
+                        {% for image in comic.images %}
+                        <span class="carousel-dot{% if forloop.first %} active{% endif %}" data-index="{{ forloop.index0 }}"></span>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="comic-caption">
+                    <time class="comic-date" datetime="{{ comic.date | date: '%Y-%m-%d' }}">{{ comic.date | date: "%B %-d, %Y" }}</time>
+                    {% if comic.content != "" %}
+                    <div class="comic-text">{{ comic.content }}</div>
+                    {% endif %}
+                </div>
+            </article>
+            {% endfor %}
+        </main>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.comic-carousel').forEach(function(carousel) {
+            var slides = carousel.querySelectorAll('.carousel-slide');
+            var dots = carousel.querySelectorAll('.carousel-dot');
+            var prevBtn = carousel.querySelector('.carousel-prev');
+            var nextBtn = carousel.querySelector('.carousel-next');
+            var current = 0;
+
+            function goTo(index) {
+                slides[current].classList.remove('active');
+                if (dots.length) dots[current].classList.remove('active');
+                current = (index + slides.length) % slides.length;
+                slides[current].classList.add('active');
+                if (dots.length) dots[current].classList.add('active');
+            }
+
+            if (prevBtn) prevBtn.addEventListener('click', function() { goTo(current - 1); });
+            if (nextBtn) nextBtn.addEventListener('click', function() { goTo(current + 1); });
+            dots.forEach(function(dot) {
+                dot.addEventListener('click', function() { goTo(parseInt(this.dataset.index)); });
+            });
+        });
+    });
+    </script>
+</body>
+</html>
