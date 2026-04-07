@@ -1,0 +1,29 @@
+---
+layout: null
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Geoff Chan's Comics</title>
+        <description>Art and comics by Geoff Chan</description>
+        <link>{{ site.url }}/comics</link>
+        <atom:link href="{{ site.url }}/comics/feed.xml" rel="self" type="application/rss+xml"/>
+        <lastBuildDate>{{ site.time | date_to_rfc822 }}</lastBuildDate>
+        {% assign all_comics = site.comics | sort: 'date' | reverse %}
+        {% for comic in all_comics %}
+        {% assign slug = comic.path | replace: '.md', '' | split: '/' | last %}
+        <item>
+            <title>{{ comic.title | xml_escape }}</title>
+            <link>{{ site.url }}{{ comic.url }}</link>
+            <guid isPermaLink="true">{{ site.url }}{{ comic.url }}</guid>
+            <pubDate>{{ comic.date | date_to_rfc822 }}</pubDate>
+            {% if comic.content != "" %}
+            <description>{{ comic.content | strip_html | xml_escape | truncate: 500 }}</description>
+            {% endif %}
+            {% if comic.images %}
+            <enclosure url="{{ site.url }}/comics/images/{{ slug }}/{{ comic.images.first }}" type="image/png"/>
+            {% endif %}
+        </item>
+        {% endfor %}
+    </channel>
+</rss>
