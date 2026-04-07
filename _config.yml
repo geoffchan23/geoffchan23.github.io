@@ -6,3 +6,14 @@ baseurl: ""
 # Build settings
 markdown: kramdown
 permalink: pretty
+collections:
+  comics:
+    output: true
+    permalink: /comics/:title/
+
+defaults:
+  - scope:
+      path: ""
+      type: comics
+    values:
+      layout: comic
