@@ -11,6 +11,9 @@ collections:
     output: true
     permalink: /art/:title/
 
+exclude:
+  - docs/
+
 defaults:
   - scope:
       path: ""
