@@ -1,6 +1,6 @@
-# Comics - How to Add a New Post
+# Art - How to Add a New Post
 
-This document explains how to add a new comic/art post. Follow these steps exactly.
+This document explains how to add a new art post. Follow these steps exactly.
 
 ## Step 1: Prepare your images
 
@@ -9,13 +9,13 @@ This document explains how to add a new comic/art post. Follow these steps exact
 
 ## Step 2: Create the image folder
 
-Create a folder in `comics/images/` named with the date and a short slug:
+Create a folder in `art/images/` named with the date and a short slug:
 
 ```
-comics/images/YYYY-MM-DD-slug/
+art/images/YYYY-MM-DD-slug/
 ```
 
-Example: `comics/images/2026-04-07-first-post/`
+Example: `art/images/2026-04-07-first-post/`
 
 The slug should be lowercase, hyphen-separated, and briefly describe the post.
 
@@ -27,13 +27,13 @@ The number determines the carousel order. If there is only one image, name it `0
 
 ## Step 4: Create the markdown post file
 
-Create a file in `_comics/` with the same date-slug name:
+Create a file in `_art/` with the same date-slug name:
 
 ```
-_comics/YYYY-MM-DD-slug.md
+_art/YYYY-MM-DD-slug.md
 ```
 
-Example: `_comics/2026-04-07-first-post.md`
+Example: `_art/2026-04-07-first-post.md`
 
 ## Step 5: Write the front matter and content
 
@@ -57,7 +57,7 @@ Leave this section empty if you don't want a caption.
 |----------|---------------------------|--------------------------------------------------|
 | `title`  | Any string                | Name of the post                                 |
 | `date`   | `YYYY-MM-DD`              | Publication date                                 |
-| `images` | List of filenames         | Image filenames in `comics/images/YYYY-MM-DD-slug/` |
+| `images` | List of filenames         | Image filenames in `art/images/YYYY-MM-DD-slug/` |
 
 ### Body content
 
@@ -67,9 +67,9 @@ Everything below the second `---` is your caption/thoughts. It is rendered as ma
 
 To create a post called "Coffee Sketch" on April 8, 2026 with two images:
 
-1. Create folder: `comics/images/2026-04-08-coffee-sketch/`
+1. Create folder: `art/images/2026-04-08-coffee-sketch/`
 2. Add images: `01.png`, `02.png`
-3. Create file: `_comics/2026-04-08-coffee-sketch.md`
+3. Create file: `_art/2026-04-08-coffee-sketch.md`
 4. File contents:
 
 ```yaml
@@ -89,6 +89,6 @@ Quick sketch at the coffee shop this morning. Trying out a new pen.
 
 | Item           | Pattern                        | Example                              |
 |----------------|--------------------------------|--------------------------------------|
-| Post file      | `_comics/YYYY-MM-DD-slug.md`  | `_comics/2026-04-07-first-post.md`   |
-| Image folder   | `comics/images/YYYY-MM-DD-slug/` | `comics/images/2026-04-07-first-post/` |
+| Post file      | `_art/YYYY-MM-DD-slug.md`  | `_art/2026-04-07-first-post.md`   |
+| Image folder   | `art/images/YYYY-MM-DD-slug/` | `art/images/2026-04-07-first-post/` |
 | Image files    | `NN.ext`                       | `01.png`, `02.jpg`                   |

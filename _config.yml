@@ -7,13 +7,13 @@ baseurl: ""
 markdown: kramdown
 permalink: pretty
 collections:
-  comics:
+  art:
     output: true
-    permalink: /comics/:title/
+    permalink: /art/:title/
 
 defaults:
   - scope:
       path: ""
-      type: comics
+      type: art
     values:
-      layout: comic
+      layout: art

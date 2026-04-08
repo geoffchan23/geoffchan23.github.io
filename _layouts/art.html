@@ -10,33 +10,33 @@
     <meta property="og:url" content="{{ site.url }}{{ page.url }}">
     {% if page.images %}
     {% assign slug = page.path | replace: '.md', '' | split: '/' | last %}
-    <meta property="og:image" content="{{ site.url }}/comics/images/{{ slug }}/{{ page.images.first }}">
+    <meta property="og:image" content="{{ site.url }}/art/images/{{ slug }}/{{ page.images.first }}">
     {% endif %}
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-    <link rel="alternate" type="application/rss+xml" title="Geoff Chan's Comics" href="/comics/feed.xml">
+    <link rel="alternate" type="application/rss+xml" title="Geoff Chan's Art" href="/art/feed.xml">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/reset.css">
     <link rel="stylesheet" href="/styles.css">
-    <link rel="stylesheet" href="/comics.css">
+    <link rel="stylesheet" href="/art.css">
 </head>
 <body>
     <div class="container comics-container">
         <header>
             <div>
-                <a href="/comics"><h1>comics</h1></a>
+                <a href="/art"><h1>art</h1></a>
                 <span>by geoff chan</span>
             </div>
             <nav>
                 <a href="/">Home</a>
-                <a href="/comics">Grid</a>
+                <a href="/art">Grid</a>
             </nav>
         </header>
 
         <main>
-            {% assign all_comics = site.comics | sort: 'date' | reverse %}
+            {% assign all_comics = site.art | sort: 'date' | reverse %}
 
             {% for comic in all_comics %}
             {% assign slug = comic.path | replace: '.md', '' | split: '/' | last %}
@@ -44,7 +44,7 @@
                 <div class="comic-carousel" data-post="{{ slug }}">
                     {% for image in comic.images %}
                     <div class="carousel-slide{% if forloop.first %} active{% endif %}">
-                        <img src="/comics/images/{{ slug }}/{{ image }}" alt="{{ comic.title }}{% if comic.images.size > 1 %} - image {{ forloop.index }} of {{ comic.images.size }}{% endif %}" loading="lazy">
+                        <img src="/art/images/{{ slug }}/{{ image }}" alt="{{ comic.title }}{% if comic.images.size > 1 %} - image {{ forloop.index }} of {{ comic.images.size }}{% endif %}" loading="lazy">
                     </div>
                     {% endfor %}
 

@@ -19,11 +19,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - Structure: Follow Jekyll conventions with _layouts directory
 - Links: Use relative paths for internal links
 
-## Adding a New Comic Post
+## Adding a New Art Post
 
-When the user asks to add a new comic, follow the format documented in `_comics/README.md`.
+When the user asks to add a new art post, follow the format documented in `_art/README.md`.
 
 1. **Ask for:** title, image file(s) (path or drag-drop), and optional caption/thoughts
-2. **Create image folder:** `comics/images/YYYY-MM-DD-slug/` and copy images as `01.png`, `02.png`, etc.
-3. **Create post file:** `_comics/YYYY-MM-DD-slug.md` with front matter (title, date, images list) and caption body
+2. **Create image folder:** `art/images/YYYY-MM-DD-slug/` and copy images as `01.png`, `02.png`, etc.
+3. **Create post file:** `_art/YYYY-MM-DD-slug.md` with front matter (title, date, images list) and caption body
 4. **Commit and push** so it auto-deploys to GitHub Pages

@@ -1,0 +1,24 @@
+---
+layout: default
+title: Art
+---
+<header>
+    <div>
+        <a href="/art"><h1>art</h1></a>
+        <span>by geoff chan</span>
+    </div>
+    <nav>
+        <a href="/">Home</a>
+    </nav>
+</header>
+<main>
+    <div class="comics-grid">
+        {% assign all_comics = site.art | sort: 'date' | reverse %}
+        {% for comic in all_comics %}
+        {% assign slug = comic.path | replace: '.md', '' | split: '/' | last %}
+        <a href="{{ comic.url }}" class="grid-item">
+            <img src="/art/images/{{ slug }}/{{ comic.images.first }}" alt="{{ comic.title }}" loading="lazy">
+        </a>
+        {% endfor %}
+    </div>
+</main>
