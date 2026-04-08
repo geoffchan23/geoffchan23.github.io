@@ -5,3 +5,5 @@ _site/
 *.png
 !favicon-*.png
 !art/images/**/*.png
+!art/images/**/*.jpg
+!art/images/**/*.webp
