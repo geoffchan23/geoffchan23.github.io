@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-04-18T14:48:43Z",
+  "generatedAt": "2026-04-18T14:53:34Z",
   "last24h": {
-    "totalTokens": 70778258,
+    "totalTokens": 79276388,
     "byModel": {
-      "claude-opus-4-7": 68015964,
+      "claude-opus-4-7": 76514094,
       "claude-opus-4-6": 215825,
       "claude-sonnet-4-6": 2546469
     },
     "byProject": [
       {
         "name": "smart-home",
-        "tokens": 52913359
+        "tokens": 61411489
       },
       {
         "name": "raven-os",
@@ -1014,15 +1014,15 @@
     },
     {
       "t": "2026-04-18T14:00:00Z",
-      "tokens": 42070423,
+      "tokens": 50568553,
       "byModel": {
         "claude-sonnet-4-6": 2546469,
-        "claude-opus-4-7": 39523954
+        "claude-opus-4-7": 48022084
       },
       "byProject": [
         {
           "name": "smart-home",
-          "tokens": 40674797
+          "tokens": 49172927
         },
         {
           "name": "agent",
@@ -2425,15 +2425,15 @@
     },
     {
       "t": "2026-04-18",
-      "tokens": 37094837,
+      "tokens": 42642262,
       "byModel": {
-        "claude-opus-4-7": 35597398,
+        "claude-opus-4-7": 41144823,
         "claude-sonnet-4-6": 1497439
       },
       "byProject": [
         {
           "name": "Random-Projects-smart-home",
-          "tokens": 36452692
+          "tokens": 42000117
         },
         {
           "name": "Random-Projects-smart-home--claude-worktrees-cranky-kepler-d2cb22",
