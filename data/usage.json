@@ -6,29 +6,7 @@
       "claude-opus-4-7": 76514094,
       "claude-opus-4-6": 215825,
       "claude-sonnet-4-6": 2546469
-    },
-    "byProject": [
-      {
-        "name": "smart-home",
-        "tokens": 61411489
-      },
-      {
-        "name": "raven-os",
-        "tokens": 13722193
-      },
-      {
-        "name": "cranky-kepler-d2cb22",
-        "tokens": 2215839
-      },
-      {
-        "name": "agent",
-        "tokens": 1711042
-      },
-      {
-        "name": "hologic-customer-knowledge",
-        "tokens": 215825
-      }
-    ]
+    }
   },
   "hourly": [
     {
@@ -36,94 +14,42 @@
       "tokens": 61948159,
       "byModel": {
         "claude-opus-4-6": 61948159
-      },
-      "byProject": [
-        {
-          "name": "levi-word-game",
-          "tokens": 60955619
-        },
-        {
-          "name": "raven-os",
-          "tokens": 992540
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-11T16:00:00Z",
       "tokens": 29042502,
       "byModel": {
         "claude-opus-4-6": 29042502
-      },
-      "byProject": [
-        {
-          "name": "smart-home",
-          "tokens": 19562184
-        },
-        {
-          "name": "agent",
-          "tokens": 4822506
-        },
-        {
-          "name": "levi-word-game",
-          "tokens": 4657812
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-11T22:00:00Z",
       "tokens": 6852072,
       "byModel": {
         "claude-opus-4-6": 6852072
-      },
-      "byProject": [
-        {
-          "name": "levi-word-game",
-          "tokens": 6852072
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-12T02:00:00Z",
       "tokens": 12372019,
       "byModel": {
         "claude-opus-4-6": 12372019
-      },
-      "byProject": [
-        {
-          "name": "raven-os",
-          "tokens": 12372019
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-12T03:00:00Z",
       "tokens": 47469108,
       "byModel": {
         "claude-opus-4-6": 47469108
-      },
-      "byProject": [
-        {
-          "name": "raven-os",
-          "tokens": 47142473
-        },
-        {
-          "name": "levi-word-game",
-          "tokens": 326635
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-12T15:00:00Z",
       "tokens": 360783,
       "byModel": {
         "claude-opus-4-6": 360783
-      },
-      "byProject": [
-        {
-          "name": "smart-home",
-          "tokens": 360783
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-12T18:00:00Z",
@@ -131,13 +57,7 @@
       "byModel": {
         "claude-haiku-4-5-20251001": 6208964,
         "claude-opus-4-6": 190290
-      },
-      "byProject": [
-        {
-          "name": "smart-home",
-          "tokens": 6399254
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-12T19:00:00Z",
@@ -145,77 +65,35 @@
       "byModel": {
         "claude-opus-4-6": 5650081,
         "<synthetic>": 0
-      },
-      "byProject": [
-        {
-          "name": "smart-home",
-          "tokens": 2942440
-        },
-        {
-          "name": "raven-os",
-          "tokens": 2707641
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-12T20:00:00Z",
       "tokens": 14305481,
       "byModel": {
         "claude-opus-4-6": 14305481
-      },
-      "byProject": [
-        {
-          "name": "raven-os",
-          "tokens": 14305481
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-12T22:00:00Z",
       "tokens": 30207325,
       "byModel": {
         "claude-opus-4-6": 30207325
-      },
-      "byProject": [
-        {
-          "name": "raven-os",
-          "tokens": 29415992
-        },
-        {
-          "name": "smart-home",
-          "tokens": 791333
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-13T01:00:00Z",
       "tokens": 2450132,
       "byModel": {
         "claude-opus-4-6": 2450132
-      },
-      "byProject": [
-        {
-          "name": "levi-word-game",
-          "tokens": 2450132
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-13T02:00:00Z",
       "tokens": 9217782,
       "byModel": {
         "claude-opus-4-6": 9217782
-      },
-      "byProject": [
-        {
-          "name": "raven-os",
-          "tokens": 7898438
-        },
-        {
-          "name": "levi-word-game",
-          "tokens": 1319344
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-13T13:00:00Z",
@@ -224,42 +102,14 @@
         "claude-opus-4-6": 1647924,
         "<synthetic>": 0,
         "claude-haiku-4-5-20251001": 9006344
-      },
-      "byProject": [
-        {
-          "name": "raven-os",
-          "tokens": 10002308
-        },
-        {
-          "name": "ravenos-mcp-test",
-          "tokens": 651960
-        },
-        {
-          "name": "smart-home",
-          "tokens": 0
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-13T14:00:00Z",
       "tokens": 21831129,
       "byModel": {
         "claude-opus-4-6": 21831129
-      },
-      "byProject": [
-        {
-          "name": "agent",
-          "tokens": 10416629
-        },
-        {
-          "name": "raven-os",
-          "tokens": 10030623
-        },
-        {
-          "name": "smart-home",
-          "tokens": 1383877
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-13T15:00:00Z",
@@ -268,21 +118,7 @@
         "claude-haiku-4-5-20251001": 4850136,
         "claude-opus-4-6": 33285902,
         "<synthetic>": 0
-      },
-      "byProject": [
-        {
-          "name": "raven-os",
-          "tokens": 23888280
-        },
-        {
-          "name": "smart-home",
-          "tokens": 13499276
-        },
-        {
-          "name": "agent",
-          "tokens": 748482
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-13T19:00:00Z",
@@ -290,17 +126,7 @@
       "byModel": {
         "claude-haiku-4-5-20251001": 6641657,
         "claude-opus-4-6": 22308445
-      },
-      "byProject": [
-        {
-          "name": "raven-os",
-          "tokens": 23405823
-        },
-        {
-          "name": "smart-home",
-          "tokens": 5544279
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-13T20:00:00Z",
@@ -308,17 +134,7 @@
       "byModel": {
         "claude-opus-4-6": 92642756,
         "claude-haiku-4-5-20251001": 2489699
-      },
-      "byProject": [
-        {
-          "name": "raven-os",
-          "tokens": 92893927
-        },
-        {
-          "name": "smart-home",
-          "tokens": 2238528
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-13T21:00:00Z",
@@ -327,21 +143,7 @@
         "claude-haiku-4-5-20251001": 9697875,
         "claude-opus-4-6": 17121340,
         "<synthetic>": 0
-      },
-      "byProject": [
-        {
-          "name": "raven-os",
-          "tokens": 20023573
-        },
-        {
-          "name": "smart-home",
-          "tokens": 5629792
-        },
-        {
-          "name": "agent",
-          "tokens": 1165850
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-14T02:00:00Z",
@@ -349,103 +151,49 @@
       "byModel": {
         "claude-haiku-4-5-20251001": 8967932,
         "claude-opus-4-6": 3867861
-      },
-      "byProject": [
-        {
-          "name": "raven-os",
-          "tokens": 12835793
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-14T13:00:00Z",
       "tokens": 967826,
       "byModel": {
         "claude-opus-4-6": 967826
-      },
-      "byProject": [
-        {
-          "name": "linkedin-research",
-          "tokens": 967826
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-14T14:00:00Z",
       "tokens": 1077786,
       "byModel": {
         "claude-opus-4-6": 1077786
-      },
-      "byProject": [
-        {
-          "name": "grant-connect-be",
-          "tokens": 750796
-        },
-        {
-          "name": "raven-os",
-          "tokens": 221024
-        },
-        {
-          "name": "linkedin-research",
-          "tokens": 105966
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-14T15:00:00Z",
       "tokens": 442546,
       "byModel": {
         "claude-opus-4-6": 442546
-      },
-      "byProject": [
-        {
-          "name": "linkedin-research",
-          "tokens": 442546
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-14T16:00:00Z",
       "tokens": 1044416,
       "byModel": {
         "claude-opus-4-6": 1044416
-      },
-      "byProject": [
-        {
-          "name": "raven-os",
-          "tokens": 1044416
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-14T17:00:00Z",
       "tokens": 24941281,
       "byModel": {
         "claude-opus-4-6": 24941281
-      },
-      "byProject": [
-        {
-          "name": "raven-os",
-          "tokens": 24381947
-        },
-        {
-          "name": "linkedin-research",
-          "tokens": 559334
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-14T19:00:00Z",
       "tokens": 18183840,
       "byModel": {
         "claude-opus-4-6": 18183840
-      },
-      "byProject": [
-        {
-          "name": "raven-os",
-          "tokens": 18183840
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-14T20:00:00Z",
@@ -453,34 +201,14 @@
       "byModel": {
         "claude-opus-4-6": 6405387,
         "claude-haiku-4-5-20251001": 6488160
-      },
-      "byProject": [
-        {
-          "name": "raven-os",
-          "tokens": 12759529
-        },
-        {
-          "name": "linkedin-research",
-          "tokens": 134018
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-14T21:00:00Z",
       "tokens": 7175901,
       "byModel": {
         "claude-opus-4-6": 7175901
-      },
-      "byProject": [
-        {
-          "name": "raven-os",
-          "tokens": 6696518
-        },
-        {
-          "name": "linkedin-research",
-          "tokens": 479383
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-14T22:00:00Z",
@@ -488,26 +216,14 @@
       "byModel": {
         "claude-opus-4-6": 8276300,
         "claude-haiku-4-5-20251001": 2669287
-      },
-      "byProject": [
-        {
-          "name": "raven-os",
-          "tokens": 10945587
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-14T23:00:00Z",
       "tokens": 5824209,
       "byModel": {
         "claude-opus-4-6": 5824209
-      },
-      "byProject": [
-        {
-          "name": "raven-os",
-          "tokens": 5824209
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-15T00:00:00Z",
@@ -515,39 +231,21 @@
       "byModel": {
         "claude-haiku-4-5-20251001": 1332665,
         "claude-opus-4-6": 17038616
-      },
-      "byProject": [
-        {
-          "name": "raven-os",
-          "tokens": 18371281
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-15T01:00:00Z",
       "tokens": 14816218,
       "byModel": {
         "claude-opus-4-6": 14816218
-      },
-      "byProject": [
-        {
-          "name": "raven-os",
-          "tokens": 14816218
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-15T02:00:00Z",
       "tokens": 271815,
       "byModel": {
         "claude-opus-4-6": 271815
-      },
-      "byProject": [
-        {
-          "name": "raven-os",
-          "tokens": 271815
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-15T14:00:00Z",
@@ -556,85 +254,35 @@
         "claude-opus-4-6": 3851082,
         "<synthetic>": 0,
         "claude-haiku-4-5-20251001": 4640013
-      },
-      "byProject": [
-        {
-          "name": "raven-os",
-          "tokens": 8173005
-        },
-        {
-          "name": "linkedin-research",
-          "tokens": 181872
-        },
-        {
-          "name": "smart-home",
-          "tokens": 136218
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-15T15:00:00Z",
       "tokens": 8452920,
       "byModel": {
         "claude-opus-4-6": 8452920
-      },
-      "byProject": [
-        {
-          "name": "raven-os",
-          "tokens": 7823550
-        },
-        {
-          "name": "linkedin-research",
-          "tokens": 629370
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-15T16:00:00Z",
       "tokens": 2190267,
       "byModel": {
         "claude-opus-4-6": 2190267
-      },
-      "byProject": [
-        {
-          "name": "raven-os",
-          "tokens": 2190267
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-15T19:00:00Z",
       "tokens": 4966227,
       "byModel": {
         "claude-opus-4-6": 4966227
-      },
-      "byProject": [
-        {
-          "name": "raven-os",
-          "tokens": 4797235
-        },
-        {
-          "name": "linkedin-research",
-          "tokens": 168992
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-15T20:00:00Z",
       "tokens": 1895544,
       "byModel": {
         "claude-opus-4-6": 1895544
-      },
-      "byProject": [
-        {
-          "name": "raven-os",
-          "tokens": 1723110
-        },
-        {
-          "name": "linkedin-research",
-          "tokens": 172434
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-16T02:00:00Z",
@@ -642,13 +290,7 @@
       "byModel": {
         "claude-opus-4-6": 12335459,
         "<synthetic>": 0
-      },
-      "byProject": [
-        {
-          "name": "raven-os",
-          "tokens": 12335459
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-16T03:00:00Z",
@@ -656,46 +298,14 @@
       "byModel": {
         "claude-opus-4-6": 32245231,
         "claude-haiku-4-5-20251001": 12280715
-      },
-      "byProject": [
-        {
-          "name": "raven-os",
-          "tokens": 38601401
-        },
-        {
-          "name": "smart-home",
-          "tokens": 5076757
-        },
-        {
-          "name": "agent",
-          "tokens": 524110
-        },
-        {
-          "name": "linkedin-research",
-          "tokens": 323678
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-16T04:00:00Z",
       "tokens": 23191325,
       "byModel": {
         "claude-opus-4-6": 23191325
-      },
-      "byProject": [
-        {
-          "name": "raven-os",
-          "tokens": 22886876
-        },
-        {
-          "name": "smart-home",
-          "tokens": 237972
-        },
-        {
-          "name": "linkedin-research",
-          "tokens": 66477
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-16T12:00:00Z",
@@ -703,30 +313,14 @@
       "byModel": {
         "claude-sonnet-4-6": 1776696,
         "claude-opus-4-6": 15109078
-      },
-      "byProject": [
-        {
-          "name": "raven-os",
-          "tokens": 16885774
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-16T13:00:00Z",
       "tokens": 13045957,
       "byModel": {
         "claude-opus-4-6": 13045957
-      },
-      "byProject": [
-        {
-          "name": "raven-os",
-          "tokens": 12254116
-        },
-        {
-          "name": "smart-home",
-          "tokens": 791841
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-16T14:00:00Z",
@@ -734,13 +328,7 @@
       "byModel": {
         "claude-sonnet-4-6": 1351981,
         "claude-opus-4-6": 2729130
-      },
-      "byProject": [
-        {
-          "name": "raven-os",
-          "tokens": 4081111
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-16T15:00:00Z",
@@ -749,21 +337,7 @@
         "claude-opus-4-6": 4216457,
         "claude-sonnet-4-6": 1081845,
         "claude-opus-4-7": 921293
-      },
-      "byProject": [
-        {
-          "name": "raven-os",
-          "tokens": 5897026
-        },
-        {
-          "name": "customer-slack-channels",
-          "tokens": 207492
-        },
-        {
-          "name": "smart-home",
-          "tokens": 115077
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-16T16:00:00Z",
@@ -771,43 +345,21 @@
       "byModel": {
         "claude-opus-4-6": 1156949,
         "claude-opus-4-7": 88974
-      },
-      "byProject": [
-        {
-          "name": "raven-os",
-          "tokens": 1245923
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-16T17:00:00Z",
       "tokens": 430110,
       "byModel": {
         "claude-opus-4-6": 430110
-      },
-      "byProject": [
-        {
-          "name": "raven-os",
-          "tokens": 430110
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-16T18:00:00Z",
       "tokens": 11411377,
       "byModel": {
         "claude-opus-4-6": 11411377
-      },
-      "byProject": [
-        {
-          "name": "raven-os",
-          "tokens": 7763596
-        },
-        {
-          "name": "hologic-customer-knowledge",
-          "tokens": 3647781
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-16T19:00:00Z",
@@ -816,25 +368,7 @@
         "claude-opus-4-6": 31846896,
         "claude-opus-4-7": 1538154,
         "claude-haiku-4-5-20251001": 113160
-      },
-      "byProject": [
-        {
-          "name": "raven-os",
-          "tokens": 20135717
-        },
-        {
-          "name": "hologic-customer-knowledge",
-          "tokens": 10571639
-        },
-        {
-          "name": "customer-slack-channels",
-          "tokens": 1538154
-        },
-        {
-          "name": "smart-home",
-          "tokens": 1252700
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-16T20:00:00Z",
@@ -843,21 +377,7 @@
         "claude-opus-4-7": 640579,
         "claude-opus-4-6": 11798710,
         "claude-haiku-4-5-20251001": 252158
-      },
-      "byProject": [
-        {
-          "name": "raven-os",
-          "tokens": 8559848
-        },
-        {
-          "name": "hologic-customer-knowledge",
-          "tokens": 3234029
-        },
-        {
-          "name": "smart-home",
-          "tokens": 897570
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-17T03:00:00Z",
@@ -866,34 +386,14 @@
         "claude-sonnet-4-6": 2368938,
         "claude-opus-4-7": 15148250,
         "claude-opus-4-6": 347523
-      },
-      "byProject": [
-        {
-          "name": "smart-home",
-          "tokens": 17359365
-        },
-        {
-          "name": "raven-os",
-          "tokens": 347523
-        },
-        {
-          "name": "agent",
-          "tokens": 157823
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-17T12:00:00Z",
       "tokens": 5007286,
       "byModel": {
         "claude-opus-4-7": 5007286
-      },
-      "byProject": [
-        {
-          "name": "smart-home",
-          "tokens": 5007286
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-17T13:00:00Z",
@@ -901,21 +401,7 @@
       "byModel": {
         "claude-opus-4-7": 3984653,
         "claude-opus-4-6": 4367771
-      },
-      "byProject": [
-        {
-          "name": "hologic-customer-knowledge",
-          "tokens": 4367771
-        },
-        {
-          "name": "smart-home",
-          "tokens": 3828483
-        },
-        {
-          "name": "customer-slack-channels",
-          "tokens": 156170
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-17T14:00:00Z",
@@ -923,94 +409,42 @@
       "byModel": {
         "claude-opus-4-6": 1435039,
         "claude-haiku-4-5-20251001": 17298203
-      },
-      "byProject": [
-        {
-          "name": "hologic-customer-knowledge",
-          "tokens": 18733242
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-17T15:00:00Z",
       "tokens": 12322404,
       "byModel": {
         "claude-opus-4-7": 12322404
-      },
-      "byProject": [
-        {
-          "name": "raven-os",
-          "tokens": 11714691
-        },
-        {
-          "name": "smart-home",
-          "tokens": 607713
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-17T17:00:00Z",
       "tokens": 215825,
       "byModel": {
         "claude-opus-4-6": 215825
-      },
-      "byProject": [
-        {
-          "name": "hologic-customer-knowledge",
-          "tokens": 215825
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-17T18:00:00Z",
       "tokens": 2007502,
       "byModel": {
         "claude-opus-4-7": 2007502
-      },
-      "byProject": [
-        {
-          "name": "raven-os",
-          "tokens": 2007502
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-18T12:00:00Z",
       "tokens": 2315401,
       "byModel": {
         "claude-opus-4-7": 2315401
-      },
-      "byProject": [
-        {
-          "name": "cranky-kepler-d2cb22",
-          "tokens": 1170698
-        },
-        {
-          "name": "smart-home",
-          "tokens": 1144703
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-18T13:00:00Z",
       "tokens": 11846703,
       "byModel": {
         "claude-opus-4-7": 11846703
-      },
-      "byProject": [
-        {
-          "name": "smart-home",
-          "tokens": 10486146
-        },
-        {
-          "name": "cranky-kepler-d2cb22",
-          "tokens": 1045141
-        },
-        {
-          "name": "agent",
-          "tokens": 315416
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-18T14:00:00Z",
@@ -1018,17 +452,7 @@
       "byModel": {
         "claude-sonnet-4-6": 2546469,
         "claude-opus-4-7": 48022084
-      },
-      "byProject": [
-        {
-          "name": "smart-home",
-          "tokens": 49172927
-        },
-        {
-          "name": "agent",
-          "tokens": 1395626
-        }
-      ]
+      }
     }
   ],
   "daily": [
@@ -1038,13 +462,7 @@
       "byModel": {
         "claude-haiku-4-5-20251001": 968612,
         "claude-opus-4-5-20251101": 26433
-      },
-      "byProject": [
-        {
-          "name": "raven-raven-os",
-          "tokens": 995045
-        }
-      ]
+      }
     },
     {
       "t": "2026-01-12",
@@ -1052,39 +470,21 @@
       "byModel": {
         "claude-haiku-4-5-20251001": 1801224,
         "claude-opus-4-5-20251101": 62314
-      },
-      "byProject": [
-        {
-          "name": "raven-raven-os",
-          "tokens": 1863538
-        }
-      ]
+      }
     },
     {
       "t": "2026-01-13",
       "tokens": 883616,
       "byModel": {
         "claude-haiku-4-5-20251001": 883616
-      },
-      "byProject": [
-        {
-          "name": "raven-raven-os",
-          "tokens": 883616
-        }
-      ]
+      }
     },
     {
       "t": "2026-01-14",
       "tokens": 1716042,
       "byModel": {
         "claude-haiku-4-5-20251001": 1716042
-      },
-      "byProject": [
-        {
-          "name": "raven-raven-os",
-          "tokens": 1716042
-        }
-      ]
+      }
     },
     {
       "t": "2026-01-15",
@@ -1092,13 +492,7 @@
       "byModel": {
         "claude-haiku-4-5-20251001": 2792722,
         "claude-opus-4-5-20251101": 448675
-      },
-      "byProject": [
-        {
-          "name": "raven-raven-os",
-          "tokens": 3241397
-        }
-      ]
+      }
     },
     {
       "t": "2026-01-16",
@@ -1106,13 +500,7 @@
       "byModel": {
         "claude-opus-4-5-20251101": 371732,
         "claude-haiku-4-5-20251001": 319049
-      },
-      "byProject": [
-        {
-          "name": "raven-raven-os",
-          "tokens": 690781
-        }
-      ]
+      }
     },
     {
       "t": "2026-01-19",
@@ -1120,26 +508,14 @@
       "byModel": {
         "claude-opus-4-5-20251101": 454338,
         "claude-haiku-4-5-20251001": 1467545
-      },
-      "byProject": [
-        {
-          "name": "raven-raven-os",
-          "tokens": 1921883
-        }
-      ]
+      }
     },
     {
       "t": "2026-01-20",
       "tokens": 1020623,
       "byModel": {
         "claude-haiku-4-5-20251001": 1020623
-      },
-      "byProject": [
-        {
-          "name": "raven-raven-os",
-          "tokens": 1020623
-        }
-      ]
+      }
     },
     {
       "t": "2026-01-21",
@@ -1147,39 +523,21 @@
       "byModel": {
         "claude-haiku-4-5-20251001": 3247185,
         "claude-opus-4-5-20251101": 531165
-      },
-      "byProject": [
-        {
-          "name": "raven-raven-os",
-          "tokens": 3778350
-        }
-      ]
+      }
     },
     {
       "t": "2026-01-23",
       "tokens": 779549,
       "byModel": {
         "claude-haiku-4-5-20251001": 779549
-      },
-      "byProject": [
-        {
-          "name": "raven-raven-os",
-          "tokens": 779549
-        }
-      ]
+      }
     },
     {
       "t": "2026-01-26",
       "tokens": 3609667,
       "byModel": {
         "claude-haiku-4-5-20251001": 3609667
-      },
-      "byProject": [
-        {
-          "name": "raven-raven-os",
-          "tokens": 3609667
-        }
-      ]
+      }
     },
     {
       "t": "2026-01-27",
@@ -1187,17 +545,7 @@
       "byModel": {
         "claude-opus-4-5-20251101": 760543,
         "claude-haiku-4-5-20251001": 2631547
-      },
-      "byProject": [
-        {
-          "name": "raven-raven-os",
-          "tokens": 2912487
-        },
-        {
-          "name": "perii",
-          "tokens": 479603
-        }
-      ]
+      }
     },
     {
       "t": "2026-01-28",
@@ -1205,17 +553,7 @@
       "byModel": {
         "claude-haiku-4-5-20251001": 2545329,
         "claude-opus-4-5-20251101": 188954
-      },
-      "byProject": [
-        {
-          "name": "raven-raven-os",
-          "tokens": 2253999
-        },
-        {
-          "name": "perii",
-          "tokens": 480284
-        }
-      ]
+      }
     },
     {
       "t": "2026-01-29",
@@ -1223,13 +561,7 @@
       "byModel": {
         "claude-opus-4-5-20251101": 1686374,
         "claude-haiku-4-5-20251001": 1309588
-      },
-      "byProject": [
-        {
-          "name": "raven-raven-os",
-          "tokens": 2995962
-        }
-      ]
+      }
     },
     {
       "t": "2026-01-30",
@@ -1237,17 +569,7 @@
       "byModel": {
         "claude-haiku-4-5-20251001": 1932631,
         "claude-opus-4-5-20251101": 760615
-      },
-      "byProject": [
-        {
-          "name": "perii",
-          "tokens": 1415570
-        },
-        {
-          "name": "raven-raven-os",
-          "tokens": 1277676
-        }
-      ]
+      }
     },
     {
       "t": "2026-02-02",
@@ -1255,17 +577,7 @@
       "byModel": {
         "claude-opus-4-5-20251101": 2069540,
         "claude-haiku-4-5-20251001": 5991816
-      },
-      "byProject": [
-        {
-          "name": "raven-raven-os",
-          "tokens": 5647175
-        },
-        {
-          "name": "perii",
-          "tokens": 2414181
-        }
-      ]
+      }
     },
     {
       "t": "2026-02-03",
@@ -1273,17 +585,7 @@
       "byModel": {
         "claude-opus-4-5-20251101": 3312434,
         "claude-haiku-4-5-20251001": 1753155
-      },
-      "byProject": [
-        {
-          "name": "raven-raven-os",
-          "tokens": 3305366
-        },
-        {
-          "name": "perii",
-          "tokens": 1760223
-        }
-      ]
+      }
     },
     {
       "t": "2026-02-04",
@@ -1292,17 +594,7 @@
         "claude-opus-4-5-20251101": 1556452,
         "claude-haiku-4-5-20251001": 4171990,
         "claude-sonnet-4-5-20250929": 290642
-      },
-      "byProject": [
-        {
-          "name": "raven-raven-os",
-          "tokens": 5369149
-        },
-        {
-          "name": "perii",
-          "tokens": 649935
-        }
-      ]
+      }
     },
     {
       "t": "2026-02-05",
@@ -1310,17 +602,7 @@
       "byModel": {
         "claude-haiku-4-5-20251001": 4766426,
         "claude-opus-4-5-20251101": 728171
-      },
-      "byProject": [
-        {
-          "name": "raven-raven-os",
-          "tokens": 4316322
-        },
-        {
-          "name": "perii",
-          "tokens": 1178275
-        }
-      ]
+      }
     },
     {
       "t": "2026-02-09",
@@ -1328,13 +610,7 @@
       "byModel": {
         "claude-sonnet-4-5-20250929": 1234152,
         "claude-haiku-4-5-20251001": 2313932
-      },
-      "byProject": [
-        {
-          "name": "raven-raven-os",
-          "tokens": 3548084
-        }
-      ]
+      }
     },
     {
       "t": "2026-02-10",
@@ -1342,17 +618,7 @@
       "byModel": {
         "claude-opus-4-6": 1680819,
         "claude-haiku-4-5-20251001": 5907215
-      },
-      "byProject": [
-        {
-          "name": "raven-raven-os",
-          "tokens": 5598715
-        },
-        {
-          "name": "perii",
-          "tokens": 1989319
-        }
-      ]
+      }
     },
     {
       "t": "2026-02-11",
@@ -1360,17 +626,7 @@
       "byModel": {
         "claude-haiku-4-5-20251001": 3698711,
         "claude-opus-4-6": 4369118
-      },
-      "byProject": [
-        {
-          "name": "raven-raven-os",
-          "tokens": 4034644
-        },
-        {
-          "name": "Random-Projects-entrepreneur-agent",
-          "tokens": 4033185
-        }
-      ]
+      }
     },
     {
       "t": "2026-02-12",
@@ -1378,21 +634,7 @@
       "byModel": {
         "claude-haiku-4-5-20251001": 3748126,
         "claude-opus-4-6": 19799768
-      },
-      "byProject": [
-        {
-          "name": "Random-Projects-entrepreneur-agent-1",
-          "tokens": 18898634
-        },
-        {
-          "name": "raven-raven-os",
-          "tokens": 4471274
-        },
-        {
-          "name": "Random-Projects-entrepreneur-agent",
-          "tokens": 177986
-        }
-      ]
+      }
     },
     {
       "t": "2026-02-17",
@@ -1400,17 +642,7 @@
       "byModel": {
         "claude-haiku-4-5-20251001": 4472910,
         "claude-opus-4-6": 216551
-      },
-      "byProject": [
-        {
-          "name": "raven-raven-os",
-          "tokens": 3732858
-        },
-        {
-          "name": "perii",
-          "tokens": 956603
-        }
-      ]
+      }
     },
     {
       "t": "2026-02-18",
@@ -1419,13 +651,7 @@
         "claude-haiku-4-5-20251001": 4222123,
         "claude-sonnet-4-6": 877706,
         "claude-opus-4-6": 168430
-      },
-      "byProject": [
-        {
-          "name": "raven-raven-os",
-          "tokens": 5268259
-        }
-      ]
+      }
     },
     {
       "t": "2026-02-19",
@@ -1434,13 +660,7 @@
         "claude-opus-4-6": 2214224,
         "claude-haiku-4-5-20251001": 7686019,
         "claude-sonnet-4-6": 983137
-      },
-      "byProject": [
-        {
-          "name": "raven-raven-os",
-          "tokens": 10883380
-        }
-      ]
+      }
     },
     {
       "t": "2026-02-20",
@@ -1448,26 +668,14 @@
       "byModel": {
         "claude-opus-4-6": 243860,
         "claude-haiku-4-5-20251001": 424972
-      },
-      "byProject": [
-        {
-          "name": "raven-raven-os",
-          "tokens": 668832
-        }
-      ]
+      }
     },
     {
       "t": "2026-02-23",
       "tokens": 1925735,
       "byModel": {
         "claude-haiku-4-5-20251001": 1925735
-      },
-      "byProject": [
-        {
-          "name": "raven-raven-os",
-          "tokens": 1925735
-        }
-      ]
+      }
     },
     {
       "t": "2026-02-24",
@@ -1475,13 +683,7 @@
       "byModel": {
         "claude-opus-4-6": 3481773,
         "claude-haiku-4-5-20251001": 4867529
-      },
-      "byProject": [
-        {
-          "name": "raven-raven-os",
-          "tokens": 8349302
-        }
-      ]
+      }
     },
     {
       "t": "2026-02-25",
@@ -1489,13 +691,7 @@
       "byModel": {
         "claude-haiku-4-5-20251001": 1805466,
         "claude-opus-4-6": 153389
-      },
-      "byProject": [
-        {
-          "name": "raven-raven-os",
-          "tokens": 1958855
-        }
-      ]
+      }
     },
     {
       "t": "2026-02-26",
@@ -1503,34 +699,14 @@
       "byModel": {
         "claude-opus-4-6": 22431201,
         "claude-haiku-4-5-20251001": 7772687
-      },
-      "byProject": [
-        {
-          "name": "Random-Projects-granola-notes",
-          "tokens": 20508024
-        },
-        {
-          "name": "raven-raven-os",
-          "tokens": 9514431
-        },
-        {
-          "name": "Memory",
-          "tokens": 181433
-        }
-      ]
+      }
     },
     {
       "t": "2026-02-27",
       "tokens": 33036587,
       "byModel": {
         "claude-opus-4-6": 33036587
-      },
-      "byProject": [
-        {
-          "name": "Random-Projects-granola-notes",
-          "tokens": 33036587
-        }
-      ]
+      }
     },
     {
       "t": "2026-03-02",
@@ -1538,21 +714,7 @@
       "byModel": {
         "claude-haiku-4-5-20251001": 5555512,
         "claude-opus-4-6": 1056849
-      },
-      "byProject": [
-        {
-          "name": "raven-raven-os",
-          "tokens": 5231907
-        },
-        {
-          "name": "perii",
-          "tokens": 1143633
-        },
-        {
-          "name": "Random-Projects-granola-notes",
-          "tokens": 236821
-        }
-      ]
+      }
     },
     {
       "t": "2026-03-03",
@@ -1561,25 +723,7 @@
         "claude-haiku-4-5-20251001": 12459427,
         "claude-opus-4-6": 1920663,
         "claude-sonnet-4-6": 1369410
-      },
-      "byProject": [
-        {
-          "name": "raven-raven-os",
-          "tokens": 11307747
-        },
-        {
-          "name": "Imagine-Canada-grant-connect-be",
-          "tokens": 2843276
-        },
-        {
-          "name": "Stack-Five-claude-mastery-course",
-          "tokens": 1116060
-        },
-        {
-          "name": "Stack-Five",
-          "tokens": 482417
-        }
-      ]
+      }
     },
     {
       "t": "2026-03-04",
@@ -1587,39 +731,21 @@
       "byModel": {
         "claude-opus-4-6": 2370376,
         "claude-haiku-4-5-20251001": 2481800
-      },
-      "byProject": [
-        {
-          "name": "raven-raven-os",
-          "tokens": 4852176
-        }
-      ]
+      }
     },
     {
       "t": "2026-03-05",
       "tokens": 1759007,
       "byModel": {
         "claude-haiku-4-5-20251001": 1759007
-      },
-      "byProject": [
-        {
-          "name": "raven-raven-os",
-          "tokens": 1759007
-        }
-      ]
+      }
     },
     {
       "t": "2026-03-06",
       "tokens": 261276,
       "byModel": {
         "claude-opus-4-6": 261276
-      },
-      "byProject": [
-        {
-          "name": "raven-raven-os",
-          "tokens": 261276
-        }
-      ]
+      }
     },
     {
       "t": "2026-03-09",
@@ -1627,13 +753,7 @@
       "byModel": {
         "claude-opus-4-6": 22496200,
         "claude-haiku-4-5-20251001": 6931205
-      },
-      "byProject": [
-        {
-          "name": "raven-raven-os",
-          "tokens": 29427405
-        }
-      ]
+      }
     },
     {
       "t": "2026-03-10",
@@ -1641,17 +761,7 @@
       "byModel": {
         "claude-opus-4-6": 23514118,
         "claude-haiku-4-5-20251001": 1360304
-      },
-      "byProject": [
-        {
-          "name": "raven-raven-os",
-          "tokens": 24595393
-        },
-        {
-          "name": "Imagine-Canada-grant-connect-be",
-          "tokens": 279029
-        }
-      ]
+      }
     },
     {
       "t": "2026-03-11",
@@ -1659,17 +769,7 @@
       "byModel": {
         "claude-opus-4-6": 24365569,
         "claude-haiku-4-5-20251001": 4116341
-      },
-      "byProject": [
-        {
-          "name": "raven-raven-os",
-          "tokens": 26661326
-        },
-        {
-          "name": "perii",
-          "tokens": 1820584
-        }
-      ]
+      }
     },
     {
       "t": "2026-03-12",
@@ -1677,39 +777,21 @@
       "byModel": {
         "claude-opus-4-6": 10511092,
         "claude-haiku-4-5-20251001": 2259870
-      },
-      "byProject": [
-        {
-          "name": "raven-raven-os",
-          "tokens": 12770962
-        }
-      ]
+      }
     },
     {
       "t": "2026-03-13",
       "tokens": 1613829,
       "byModel": {
         "claude-opus-4-6": 1613829
-      },
-      "byProject": [
-        {
-          "name": "raven-raven-os",
-          "tokens": 1613829
-        }
-      ]
+      }
     },
     {
       "t": "2026-03-14",
       "tokens": 1004064,
       "byModel": {
         "claude-opus-4-6": 1004064
-      },
-      "byProject": [
-        {
-          "name": "raven-raven-os",
-          "tokens": 1004064
-        }
-      ]
+      }
     },
     {
       "t": "2026-03-16",
@@ -1717,17 +799,7 @@
       "byModel": {
         "claude-opus-4-6": 9561146,
         "claude-haiku-4-5-20251001": 1950539
-      },
-      "byProject": [
-        {
-          "name": "raven-raven-os",
-          "tokens": 10878540
-        },
-        {
-          "name": "Random-Projects-whatsapp-wordle",
-          "tokens": 633145
-        }
-      ]
+      }
     },
     {
       "t": "2026-03-17",
@@ -1735,21 +807,7 @@
       "byModel": {
         "claude-opus-4-6": 44557137,
         "claude-haiku-4-5-20251001": 1216614
-      },
-      "byProject": [
-        {
-          "name": "raven-raven-os",
-          "tokens": 41914333
-        },
-        {
-          "name": "Random-Projects-whatsapp-wordle",
-          "tokens": 2929483
-        },
-        {
-          "name": "node-modules-openclaw",
-          "tokens": 929935
-        }
-      ]
+      }
     },
     {
       "t": "2026-03-18",
@@ -1757,17 +815,7 @@
       "byModel": {
         "claude-opus-4-6": 50755441,
         "claude-haiku-4-5-20251001": 3872607
-      },
-      "byProject": [
-        {
-          "name": "Random-Projects-whatsapp-wordle",
-          "tokens": 40912967
-        },
-        {
-          "name": "raven-raven-os",
-          "tokens": 13715081
-        }
-      ]
+      }
     },
     {
       "t": "2026-03-19",
@@ -1775,17 +823,7 @@
       "byModel": {
         "claude-opus-4-6": 9111820,
         "claude-haiku-4-5-20251001": 9793042
-      },
-      "byProject": [
-        {
-          "name": "raven-raven-os",
-          "tokens": 17867608
-        },
-        {
-          "name": "Random-Projects-whatsapp-wordle",
-          "tokens": 1037254
-        }
-      ]
+      }
     },
     {
       "t": "2026-03-20",
@@ -1793,33 +831,7 @@
       "byModel": {
         "claude-opus-4-6": 74189394,
         "claude-haiku-4-5-20251001": 24532317
-      },
-      "byProject": [
-        {
-          "name": "raven-raven-os",
-          "tokens": 37981495
-        },
-        {
-          "name": "perii",
-          "tokens": 35522226
-        },
-        {
-          "name": "Random-Projects-whatsapp-wordle",
-          "tokens": 23840689
-        },
-        {
-          "name": "Imagine-Canada-charity-api",
-          "tokens": 897224
-        },
-        {
-          "name": "Users-geoffreychan",
-          "tokens": 256862
-        },
-        {
-          "name": "Imagine-Canada-grant-connect-be",
-          "tokens": 223215
-        }
-      ]
+      }
     },
     {
       "t": "2026-03-23",
@@ -1827,17 +839,7 @@
       "byModel": {
         "claude-opus-4-6": 57532301,
         "claude-haiku-4-5-20251001": 28812688
-      },
-      "byProject": [
-        {
-          "name": "raven-raven-os",
-          "tokens": 85490455
-        },
-        {
-          "name": "Random-Projects-linkedin-research",
-          "tokens": 854534
-        }
-      ]
+      }
     },
     {
       "t": "2026-03-24",
@@ -1846,21 +848,7 @@
         "claude-opus-4-6": 81403659,
         "claude-haiku-4-5-20251001": 32055406,
         "claude-sonnet-4-6": 2091584
-      },
-      "byProject": [
-        {
-          "name": "raven-raven-os",
-          "tokens": 59011525
-        },
-        {
-          "name": "perii",
-          "tokens": 49390631
-        },
-        {
-          "name": "Random-Projects-linkedin-research",
-          "tokens": 7148493
-        }
-      ]
+      }
     },
     {
       "t": "2026-03-25",
@@ -1869,38 +857,14 @@
         "claude-opus-4-6": 184251127,
         "claude-haiku-4-5-20251001": 9096393,
         "claude-sonnet-4-6": 852245
-      },
-      "byProject": [
-        {
-          "name": "perii",
-          "tokens": 118034262
-        },
-        {
-          "name": "raven-raven-os",
-          "tokens": 63843045
-        },
-        {
-          "name": "Random-Projects-dietician-agent",
-          "tokens": 12322458
-        }
-      ]
+      }
     },
     {
       "t": "2026-03-26",
       "tokens": 3772677,
       "byModel": {
         "claude-opus-4-6": 3772677
-      },
-      "byProject": [
-        {
-          "name": "raven-raven-os",
-          "tokens": 3026705
-        },
-        {
-          "name": "Random-Projects-dietician-agent",
-          "tokens": 745972
-        }
-      ]
+      }
     },
     {
       "t": "2026-03-27",
@@ -1908,21 +872,7 @@
       "byModel": {
         "claude-opus-4-6": 14229763,
         "claude-haiku-4-5-20251001": 969648
-      },
-      "byProject": [
-        {
-          "name": "raven-raven-os",
-          "tokens": 13197881
-        },
-        {
-          "name": "Random-Projects-crumbs",
-          "tokens": 1029732
-        },
-        {
-          "name": "Random-Projects-dietician-agent",
-          "tokens": 971798
-        }
-      ]
+      }
     },
     {
       "t": "2026-03-28",
@@ -1931,30 +881,14 @@
         "claude-opus-4-6": 145284179,
         "claude-haiku-4-5-20251001": 6909290,
         "claude-sonnet-4-6": 282053
-      },
-      "byProject": [
-        {
-          "name": "Random-Projects-smart-home",
-          "tokens": 151249142
-        },
-        {
-          "name": "raven-raven-os",
-          "tokens": 1226380
-        }
-      ]
+      }
     },
     {
       "t": "2026-03-29",
       "tokens": 939435,
       "byModel": {
         "claude-opus-4-6": 939435
-      },
-      "byProject": [
-        {
-          "name": "Random-Projects-smart-home",
-          "tokens": 939435
-        }
-      ]
+      }
     },
     {
       "t": "2026-03-30",
@@ -1963,25 +897,7 @@
         "claude-opus-4-6": 68761071,
         "claude-haiku-4-5-20251001": 17965467,
         "claude-sonnet-4-6": 511203
-      },
-      "byProject": [
-        {
-          "name": "raven-raven-os",
-          "tokens": 54921736
-        },
-        {
-          "name": "perii",
-          "tokens": 13731564
-        },
-        {
-          "name": "Random-Projects-smart-home",
-          "tokens": 12804938
-        },
-        {
-          "name": "Random-Projects-whatsapp-wordle",
-          "tokens": 5779503
-        }
-      ]
+      }
     },
     {
       "t": "2026-03-31",
@@ -1990,33 +906,7 @@
         "claude-opus-4-6": 65371606,
         "claude-haiku-4-5-20251001": 37401035,
         "claude-sonnet-4-6": 1113116
-      },
-      "byProject": [
-        {
-          "name": "raven-raven-os",
-          "tokens": 40550160
-        },
-        {
-          "name": "Random-Projects-smart-home",
-          "tokens": 33258888
-        },
-        {
-          "name": "Imagine-Canada-grant-connect-be",
-          "tokens": 26174617
-        },
-        {
-          "name": "Random-Projects-claude-code-rdp",
-          "tokens": 2149388
-        },
-        {
-          "name": "Random-Projects-whatsapp-wordle",
-          "tokens": 1743445
-        },
-        {
-          "name": "geoffreychan-Desktop-Work",
-          "tokens": 9259
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-01",
@@ -2025,29 +915,7 @@
         "claude-opus-4-6": 36795060,
         "claude-haiku-4-5-20251001": 13263678,
         "claude-sonnet-4-6": 241441
-      },
-      "byProject": [
-        {
-          "name": "raven-raven-os",
-          "tokens": 19289634
-        },
-        {
-          "name": "Random-Projects-smart-home",
-          "tokens": 18408378
-        },
-        {
-          "name": "Random-Projects-levi-word-game",
-          "tokens": 5612448
-        },
-        {
-          "name": "Random-Projects-claude-code-rdp",
-          "tokens": 3943985
-        },
-        {
-          "name": "Random-Projects-whatsapp-wordle",
-          "tokens": 3045734
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-02",
@@ -2056,25 +924,7 @@
         "claude-opus-4-6": 67452396,
         "claude-haiku-4-5-20251001": 15152250,
         "claude-sonnet-4-6": 303456
-      },
-      "byProject": [
-        {
-          "name": "raven-raven-os",
-          "tokens": 62317882
-        },
-        {
-          "name": "Random-Projects-smart-home",
-          "tokens": 12078242
-        },
-        {
-          "name": "Random-Projects-levi-word-game",
-          "tokens": 5827094
-        },
-        {
-          "name": "Random-Projects-claude-code-rdp",
-          "tokens": 2684884
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-03",
@@ -2082,21 +932,7 @@
       "byModel": {
         "claude-opus-4-6": 26079060,
         "claude-haiku-4-5-20251001": 7293965
-      },
-      "byProject": [
-        {
-          "name": "Random-Projects-smart-home",
-          "tokens": 22014269
-        },
-        {
-          "name": "raven-raven-os",
-          "tokens": 8936416
-        },
-        {
-          "name": "Random-Projects-whatsapp-wordle",
-          "tokens": 2422340
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-04",
@@ -2104,51 +940,21 @@
       "byModel": {
         "claude-opus-4-6": 31206079,
         "claude-haiku-4-5-20251001": 9402750
-      },
-      "byProject": [
-        {
-          "name": "Random-Projects-claude-code-rdp",
-          "tokens": 22052777
-        },
-        {
-          "name": "Random-Projects-smart-home",
-          "tokens": 15100805
-        },
-        {
-          "name": "Random-Projects-levi-word-game",
-          "tokens": 2044172
-        },
-        {
-          "name": "raven-raven-os",
-          "tokens": 1411075
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-05",
       "tokens": 82326,
       "byModel": {
         "claude-opus-4-6": 82326
-      },
-      "byProject": [
-        {
-          "name": "Random-Projects-whatsapp-wordle",
-          "tokens": 82326
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-06",
       "tokens": 743390,
       "byModel": {
         "claude-opus-4-6": 743390
-      },
-      "byProject": [
-        {
-          "name": "Random-Projects-smart-home",
-          "tokens": 743390
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-07",
@@ -2157,33 +963,7 @@
         "claude-opus-4-6": 159443846,
         "claude-sonnet-4-6": 1709659,
         "claude-haiku-4-5-20251001": 12948019
-      },
-      "byProject": [
-        {
-          "name": "raven-raven-os",
-          "tokens": 118744652
-        },
-        {
-          "name": "Random-Projects-smart-home",
-          "tokens": 28638187
-        },
-        {
-          "name": "geoffchan23-github-io",
-          "tokens": 13004065
-        },
-        {
-          "name": "Random-Projects-claude-code-rdp",
-          "tokens": 8869597
-        },
-        {
-          "name": "Stack-Five-Shift",
-          "tokens": 3176064
-        },
-        {
-          "name": "Random-Projects-osmos-ai-mvp",
-          "tokens": 1668959
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-08",
@@ -2192,21 +972,7 @@
         "claude-opus-4-6": 85551825,
         "claude-haiku-4-5-20251001": 21206779,
         "claude-sonnet-4-6": 2422768
-      },
-      "byProject": [
-        {
-          "name": "raven-raven-os",
-          "tokens": 71605199
-        },
-        {
-          "name": "Random-Projects-smart-home",
-          "tokens": 36792062
-        },
-        {
-          "name": "geoffchan23-github-io",
-          "tokens": 784111
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-09",
@@ -2215,25 +981,7 @@
         "claude-opus-4-6": 130466334,
         "claude-sonnet-4-6": 4764737,
         "claude-haiku-4-5-20251001": 16927101
-      },
-      "byProject": [
-        {
-          "name": "raven-raven-os",
-          "tokens": 132212402
-        },
-        {
-          "name": "Random-Projects-smart-home",
-          "tokens": 18303377
-        },
-        {
-          "name": "Random-Projects-ravenos-mcp-test",
-          "tokens": 1246381
-        },
-        {
-          "name": "Random-Projects-wheel-of-levi",
-          "tokens": 396012
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-10",
@@ -2242,25 +990,7 @@
         "claude-opus-4-6": 136119657,
         "claude-sonnet-4-6": 6131625,
         "claude-haiku-4-5-20251001": 4756254
-      },
-      "byProject": [
-        {
-          "name": "Random-Projects-smart-home",
-          "tokens": 91070872
-        },
-        {
-          "name": "raven-raven-os",
-          "tokens": 52577166
-        },
-        {
-          "name": "Random-Projects-jordans-videos",
-          "tokens": 2496709
-        },
-        {
-          "name": "Random-Projects-levi-word-game",
-          "tokens": 862789
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-11",
@@ -2268,21 +998,7 @@
       "byModel": {
         "claude-opus-4-6": 131217177,
         "claude-sonnet-4-6": 5535428
-      },
-      "byProject": [
-        {
-          "name": "Random-Projects-levi-word-game",
-          "tokens": 83834363
-        },
-        {
-          "name": "raven-raven-os",
-          "tokens": 37343354
-        },
-        {
-          "name": "Random-Projects-smart-home",
-          "tokens": 15574888
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-12",
@@ -2290,21 +1006,7 @@
       "byModel": {
         "claude-opus-4-6": 38241673,
         "claude-haiku-4-5-20251001": 2083022
-      },
-      "byProject": [
-        {
-          "name": "raven-raven-os",
-          "tokens": 34100974
-        },
-        {
-          "name": "Random-Projects-smart-home",
-          "tokens": 3826580
-        },
-        {
-          "name": "Random-Projects-levi-word-game",
-          "tokens": 2397141
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-13",
@@ -2312,21 +1014,7 @@
       "byModel": {
         "claude-opus-4-6": 130253736,
         "claude-haiku-4-5-20251001": 19011491
-      },
-      "byProject": [
-        {
-          "name": "raven-raven-os",
-          "tokens": 126387369
-        },
-        {
-          "name": "Random-Projects-smart-home",
-          "tokens": 22540618
-        },
-        {
-          "name": "Random-Projects-ravenos-mcp-test",
-          "tokens": 337240
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-14",
@@ -2334,21 +1022,7 @@
       "byModel": {
         "claude-opus-4-6": 64194437,
         "claude-haiku-4-5-20251001": 6037058
-      },
-      "byProject": [
-        {
-          "name": "raven-raven-os",
-          "tokens": 68416775
-        },
-        {
-          "name": "Random-Projects-linkedin-research",
-          "tokens": 1398741
-        },
-        {
-          "name": "Imagine-Canada-grant-connect-be",
-          "tokens": 415979
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-15",
@@ -2356,21 +1030,7 @@
       "byModel": {
         "claude-opus-4-6": 39373340,
         "claude-haiku-4-5-20251001": 8126966
-      },
-      "byProject": [
-        {
-          "name": "raven-raven-os",
-          "tokens": 43654387
-        },
-        {
-          "name": "Random-Projects-smart-home",
-          "tokens": 2993303
-        },
-        {
-          "name": "Random-Projects-linkedin-research",
-          "tokens": 852616
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-16",
@@ -2380,25 +1040,7 @@
         "claude-sonnet-4-6": 2862283,
         "claude-opus-4-7": 12043935,
         "claude-haiku-4-5-20251001": 179027
-      },
-      "byProject": [
-        {
-          "name": "raven-raven-os",
-          "tokens": 69350213
-        },
-        {
-          "name": "Random-Projects-smart-home",
-          "tokens": 13398160
-        },
-        {
-          "name": "raven-raven-os--claude-worktrees-hologic-customer-knowledge",
-          "tokens": 3487631
-        },
-        {
-          "name": "Random-Projects-linkedin-research",
-          "tokens": 66477
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-17",
@@ -2407,21 +1049,7 @@
         "claude-opus-4-7": 12266043,
         "claude-opus-4-6": 3332564,
         "claude-haiku-4-5-20251001": 8380361
-      },
-      "byProject": [
-        {
-          "name": "raven-raven-os",
-          "tokens": 9290122
-        },
-        {
-          "name": "raven-raven-os--claude-worktrees-hologic-customer-knowledge",
-          "tokens": 8964692
-        },
-        {
-          "name": "Random-Projects-smart-home",
-          "tokens": 5724154
-        }
-      ]
+      }
     },
     {
       "t": "2026-04-18",
@@ -2429,17 +1057,7 @@
       "byModel": {
         "claude-opus-4-7": 41144823,
         "claude-sonnet-4-6": 1497439
-      },
-      "byProject": [
-        {
-          "name": "Random-Projects-smart-home",
-          "tokens": 42000117
-        },
-        {
-          "name": "Random-Projects-smart-home--claude-worktrees-cranky-kepler-d2cb22",
-          "tokens": 642145
-        }
-      ]
+      }
     }
   ]
 }

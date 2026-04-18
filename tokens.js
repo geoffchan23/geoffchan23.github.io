@@ -55,26 +55,16 @@ function rollupDailyToWeekly(daily) {
         const key = yr + "-W" + String(weekNum).padStart(2, "0");
         let agg = weeks.get(key);
         if (!agg) {
-            agg = { t: d.t, tokens: 0, byModel: {}, byProjectMap: new Map() };
+            agg = { t: d.t, tokens: 0, byModel: {} };
             weeks.set(key, agg);
         }
         agg.tokens += d.tokens;
         for (const [m, n] of Object.entries(d.byModel)) {
             agg.byModel[m] = (agg.byModel[m] || 0) + n;
         }
-        for (const p of d.byProject) {
-            agg.byProjectMap.set(p.name, (agg.byProjectMap.get(p.name) || 0) + p.tokens);
-        }
     }
     return Array.from(weeks.values())
-        .map(w => ({
-            t: w.t,
-            tokens: w.tokens,
-            byModel: w.byModel,
-            byProject: Array.from(w.byProjectMap.entries())
-                .map(([name, tokens]) => ({ name, tokens }))
-                .sort((a, b) => b.tokens - a.tokens),
-        }))
+        .map(w => ({ t: w.t, tokens: w.tokens, byModel: w.byModel }))
         .sort((a, b) => a.t.localeCompare(b.t));
 }
 
@@ -99,7 +89,6 @@ function bucketsForRange(data, startMs, endMs) {
                 t: b.t + "T00:00:00Z",
                 tokens: b.tokens,
                 byModel: b.byModel,
-                byProject: b.byProject,
             })),
         };
     }
@@ -113,7 +102,6 @@ function bucketsForRange(data, startMs, endMs) {
             t: b.t + "T00:00:00Z",
             tokens: b.tokens,
             byModel: b.byModel,
-            byProject: b.byProject,
         })),
     };
 }
@@ -130,19 +118,16 @@ function renderTooltip(ctx) {
     if (!point) return;
     const total = point.y;
     const byModel = Object.entries(point.meta.byModel).sort(([, a], [, b]) => b - a).slice(0, 2);
-    const byProject = point.meta.byProject.slice(0, 3);
     const gran = ctx.tooltip.dataPoints[0].dataset.granularity || "daily";
     const timeLabel = formatTimestamp(point.x, gran);
     const modelLines = byModel.map(([id, n]) => {
         const pct = total > 0 ? Math.round((n / total) * 100) : 0;
         return `<div>${displayModel(id)} · ${pct}%</div>`;
     }).join("");
-    const projectLines = byProject.map(p => `<div>${p.name} · ${formatTokens(p.tokens)}</div>`).join("");
     tooltipEl.innerHTML = `
         <div class="tt-time">${timeLabel}</div>
         <div class="tt-total">${formatTokens(total)} tokens</div>
         ${modelLines ? `<div class="tt-section">${modelLines}</div>` : ""}
-        ${projectLines ? `<div class="tt-section">${projectLines}</div>` : ""}
     `;
     const canvasRect = ctx.chart.canvas.getBoundingClientRect();
     tooltipEl.style.opacity = "1";
@@ -191,7 +176,7 @@ function buildMainChart(canvas, data, initialStartMs, initialEndMs) {
         data: {
             datasets: [{
                 label: "Tokens",
-                data: points.map(p => ({ x: new Date(p.t).getTime(), y: p.tokens, meta: { byModel: p.byModel, byProject: p.byProject } })),
+                data: points.map(p => ({ x: new Date(p.t).getTime(), y: p.tokens, meta: { byModel: p.byModel } })),
                 borderColor: ACCENT,
                 backgroundColor: ACCENT_FILL,
                 borderWidth: 2,
@@ -248,7 +233,7 @@ function buildMainChart(canvas, data, initialStartMs, initialEndMs) {
 function onChartRangeChange(chart, data) {
     const xScale = chart.scales.x;
     const { granularity, points } = bucketsForRange(data, xScale.min, xScale.max);
-    chart.data.datasets[0].data = points.map(p => ({ x: new Date(p.t).getTime(), y: p.tokens, meta: { byModel: p.byModel, byProject: p.byProject } }));
+    chart.data.datasets[0].data = points.map(p => ({ x: new Date(p.t).getTime(), y: p.tokens, meta: { byModel: p.byModel } }));
     chart.data.datasets[0].granularity = granularity;
     chart.update("none");
 }
