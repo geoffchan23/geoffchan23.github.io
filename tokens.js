@@ -335,8 +335,12 @@ async function init() {
 init().catch((err) => {
     console.error("tokens init failed:", err);
     const bigEl = document.getElementById("tokens-big");
-    if (bigEl) {
+    // Only clobber the headline if it never rendered. If the headline is set,
+    // the fetch succeeded and the error is in chart rendering — let the data stay.
+    if (bigEl && bigEl.dataset.state === "loading") {
         bigEl.textContent = "—";
         document.getElementById("tokens-sub").textContent = "error loading usage";
+    } else {
+        document.getElementById("tokens-hint").textContent = "chart failed to render — data above is current";
     }
 });
