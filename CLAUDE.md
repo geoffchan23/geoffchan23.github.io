@@ -27,3 +27,10 @@ When the user asks to add a new art post, follow the format documented in `_art/
 2. **Create image folder:** `art/images/YYYY-MM-DD-slug/` and copy images as `01.png`, `02.png`, etc.
 3. **Create post file:** `_art/YYYY-MM-DD-slug.md` with front matter (title, date, images list) and caption body
 4. **Commit and push** so it auto-deploys to GitHub Pages
+
+## /tokens Page (Auto-Generated Data)
+
+- `data/usage.json` is auto-generated and committed hourly by the smart-home agent. Do not edit manually.
+- The agent commits appear in git history as `data: update usage stats` with author `Geoff Chan <geoffchan23@gmail.com>` (the publisher uses a path-scoped commit so only `data/usage.json` is included).
+- Page lives at `tokens.html` (serves at `/tokens`). Styles in `tokens.css`. Renderer in `tokens.js` (uses Chart.js v4 + chartjs-plugin-zoom via CDN).
+- If the agent is down, `data/usage.json` becomes stale but the page still renders the most recent snapshot.
