@@ -1,0 +1,72 @@
+.tokens-headline {
+    text-align: left;
+}
+
+.tokens-big {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 3.2em;
+    font-weight: 300;
+    color: #222;
+    line-height: 1.1;
+    letter-spacing: -2px;
+    margin-top: 0.2em;
+    transition: opacity 0.4s ease;
+}
+
+.tokens-big[data-state="loading"] {
+    opacity: 0.3;
+}
+
+.tokens-sub {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.8em;
+    opacity: 0.5;
+    margin-top: 0.3em;
+    margin-bottom: 0.5em;
+}
+
+.tokens-timeline h2 {
+    margin-top: 2em;
+}
+
+.tokens-chart-wrap {
+    position: relative;
+    width: 100%;
+    height: 280px;
+    margin-bottom: 0.5em;
+}
+
+.tokens-brush-wrap {
+    position: relative;
+    width: 100%;
+    height: 48px;
+    margin-bottom: 0.5em;
+    opacity: 0.6;
+}
+
+.tokens-hint {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.7em;
+    opacity: 0.4;
+    text-align: center;
+}
+
+.tokens-meta {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.7em;
+    opacity: 0.4;
+    margin-top: 2em;
+    text-align: center;
+}
+
+@media (max-width: 600px) {
+    .tokens-big {
+        font-size: 2.4em;
+    }
+    .tokens-chart-wrap {
+        height: 220px;
+    }
+    .tokens-brush-wrap {
+        height: 40px;
+    }
+}
