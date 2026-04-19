@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-19T22:29:02Z",
+  "generatedAt": "2026-04-19T23:29:02Z",
   "last24h": {
     "totalTokens": 6715070,
     "byModel": {
@@ -13,19 +13,6 @@
     ]
   },
   "hourly": [
-    {
-      "t": "2026-04-12T22:00:00Z",
-      "tokens": 14963154,
-      "byModel": {
-        "claude-opus-4-6": 14963154
-      },
-      "byProject": [
-        {
-          "name": "raven-os",
-          "tokens": 14963154
-        }
-      ]
-    },
     {
       "t": "2026-04-13T01:00:00Z",
       "tokens": 2450132,
