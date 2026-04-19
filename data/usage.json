@@ -1,20 +1,15 @@
 {
-  "generatedAt": "2026-04-19T13:29:01Z",
+  "generatedAt": "2026-04-19T14:29:01Z",
   "last24h": {
-    "totalTokens": 71043020,
+    "totalTokens": 6715070,
     "byModel": {
-      "claude-sonnet-4-6": 2546469,
-      "claude-opus-4-7": 68496551,
-      "<synthetic>": 0
+      "<synthetic>": 0,
+      "claude-opus-4-7": 6715070
     },
     "byProject": [
       {
         "name": "smart-home",
-        "tokens": 69647394
-      },
-      {
-        "name": "agent",
-        "tokens": 1395626
+        "tokens": 6715070
       }
     ]
   },
