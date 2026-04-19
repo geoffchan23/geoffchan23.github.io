@@ -1,24 +1,24 @@
 {
-  "generatedAt": "2026-04-19T11:29:00Z",
+  "generatedAt": "2026-04-19T12:29:00Z",
   "last24h": {
-    "totalTokens": 85205124,
+    "totalTokens": 82889723,
     "byModel": {
-      "claude-opus-4-7": 82658655,
+      "claude-opus-4-7": 80343254,
       "claude-sonnet-4-6": 2546469,
       "<synthetic>": 0
     },
     "byProject": [
       {
         "name": "smart-home",
-        "tokens": 81278243
-      },
-      {
-        "name": "cranky-kepler-d2cb22",
-        "tokens": 2215839
+        "tokens": 80133540
       },
       {
         "name": "agent",
         "tokens": 1711042
+      },
+      {
+        "name": "cranky-kepler-d2cb22",
+        "tokens": 1045141
       }
     ]
   },
