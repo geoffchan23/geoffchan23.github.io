@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-19T21:29:01Z",
+  "generatedAt": "2026-04-19T22:29:02Z",
   "last24h": {
     "totalTokens": 6715070,
     "byModel": {
@@ -15,18 +15,14 @@
   "hourly": [
     {
       "t": "2026-04-12T22:00:00Z",
-      "tokens": 30207325,
+      "tokens": 14963154,
       "byModel": {
-        "claude-opus-4-6": 30207325
+        "claude-opus-4-6": 14963154
       },
       "byProject": [
         {
           "name": "raven-os",
-          "tokens": 29415992
-        },
-        {
-          "name": "smart-home",
-          "tokens": 791333
+          "tokens": 14963154
         }
       ]
     },
