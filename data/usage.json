@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-19T18:29:01Z",
+  "generatedAt": "2026-04-19T19:29:01Z",
   "last24h": {
     "totalTokens": 6715070,
     "byModel": {
@@ -13,20 +13,6 @@
     ]
   },
   "hourly": [
-    {
-      "t": "2026-04-12T18:00:00Z",
-      "tokens": 6399254,
-      "byModel": {
-        "claude-haiku-4-5-20251001": 6208964,
-        "claude-opus-4-6": 190290
-      },
-      "byProject": [
-        {
-          "name": "smart-home",
-          "tokens": 6399254
-        }
-      ]
-    },
     {
       "t": "2026-04-12T19:00:00Z",
       "tokens": 5650081,
