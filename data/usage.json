@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-04-20T18:36:19Z",
+  "generatedAt": "2026-04-20T19:08:57Z",
   "last24h": {
-    "totalTokens": 128675755,
+    "totalTokens": 163577065,
     "byModel": {
-      "claude-opus-4-7": 103279605,
+      "claude-opus-4-7": 138180915,
       "claude-haiku-4-5-20251001": 25396150
     }
   },
@@ -388,622 +388,793 @@
     },
     {
       "t": "2026-04-20T18:00:00Z",
-      "tokens": 4873771,
+      "tokens": 25400610,
       "byModel": {
-        "claude-opus-4-7": 4873771
+        "claude-opus-4-7": 25400610
+      }
+    },
+    {
+      "t": "2026-04-20T19:00:00Z",
+      "tokens": 14374471,
+      "byModel": {
+        "claude-opus-4-7": 14374471
       }
     }
   ],
   "daily": [
     {
       "t": "2026-01-09",
-      "tokens": 995045,
+      "tokens": 2296155,
       "byModel": {
-        "claude-haiku-4-5-20251001": 968612,
-        "claude-opus-4-5-20251101": 26433
+        "claude-opus-4-5-20251101": 59610,
+        "claude-haiku-4-5-20251001": 2236545
       }
     },
     {
+      "t": "2026-01-10",
+      "tokens": 0,
+      "byModel": {}
+    },
+    {
+      "t": "2026-01-11",
+      "tokens": 0,
+      "byModel": {}
+    },
+    {
       "t": "2026-01-12",
-      "tokens": 1863538,
+      "tokens": 5342925,
       "byModel": {
-        "claude-haiku-4-5-20251001": 1801224,
-        "claude-opus-4-5-20251101": 62314
+        "claude-opus-4-5-20251101": 199434,
+        "claude-haiku-4-5-20251001": 5143491
       }
     },
     {
       "t": "2026-01-13",
-      "tokens": 883616,
+      "tokens": 2503539,
       "byModel": {
-        "claude-haiku-4-5-20251001": 883616
+        "claude-haiku-4-5-20251001": 2503539
       }
     },
     {
       "t": "2026-01-14",
-      "tokens": 1716042,
+      "tokens": 4142309,
       "byModel": {
-        "claude-haiku-4-5-20251001": 1716042
+        "claude-haiku-4-5-20251001": 4142309
       }
     },
     {
       "t": "2026-01-15",
-      "tokens": 3241397,
+      "tokens": 7231635,
       "byModel": {
-        "claude-haiku-4-5-20251001": 2792722,
-        "claude-opus-4-5-20251101": 448675
+        "claude-haiku-4-5-20251001": 6061660,
+        "claude-opus-4-5-20251101": 1169975
       }
     },
     {
       "t": "2026-01-16",
-      "tokens": 690781,
+      "tokens": 1588339,
       "byModel": {
-        "claude-opus-4-5-20251101": 371732,
-        "claude-haiku-4-5-20251001": 319049
+        "claude-opus-4-5-20251101": 882453,
+        "claude-haiku-4-5-20251001": 705886
       }
     },
     {
+      "t": "2026-01-17",
+      "tokens": 0,
+      "byModel": {}
+    },
+    {
+      "t": "2026-01-18",
+      "tokens": 0,
+      "byModel": {}
+    },
+    {
       "t": "2026-01-19",
-      "tokens": 1921883,
+      "tokens": 5544017,
       "byModel": {
-        "claude-opus-4-5-20251101": 454338,
-        "claude-haiku-4-5-20251001": 1467545
+        "claude-haiku-4-5-20251001": 4005828,
+        "claude-opus-4-5-20251101": 1538189
       }
     },
     {
       "t": "2026-01-20",
-      "tokens": 1020623,
+      "tokens": 2118047,
       "byModel": {
-        "claude-haiku-4-5-20251001": 1020623
+        "claude-haiku-4-5-20251001": 2118047
       }
     },
     {
       "t": "2026-01-21",
-      "tokens": 3778350,
+      "tokens": 8957680,
       "byModel": {
-        "claude-haiku-4-5-20251001": 3247185,
-        "claude-opus-4-5-20251101": 531165
+        "claude-haiku-4-5-20251001": 8079286,
+        "claude-opus-4-5-20251101": 878394
       }
+    },
+    {
+      "t": "2026-01-22",
+      "tokens": 0,
+      "byModel": {}
     },
     {
       "t": "2026-01-23",
-      "tokens": 779549,
+      "tokens": 1516538,
       "byModel": {
-        "claude-haiku-4-5-20251001": 779549
+        "claude-haiku-4-5-20251001": 1516538
       }
     },
     {
+      "t": "2026-01-24",
+      "tokens": 0,
+      "byModel": {}
+    },
+    {
+      "t": "2026-01-25",
+      "tokens": 0,
+      "byModel": {}
+    },
+    {
       "t": "2026-01-26",
-      "tokens": 3609667,
+      "tokens": 8810496,
       "byModel": {
-        "claude-haiku-4-5-20251001": 3609667
+        "claude-haiku-4-5-20251001": 8810496
       }
     },
     {
       "t": "2026-01-27",
-      "tokens": 3392090,
+      "tokens": 7483888,
       "byModel": {
-        "claude-opus-4-5-20251101": 760543,
-        "claude-haiku-4-5-20251001": 2631547
+        "claude-haiku-4-5-20251001": 5814519,
+        "claude-opus-4-5-20251101": 1669369
       }
     },
     {
       "t": "2026-01-28",
-      "tokens": 2734283,
+      "tokens": 5787154,
       "byModel": {
-        "claude-haiku-4-5-20251001": 2545329,
-        "claude-opus-4-5-20251101": 188954
+        "claude-haiku-4-5-20251001": 5238843,
+        "claude-opus-4-5-20251101": 548311
       }
     },
     {
       "t": "2026-01-29",
-      "tokens": 2995962,
+      "tokens": 6730860,
       "byModel": {
-        "claude-opus-4-5-20251101": 1686374,
-        "claude-haiku-4-5-20251001": 1309588
+        "claude-haiku-4-5-20251001": 3455124,
+        "claude-opus-4-5-20251101": 3275736,
+        "<synthetic>": 0
       }
     },
     {
       "t": "2026-01-30",
-      "tokens": 2693246,
+      "tokens": 6846724,
       "byModel": {
-        "claude-haiku-4-5-20251001": 1932631,
-        "claude-opus-4-5-20251101": 760615
+        "claude-opus-4-5-20251101": 1720970,
+        "claude-haiku-4-5-20251001": 5125754,
+        "<synthetic>": 0
       }
     },
     {
+      "t": "2026-01-31",
+      "tokens": 0,
+      "byModel": {}
+    },
+    {
+      "t": "2026-02-01",
+      "tokens": 0,
+      "byModel": {}
+    },
+    {
       "t": "2026-02-02",
-      "tokens": 8061356,
+      "tokens": 18573659,
       "byModel": {
-        "claude-opus-4-5-20251101": 2069540,
-        "claude-haiku-4-5-20251001": 5991816
+        "claude-haiku-4-5-20251001": 14307312,
+        "claude-opus-4-5-20251101": 4266347,
+        "<synthetic>": 0
       }
     },
     {
       "t": "2026-02-03",
-      "tokens": 5065589,
+      "tokens": 9269858,
       "byModel": {
-        "claude-opus-4-5-20251101": 3312434,
-        "claude-haiku-4-5-20251001": 1753155
+        "claude-opus-4-5-20251101": 6445972,
+        "<synthetic>": 0,
+        "claude-haiku-4-5-20251001": 2823886
       }
     },
     {
       "t": "2026-02-04",
-      "tokens": 6019084,
+      "tokens": 15559034,
       "byModel": {
-        "claude-opus-4-5-20251101": 1556452,
-        "claude-haiku-4-5-20251001": 4171990,
-        "claude-sonnet-4-5-20250929": 290642
+        "claude-sonnet-4-5-20250929": 755491,
+        "claude-haiku-4-5-20251001": 11399221,
+        "<synthetic>": 0,
+        "claude-opus-4-5-20251101": 3404322
       }
     },
     {
       "t": "2026-02-05",
-      "tokens": 5494597,
+      "tokens": 14376391,
       "byModel": {
-        "claude-haiku-4-5-20251001": 4766426,
-        "claude-opus-4-5-20251101": 728171
+        "claude-haiku-4-5-20251001": 12376001,
+        "claude-opus-4-5-20251101": 2000390
       }
     },
     {
+      "t": "2026-02-06",
+      "tokens": 0,
+      "byModel": {}
+    },
+    {
+      "t": "2026-02-07",
+      "tokens": 0,
+      "byModel": {}
+    },
+    {
+      "t": "2026-02-08",
+      "tokens": 0,
+      "byModel": {}
+    },
+    {
       "t": "2026-02-09",
-      "tokens": 3548084,
+      "tokens": 8854360,
       "byModel": {
-        "claude-sonnet-4-5-20250929": 1234152,
-        "claude-haiku-4-5-20251001": 2313932
+        "claude-sonnet-4-5-20250929": 3099859,
+        "claude-haiku-4-5-20251001": 5754501
       }
     },
     {
       "t": "2026-02-10",
-      "tokens": 7588034,
+      "tokens": 19140752,
       "byModel": {
-        "claude-opus-4-6": 1680819,
-        "claude-haiku-4-5-20251001": 5907215
+        "claude-haiku-4-5-20251001": 15180568,
+        "claude-opus-4-6": 3960184
       }
     },
     {
       "t": "2026-02-11",
-      "tokens": 8067829,
+      "tokens": 19061165,
       "byModel": {
-        "claude-haiku-4-5-20251001": 3698711,
-        "claude-opus-4-6": 4369118
+        "claude-opus-4-6": 10340367,
+        "claude-haiku-4-5-20251001": 8720798,
+        "<synthetic>": 0
       }
     },
     {
       "t": "2026-02-12",
-      "tokens": 23547894,
+      "tokens": 58347102,
       "byModel": {
-        "claude-haiku-4-5-20251001": 3748126,
-        "claude-opus-4-6": 19799768
+        "claude-opus-4-6": 49705476,
+        "claude-haiku-4-5-20251001": 8641626
       }
     },
     {
+      "t": "2026-02-13",
+      "tokens": 0,
+      "byModel": {}
+    },
+    {
+      "t": "2026-02-14",
+      "tokens": 0,
+      "byModel": {}
+    },
+    {
+      "t": "2026-02-15",
+      "tokens": 0,
+      "byModel": {}
+    },
+    {
+      "t": "2026-02-16",
+      "tokens": 0,
+      "byModel": {}
+    },
+    {
       "t": "2026-02-17",
-      "tokens": 4689461,
+      "tokens": 4510850,
       "byModel": {
-        "claude-haiku-4-5-20251001": 4472910,
-        "claude-opus-4-6": 216551
+        "claude-haiku-4-5-20251001": 4510850
       }
     },
     {
       "t": "2026-02-18",
-      "tokens": 5268259,
+      "tokens": 20299903,
       "byModel": {
-        "claude-haiku-4-5-20251001": 4222123,
-        "claude-sonnet-4-6": 877706,
-        "claude-opus-4-6": 168430
+        "claude-haiku-4-5-20251001": 17262575,
+        "claude-opus-4-6": 672224,
+        "claude-sonnet-4-6": 2365104
       }
     },
     {
       "t": "2026-02-19",
-      "tokens": 10883380,
+      "tokens": 17969945,
       "byModel": {
-        "claude-opus-4-6": 2214224,
-        "claude-haiku-4-5-20251001": 7686019,
-        "claude-sonnet-4-6": 983137
+        "claude-sonnet-4-6": 2145321,
+        "claude-haiku-4-5-20251001": 9283623,
+        "claude-opus-4-6": 6541001
       }
     },
     {
       "t": "2026-02-20",
-      "tokens": 668832,
+      "tokens": 11484917,
       "byModel": {
-        "claude-opus-4-6": 243860,
-        "claude-haiku-4-5-20251001": 424972
+        "claude-opus-4-6": 960751,
+        "claude-haiku-4-5-20251001": 10524166
       }
     },
     {
+      "t": "2026-02-21",
+      "tokens": 0,
+      "byModel": {}
+    },
+    {
+      "t": "2026-02-22",
+      "tokens": 0,
+      "byModel": {}
+    },
+    {
       "t": "2026-02-23",
-      "tokens": 1925735,
+      "tokens": 3902533,
       "byModel": {
-        "claude-haiku-4-5-20251001": 1925735
+        "claude-haiku-4-5-20251001": 3902533
       }
     },
     {
       "t": "2026-02-24",
-      "tokens": 8349302,
+      "tokens": 14776168,
       "byModel": {
-        "claude-opus-4-6": 3481773,
-        "claude-haiku-4-5-20251001": 4867529
+        "claude-haiku-4-5-20251001": 11857342,
+        "claude-opus-4-6": 2918826
       }
     },
     {
       "t": "2026-02-25",
-      "tokens": 1958855,
+      "tokens": 8984737,
       "byModel": {
-        "claude-haiku-4-5-20251001": 1805466,
-        "claude-opus-4-6": 153389
+        "claude-haiku-4-5-20251001": 4619189,
+        "claude-opus-4-6": 4365548
       }
     },
     {
       "t": "2026-02-26",
-      "tokens": 30203888,
+      "tokens": 16218322,
       "byModel": {
-        "claude-opus-4-6": 22431201,
-        "claude-haiku-4-5-20251001": 7772687
+        "claude-opus-4-6": 922203,
+        "claude-haiku-4-5-20251001": 15296119
       }
     },
     {
       "t": "2026-02-27",
-      "tokens": 33036587,
+      "tokens": 61079481,
       "byModel": {
-        "claude-opus-4-6": 33036587
+        "claude-opus-4-6": 59879768,
+        "<synthetic>": 0,
+        "claude-haiku-4-5-20251001": 1199713
       }
     },
     {
-      "t": "2026-03-02",
-      "tokens": 6612361,
+      "t": "2026-02-28",
+      "tokens": 25867295,
       "byModel": {
-        "claude-haiku-4-5-20251001": 5555512,
-        "claude-opus-4-6": 1056849
+        "claude-opus-4-6": 25867295
+      }
+    },
+    {
+      "t": "2026-03-01",
+      "tokens": 0,
+      "byModel": {}
+    },
+    {
+      "t": "2026-03-02",
+      "tokens": 16962690,
+      "byModel": {
+        "claude-opus-4-6": 2569926,
+        "claude-haiku-4-5-20251001": 14392764,
+        "<synthetic>": 0
       }
     },
     {
       "t": "2026-03-03",
-      "tokens": 15749500,
+      "tokens": 23033596,
       "byModel": {
-        "claude-haiku-4-5-20251001": 12459427,
-        "claude-opus-4-6": 1920663,
-        "claude-sonnet-4-6": 1369410
+        "claude-haiku-4-5-20251001": 15978549,
+        "claude-opus-4-6": 3657770,
+        "claude-sonnet-4-6": 3397277
       }
     },
     {
       "t": "2026-03-04",
-      "tokens": 4852176,
+      "tokens": 31129995,
       "byModel": {
-        "claude-opus-4-6": 2370376,
-        "claude-haiku-4-5-20251001": 2481800
+        "claude-opus-4-6": 5876287,
+        "claude-haiku-4-5-20251001": 25253708
       }
     },
     {
       "t": "2026-03-05",
-      "tokens": 1759007,
+      "tokens": 5052677,
       "byModel": {
-        "claude-haiku-4-5-20251001": 1759007
+        "claude-haiku-4-5-20251001": 5052677
       }
     },
     {
       "t": "2026-03-06",
-      "tokens": 261276,
+      "tokens": 356294,
       "byModel": {
-        "claude-opus-4-6": 261276
+        "claude-opus-4-6": 356294
       }
     },
     {
+      "t": "2026-03-07",
+      "tokens": 0,
+      "byModel": {}
+    },
+    {
+      "t": "2026-03-08",
+      "tokens": 0,
+      "byModel": {}
+    },
+    {
       "t": "2026-03-09",
-      "tokens": 29427405,
+      "tokens": 53087595,
       "byModel": {
-        "claude-opus-4-6": 22496200,
-        "claude-haiku-4-5-20251001": 6931205
+        "claude-haiku-4-5-20251001": 15878791,
+        "claude-opus-4-6": 37208804
       }
     },
     {
       "t": "2026-03-10",
-      "tokens": 24874422,
+      "tokens": 41499188,
       "byModel": {
-        "claude-opus-4-6": 23514118,
-        "claude-haiku-4-5-20251001": 1360304
+        "claude-haiku-4-5-20251001": 2798282,
+        "claude-opus-4-6": 38700906
       }
     },
     {
       "t": "2026-03-11",
-      "tokens": 28481910,
+      "tokens": 47260066,
       "byModel": {
-        "claude-opus-4-6": 24365569,
-        "claude-haiku-4-5-20251001": 4116341
+        "claude-haiku-4-5-20251001": 9130223,
+        "claude-opus-4-6": 38129843,
+        "<synthetic>": 0
       }
     },
     {
       "t": "2026-03-12",
-      "tokens": 12770962,
+      "tokens": 22396218,
       "byModel": {
-        "claude-opus-4-6": 10511092,
-        "claude-haiku-4-5-20251001": 2259870
+        "claude-haiku-4-5-20251001": 5257109,
+        "claude-opus-4-6": 17139109
       }
     },
     {
       "t": "2026-03-13",
-      "tokens": 1613829,
+      "tokens": 2418555,
       "byModel": {
-        "claude-opus-4-6": 1613829
+        "claude-opus-4-6": 2418555
       }
     },
     {
       "t": "2026-03-14",
-      "tokens": 1004064,
+      "tokens": 1499421,
       "byModel": {
-        "claude-opus-4-6": 1004064
+        "claude-opus-4-6": 1499421
       }
     },
     {
+      "t": "2026-03-15",
+      "tokens": 0,
+      "byModel": {}
+    },
+    {
       "t": "2026-03-16",
-      "tokens": 11511685,
+      "tokens": 20399965,
       "byModel": {
-        "claude-opus-4-6": 9561146,
-        "claude-haiku-4-5-20251001": 1950539
+        "claude-haiku-4-5-20251001": 5103938,
+        "claude-opus-4-6": 15296027
       }
     },
     {
       "t": "2026-03-17",
-      "tokens": 45773751,
+      "tokens": 68190336,
       "byModel": {
-        "claude-opus-4-6": 44557137,
-        "claude-haiku-4-5-20251001": 1216614
+        "claude-haiku-4-5-20251001": 3090666,
+        "claude-opus-4-6": 65099670,
+        "<synthetic>": 0
       }
     },
     {
       "t": "2026-03-18",
-      "tokens": 54628048,
+      "tokens": 88012146,
       "byModel": {
-        "claude-opus-4-6": 50755441,
-        "claude-haiku-4-5-20251001": 3872607
+        "claude-opus-4-6": 78178393,
+        "<synthetic>": 0,
+        "claude-haiku-4-5-20251001": 9833753
       }
     },
     {
       "t": "2026-03-19",
-      "tokens": 18904862,
+      "tokens": 45420465,
       "byModel": {
-        "claude-opus-4-6": 9111820,
-        "claude-haiku-4-5-20251001": 9793042
+        "claude-opus-4-6": 15989220,
+        "claude-haiku-4-5-20251001": 29431245,
+        "<synthetic>": 0
       }
     },
     {
       "t": "2026-03-20",
-      "tokens": 98721711,
+      "tokens": 180031417,
       "byModel": {
-        "claude-opus-4-6": 74189394,
-        "claude-haiku-4-5-20251001": 24532317
+        "claude-opus-4-6": 108362630,
+        "claude-haiku-4-5-20251001": 71668787
       }
     },
     {
-      "t": "2026-03-23",
-      "tokens": 86344989,
+      "t": "2026-03-21",
+      "tokens": 8790357,
       "byModel": {
-        "claude-opus-4-6": 57532301,
-        "claude-haiku-4-5-20251001": 28812688
+        "claude-opus-4-6": 8790357
+      }
+    },
+    {
+      "t": "2026-03-22",
+      "tokens": 0,
+      "byModel": {}
+    },
+    {
+      "t": "2026-03-23",
+      "tokens": 165259843,
+      "byModel": {
+        "claude-opus-4-6": 97198134,
+        "<synthetic>": 0,
+        "claude-haiku-4-5-20251001": 68061709
       }
     },
     {
       "t": "2026-03-24",
-      "tokens": 115550649,
+      "tokens": 182485180,
       "byModel": {
-        "claude-opus-4-6": 81403659,
-        "claude-haiku-4-5-20251001": 32055406,
-        "claude-sonnet-4-6": 2091584
+        "claude-haiku-4-5-20251001": 82445375,
+        "claude-opus-4-6": 97502436,
+        "claude-sonnet-4-6": 2537369,
+        "<synthetic>": 0
       }
     },
     {
       "t": "2026-03-25",
-      "tokens": 194199765,
+      "tokens": 239081315,
       "byModel": {
-        "claude-opus-4-6": 184251127,
-        "claude-haiku-4-5-20251001": 9096393,
-        "claude-sonnet-4-6": 852245
+        "claude-opus-4-6": 217400594,
+        "claude-sonnet-4-6": 958865,
+        "claude-haiku-4-5-20251001": 20721856,
+        "<synthetic>": 0
       }
     },
     {
       "t": "2026-03-26",
-      "tokens": 3772677,
+      "tokens": 122903741,
       "byModel": {
-        "claude-opus-4-6": 3772677
+        "claude-opus-4-6": 115428645,
+        "claude-sonnet-4-6": 1040406,
+        "claude-haiku-4-5-20251001": 6434690
       }
     },
     {
       "t": "2026-03-27",
-      "tokens": 15199411,
+      "tokens": 21686294,
       "byModel": {
-        "claude-opus-4-6": 14229763,
-        "claude-haiku-4-5-20251001": 969648
+        "claude-haiku-4-5-20251001": 2615284,
+        "claude-opus-4-6": 19071010
       }
     },
     {
       "t": "2026-03-28",
-      "tokens": 152475522,
+      "tokens": 211524987,
       "byModel": {
-        "claude-opus-4-6": 145284179,
-        "claude-haiku-4-5-20251001": 6909290,
-        "claude-sonnet-4-6": 282053
+        "claude-opus-4-6": 196984788,
+        "claude-haiku-4-5-20251001": 14078391,
+        "<synthetic>": 0,
+        "claude-sonnet-4-6": 461808
       }
     },
     {
       "t": "2026-03-29",
-      "tokens": 939435,
+      "tokens": 25593928,
       "byModel": {
-        "claude-opus-4-6": 939435
+        "claude-opus-4-6": 25593928
       }
     },
     {
       "t": "2026-03-30",
-      "tokens": 87237741,
+      "tokens": 141717394,
       "byModel": {
-        "claude-opus-4-6": 68761071,
-        "claude-haiku-4-5-20251001": 17965467,
-        "claude-sonnet-4-6": 511203
+        "claude-opus-4-6": 97350295,
+        "<synthetic>": 0,
+        "claude-sonnet-4-6": 978043,
+        "claude-haiku-4-5-20251001": 43389056
       }
     },
     {
       "t": "2026-03-31",
-      "tokens": 103885757,
+      "tokens": 201954784,
       "byModel": {
-        "claude-opus-4-6": 65371606,
-        "claude-haiku-4-5-20251001": 37401035,
-        "claude-sonnet-4-6": 1113116
+        "claude-opus-4-6": 112296515,
+        "claude-sonnet-4-6": 1650453,
+        "claude-haiku-4-5-20251001": 88007816
       }
     },
     {
       "t": "2026-04-01",
-      "tokens": 50300179,
+      "tokens": 80707750,
       "byModel": {
-        "claude-opus-4-6": 36795060,
-        "claude-haiku-4-5-20251001": 13263678,
-        "claude-sonnet-4-6": 241441
+        "claude-opus-4-6": 53782697,
+        "claude-haiku-4-5-20251001": 26925053,
+        "<synthetic>": 0
       }
     },
     {
       "t": "2026-04-02",
-      "tokens": 82908102,
+      "tokens": 177037579,
       "byModel": {
-        "claude-opus-4-6": 67452396,
-        "claude-haiku-4-5-20251001": 15152250,
-        "claude-sonnet-4-6": 303456
+        "claude-opus-4-6": 125622763,
+        "claude-haiku-4-5-20251001": 50554016,
+        "claude-sonnet-4-6": 860800
       }
     },
     {
       "t": "2026-04-03",
-      "tokens": 33373025,
+      "tokens": 50782190,
       "byModel": {
-        "claude-opus-4-6": 26079060,
-        "claude-haiku-4-5-20251001": 7293965
+        "claude-opus-4-6": 39235501,
+        "claude-haiku-4-5-20251001": 11546689
       }
     },
     {
       "t": "2026-04-04",
-      "tokens": 40608829,
+      "tokens": 25494501,
       "byModel": {
-        "claude-opus-4-6": 31206079,
-        "claude-haiku-4-5-20251001": 9402750
+        "claude-opus-4-6": 21391785,
+        "claude-haiku-4-5-20251001": 4102716
       }
     },
     {
       "t": "2026-04-05",
-      "tokens": 82326,
+      "tokens": 60749824,
       "byModel": {
-        "claude-opus-4-6": 82326
+        "claude-opus-4-6": 43172332,
+        "claude-haiku-4-5-20251001": 17577492
       }
     },
     {
       "t": "2026-04-06",
-      "tokens": 743390,
-      "byModel": {
-        "claude-opus-4-6": 743390
-      }
+      "tokens": 0,
+      "byModel": {}
     },
     {
       "t": "2026-04-07",
-      "tokens": 174101524,
+      "tokens": 263008181,
       "byModel": {
-        "claude-opus-4-6": 159443846,
-        "claude-sonnet-4-6": 1709659,
-        "claude-haiku-4-5-20251001": 12948019
+        "claude-opus-4-6": 234151785,
+        "claude-haiku-4-5-20251001": 26040274,
+        "<synthetic>": 0,
+        "claude-sonnet-4-6": 2816122
       }
     },
     {
       "t": "2026-04-08",
-      "tokens": 109181372,
+      "tokens": 194312278,
       "byModel": {
-        "claude-opus-4-6": 85551825,
-        "claude-haiku-4-5-20251001": 21206779,
-        "claude-sonnet-4-6": 2422768
+        "claude-haiku-4-5-20251001": 54603392,
+        "claude-opus-4-6": 139708886,
+        "<synthetic>": 0
       }
     },
     {
       "t": "2026-04-09",
-      "tokens": 152158172,
+      "tokens": 233704598,
       "byModel": {
-        "claude-opus-4-6": 130466334,
-        "claude-sonnet-4-6": 4764737,
-        "claude-haiku-4-5-20251001": 16927101
+        "claude-opus-4-6": 190966958,
+        "claude-haiku-4-5-20251001": 31002678,
+        "claude-sonnet-4-6": 11734962,
+        "<synthetic>": 0
       }
     },
     {
       "t": "2026-04-10",
-      "tokens": 147007536,
+      "tokens": 234044928,
       "byModel": {
-        "claude-opus-4-6": 136119657,
-        "claude-sonnet-4-6": 6131625,
-        "claude-haiku-4-5-20251001": 4756254
+        "claude-opus-4-6": 211591581,
+        "claude-sonnet-4-6": 5506981,
+        "claude-haiku-4-5-20251001": 16946366,
+        "<synthetic>": 0
       }
     },
     {
       "t": "2026-04-11",
-      "tokens": 136752605,
+      "tokens": 298354757,
       "byModel": {
-        "claude-opus-4-6": 131217177,
-        "claude-sonnet-4-6": 5535428
+        "claude-sonnet-4-6": 14958982,
+        "claude-opus-4-6": 278399277,
+        "claude-haiku-4-5-20251001": 4996498
       }
     },
     {
       "t": "2026-04-12",
-      "tokens": 40324695,
+      "tokens": 116764051,
       "byModel": {
-        "claude-opus-4-6": 38241673,
-        "claude-haiku-4-5-20251001": 2083022
+        "claude-opus-4-6": 110555087,
+        "claude-haiku-4-5-20251001": 6208964,
+        "<synthetic>": 0
       }
     },
     {
       "t": "2026-04-13",
-      "tokens": 149265227,
+      "tokens": 233191121,
       "byModel": {
-        "claude-opus-4-6": 130253736,
-        "claude-haiku-4-5-20251001": 19011491
+        "claude-opus-4-6": 200505410,
+        "claude-haiku-4-5-20251001": 32685711,
+        "<synthetic>": 0
       }
     },
     {
       "t": "2026-04-14",
-      "tokens": 70231495,
+      "tokens": 96332732,
       "byModel": {
-        "claude-opus-4-6": 64194437,
-        "claude-haiku-4-5-20251001": 6037058
+        "claude-opus-4-6": 78207353,
+        "claude-haiku-4-5-20251001": 18125379
       }
     },
     {
       "t": "2026-04-15",
-      "tokens": 47500306,
+      "tokens": 59455367,
       "byModel": {
-        "claude-opus-4-6": 39373340,
-        "claude-haiku-4-5-20251001": 8126966
+        "claude-opus-4-6": 53482689,
+        "<synthetic>": 0,
+        "claude-haiku-4-5-20251001": 5972678
       }
     },
     {
       "t": "2026-04-16",
-      "tokens": 86302481,
+      "tokens": 179562234,
       "byModel": {
-        "claude-opus-4-6": 71217236,
-        "claude-sonnet-4-6": 2862283,
-        "claude-opus-4-7": 12043935,
-        "claude-haiku-4-5-20251001": 179027
+        "claude-opus-4-6": 159516679,
+        "claude-opus-4-7": 3189000,
+        "claude-haiku-4-5-20251001": 12646033,
+        "<synthetic>": 0,
+        "claude-sonnet-4-6": 4210522
       }
     },
     {
       "t": "2026-04-17",
-      "tokens": 23978968,
+      "tokens": 64503394,
       "byModel": {
-        "claude-opus-4-7": 12266043,
-        "claude-opus-4-6": 3332564,
-        "claude-haiku-4-5-20251001": 8380361
+        "claude-sonnet-4-6": 2368938,
+        "claude-opus-4-7": 38470095,
+        "claude-opus-4-6": 6366158,
+        "claude-haiku-4-5-20251001": 17298203
       }
     },
     {
       "t": "2026-04-18",
-      "tokens": 54616462,
+      "tokens": 78490054,
       "byModel": {
-        "claude-opus-4-7": 53119023,
-        "claude-sonnet-4-6": 1497439
+        "claude-sonnet-4-6": 2546469,
+        "claude-opus-4-7": 75943585,
+        "<synthetic>": 0
+      }
+    },
+    {
+      "t": "2026-04-19",
+      "tokens": 6715070,
+      "byModel": {
+        "claude-opus-4-7": 6715070
       }
     },
     {
       "t": "2026-04-20",
-      "tokens": 69465457,
+      "tokens": 163577065,
       "byModel": {
-        "claude-opus-4-7": 58833283,
-        "claude-haiku-4-5-20251001": 10632174
+        "claude-opus-4-7": 138180915,
+        "claude-haiku-4-5-20251001": 25396150
       }
     }
   ]
