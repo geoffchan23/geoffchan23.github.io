@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-20T12:30:19Z",
+  "generatedAt": "2026-04-20T13:34:04Z",
   "last24h": {
     "totalTokens": 0,
     "byModel": {},
@@ -8,16 +8,16 @@
   "hourly": [
     {
       "t": "2026-04-13T13:00:00Z",
-      "tokens": 10654268,
+      "tokens": 7401303,
       "byModel": {
-        "claude-opus-4-6": 1647924,
+        "claude-opus-4-6": 1124310,
         "<synthetic>": 0,
-        "claude-haiku-4-5-20251001": 9006344
+        "claude-haiku-4-5-20251001": 6276993
       },
       "byProject": [
         {
           "name": "raven-os",
-          "tokens": 10002308
+          "tokens": 6749343
         },
         {
           "name": "ravenos-mcp-test",
