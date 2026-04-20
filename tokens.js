@@ -6,6 +6,7 @@ const ACCENT_FILL = "rgba(217, 119, 87, 0.15)";
 const TEXT = "#333";
 const TEXT_DIM = "rgba(51,51,51,0.5)";
 const GRID = "rgba(0,0,0,0.08)";
+const BRUSH_OUTSIDE = "rgba(249, 249, 249, 0.65)";
 
 const MODEL_DISPLAY = {
     "claude-opus-4-7": "Opus 4.7",
@@ -167,6 +168,44 @@ function ensureTooltip() {
     return el;
 }
 
+// --- Brush overlay plugin ---
+// Draws the current main-chart window on top of the brush chart: a highlighted
+// band for the selected range and a dim wash outside it. During an active drag,
+// draws a live preview of the range being selected.
+
+const brushOverlayPlugin = {
+    id: "brushOverlay",
+    afterDraw(chart) {
+        const state = chart.$brushState;
+        if (!state) return;
+        const { ctx, chartArea, scales } = chart;
+        const xScale = scales.x;
+        const { top, bottom, left: areaLeft, right: areaRight } = chartArea;
+        const clamp = (v) => Math.max(areaLeft, Math.min(areaRight, v));
+
+        const winLeft = clamp(xScale.getPixelForValue(state.windowStart));
+        const winRight = clamp(xScale.getPixelForValue(state.windowEnd));
+
+        ctx.save();
+        ctx.fillStyle = BRUSH_OUTSIDE;
+        if (winLeft > areaLeft) ctx.fillRect(areaLeft, top, winLeft - areaLeft, bottom - top);
+        if (winRight < areaRight) ctx.fillRect(winRight, top, areaRight - winRight, bottom - top);
+        ctx.strokeStyle = ACCENT;
+        ctx.lineWidth = 1;
+        ctx.strokeRect(winLeft + 0.5, top + 0.5, Math.max(1, winRight - winLeft - 1), bottom - top - 1);
+
+        if (state.drag && state.drag.active) {
+            const dragLeft = clamp(Math.min(state.drag.startX, state.drag.endX));
+            const dragRight = clamp(Math.max(state.drag.startX, state.drag.endX));
+            ctx.fillStyle = "rgba(217, 119, 87, 0.2)";
+            ctx.fillRect(dragLeft, top, dragRight - dragLeft, bottom - top);
+            ctx.strokeStyle = ACCENT;
+            ctx.strokeRect(dragLeft + 0.5, top + 0.5, Math.max(1, dragRight - dragLeft - 1), bottom - top - 1);
+        }
+        ctx.restore();
+    },
+};
+
 // --- Chart builders ---
 
 function buildMainChart(canvas, data, initialStartMs, initialEndMs) {
@@ -217,8 +256,11 @@ function buildMainChart(canvas, data, initialStartMs, initialEndMs) {
                 legend: { display: false },
                 tooltip: { enabled: false, external: renderTooltip },
                 zoom: {
-                    zoom: { drag: { enabled: true, backgroundColor: "rgba(217,119,87,0.1)" }, mode: "x", onZoomComplete: ({ chart }) => onChartRangeChange(chart, data) },
-                    pan: { enabled: true, mode: "x", onPanComplete: ({ chart }) => onChartRangeChange(chart, data) },
+                    zoom: {
+                        drag: { enabled: true, backgroundColor: "rgba(217,119,87,0.1)" },
+                        mode: "x",
+                        onZoomComplete: ({ chart }) => onChartRangeChange(chart, data),
+                    },
                 },
             },
         },
@@ -236,6 +278,15 @@ function onChartRangeChange(chart, data) {
     chart.data.datasets[0].data = points.map(p => ({ x: new Date(p.t).getTime(), y: p.tokens, meta: { byModel: p.byModel } }));
     chart.data.datasets[0].granularity = granularity;
     chart.update("none");
+    syncBrushWindow(chart);
+}
+
+function syncBrushWindow(mainChart) {
+    const brushChart = mainChart.$brushChart;
+    if (!brushChart || !brushChart.$brushState) return;
+    brushChart.$brushState.windowStart = mainChart.scales.x.min;
+    brushChart.$brushState.windowEnd = mainChart.scales.x.max;
+    brushChart.draw();
 }
 
 function buildBrushChart(canvas, data, mainChart) {
@@ -257,25 +308,106 @@ function buildBrushChart(canvas, data, mainChart) {
             responsive: true,
             maintainAspectRatio: false,
             animation: false,
+            events: [],
             plugins: { legend: { display: false }, tooltip: { enabled: false } },
             scales: {
                 x: { type: "time", display: false },
                 y: { display: false, beginAtZero: true },
             },
-            onClick: (evt) => {
-                const xScale = chart.scales.x;
-                const clickX = evt.x - chart.chartArea.left;
-                const frac = clickX / chart.chartArea.width;
-                const clickedMs = xScale.min + (xScale.max - xScale.min) * frac;
-                const currentWindow = mainChart.scales.x.max - mainChart.scales.x.min;
-                mainChart.scales.x.options.min = clickedMs - currentWindow / 2;
-                mainChart.scales.x.options.max = clickedMs + currentWindow / 2;
-                mainChart.update("active");
-                onChartRangeChange(mainChart, data);
-            },
         },
+        plugins: [brushOverlayPlugin],
     });
+    chart.$brushState = {
+        windowStart: mainChart.scales.x.min,
+        windowEnd: mainChart.scales.x.max,
+        drag: null,
+    };
+    attachBrushInteractions(canvas, chart, mainChart, data);
     return chart;
+}
+
+function attachBrushInteractions(canvas, brushChart, mainChart, data) {
+    const DRAG_THRESHOLD = 4;
+    let pressX = null;
+    let isDragging = false;
+
+    function pixelFromEvent(e) {
+        const rect = canvas.getBoundingClientRect();
+        const clientX = e.clientX ?? e.touches?.[0]?.clientX ?? e.changedTouches?.[0]?.clientX;
+        if (clientX == null) return null;
+        return clientX - rect.left;
+    }
+
+    function clampToArea(x) {
+        const area = brushChart.chartArea;
+        return Math.max(area.left, Math.min(area.right, x));
+    }
+
+    function onDown(e) {
+        const x = pixelFromEvent(e);
+        if (x == null) return;
+        pressX = clampToArea(x);
+        isDragging = false;
+        brushChart.$brushState.drag = { active: true, startX: pressX, endX: pressX };
+        brushChart.draw();
+        if (e.type === "touchstart") e.preventDefault();
+    }
+
+    function onMove(e) {
+        if (pressX == null) return;
+        const x = pixelFromEvent(e);
+        if (x == null) return;
+        const clamped = clampToArea(x);
+        if (Math.abs(clamped - pressX) > DRAG_THRESHOLD) isDragging = true;
+        brushChart.$brushState.drag = { active: true, startX: pressX, endX: clamped };
+        brushChart.draw();
+    }
+
+    function onUp(e) {
+        if (pressX == null) return;
+        const x = pixelFromEvent(e);
+        const endX = x == null ? pressX : clampToArea(x);
+        const xScale = brushChart.scales.x;
+
+        if (isDragging) {
+            const leftPx = Math.min(pressX, endX);
+            const rightPx = Math.max(pressX, endX);
+            applyRange(mainChart, brushChart, data, xScale.getValueForPixel(leftPx), xScale.getValueForPixel(rightPx));
+        } else {
+            const clickedMs = xScale.getValueForPixel(pressX);
+            const windowSize = mainChart.scales.x.max - mainChart.scales.x.min;
+            applyRange(mainChart, brushChart, data, clickedMs - windowSize / 2, clickedMs + windowSize / 2);
+        }
+
+        pressX = null;
+        isDragging = false;
+        brushChart.$brushState.drag = null;
+        brushChart.draw();
+    }
+
+    canvas.addEventListener("mousedown", onDown);
+    window.addEventListener("mousemove", onMove);
+    window.addEventListener("mouseup", onUp);
+    canvas.addEventListener("touchstart", onDown, { passive: false });
+    window.addEventListener("touchmove", onMove, { passive: true });
+    window.addEventListener("touchend", onUp);
+    window.addEventListener("touchcancel", onUp);
+}
+
+function applyRange(mainChart, brushChart, data, startMs, endMs) {
+    const brushScale = brushChart.scales.x;
+    const fullSpan = brushScale.max - brushScale.min;
+    const minWindow = Math.max(60_000, fullSpan * 0.01);
+    let start = Math.max(brushScale.min, Math.min(startMs, endMs));
+    let end = Math.min(brushScale.max, Math.max(startMs, endMs));
+    if (end - start < minWindow) {
+        const mid = (start + end) / 2;
+        start = Math.max(brushScale.min, mid - minWindow / 2);
+        end = Math.min(brushScale.max, mid + minWindow / 2);
+    }
+    mainChart.scales.x.options.min = start;
+    mainChart.scales.x.options.max = end;
+    onChartRangeChange(mainChart, data);
 }
 
 // --- Headline + meta renderers ---
@@ -314,7 +446,9 @@ async function init() {
     const mainCanvas = document.getElementById("tokens-chart");
     const brushCanvas = document.getElementById("tokens-brush");
     const mainChart = buildMainChart(mainCanvas, data, startMs, endMs);
-    buildBrushChart(brushCanvas, data, mainChart);
+    const brushChart = buildBrushChart(brushCanvas, data, mainChart);
+    mainChart.$brushChart = brushChart;
+    syncBrushWindow(mainChart);
 }
 
 init().catch((err) => {
