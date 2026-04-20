@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-04-20T17:36:19Z",
+  "generatedAt": "2026-04-20T18:36:19Z",
   "last24h": {
-    "totalTokens": 123801984,
+    "totalTokens": 128675755,
     "byModel": {
-      "claude-opus-4-7": 98405834,
+      "claude-opus-4-7": 103279605,
       "claude-haiku-4-5-20251001": 25396150
     }
   },
@@ -384,6 +384,13 @@
       "byModel": {
         "claude-haiku-4-5-20251001": 14622284,
         "claude-opus-4-7": 57252171
+      }
+    },
+    {
+      "t": "2026-04-20T18:00:00Z",
+      "tokens": 4873771,
+      "byModel": {
+        "claude-opus-4-7": 4873771
       }
     }
   ],
@@ -993,9 +1000,9 @@
     },
     {
       "t": "2026-04-20",
-      "tokens": 67100542,
+      "tokens": 69465457,
       "byModel": {
-        "claude-opus-4-7": 56468368,
+        "claude-opus-4-7": 58833283,
         "claude-haiku-4-5-20251001": 10632174
       }
     }
