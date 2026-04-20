@@ -1,11 +1,16 @@
 {
-  "generatedAt": "2026-04-20T14:34:04Z",
+  "generatedAt": "2026-04-20T15:34:04Z",
   "last24h": {
-    "totalTokens": 3462654,
+    "totalTokens": 29107773,
     "byModel": {
-      "claude-opus-4-7": 3462654
+      "claude-opus-4-7": 18333907,
+      "claude-haiku-4-5-20251001": 10773866
     },
     "byProject": [
+      {
+        "name": "raven-os",
+        "tokens": 25645119
+      },
       {
         "name": "hologic-customer-knowledge",
         "tokens": 3462654
@@ -14,38 +19,15 @@
   },
   "hourly": [
     {
-      "t": "2026-04-13T14:00:00Z",
-      "tokens": 505937,
-      "byModel": {
-        "claude-opus-4-6": 505937
-      },
-      "byProject": [
-        {
-          "name": "raven-os",
-          "tokens": 505937
-        }
-      ]
-    },
-    {
       "t": "2026-04-13T15:00:00Z",
-      "tokens": 38136038,
+      "tokens": 46983,
       "byModel": {
-        "claude-haiku-4-5-20251001": 4850136,
-        "claude-opus-4-6": 33285902,
-        "<synthetic>": 0
+        "claude-opus-4-6": 46983
       },
       "byProject": [
-        {
-          "name": "raven-os",
-          "tokens": 23888280
-        },
         {
           "name": "smart-home",
-          "tokens": 13499276
-        },
-        {
-          "name": "agent",
-          "tokens": 748482
+          "tokens": 46983
         }
       ]
     },
@@ -836,14 +818,32 @@
     },
     {
       "t": "2026-04-20T14:00:00Z",
-      "tokens": 1912938,
+      "tokens": 12876924,
       "byModel": {
-        "claude-opus-4-7": 1912938
+        "claude-opus-4-7": 2103058,
+        "claude-haiku-4-5-20251001": 10773866
       },
       "byProject": [
         {
+          "name": "raven-os",
+          "tokens": 10963986
+        },
+        {
           "name": "hologic-customer-knowledge",
           "tokens": 1912938
+        }
+      ]
+    },
+    {
+      "t": "2026-04-20T15:00:00Z",
+      "tokens": 14681133,
+      "byModel": {
+        "claude-opus-4-7": 14681133
+      },
+      "byProject": [
+        {
+          "name": "raven-os",
+          "tokens": 14681133
         }
       ]
     }
@@ -2260,14 +2260,15 @@
     },
     {
       "t": "2026-04-20",
-      "tokens": 1885234,
+      "tokens": 13987692,
       "byModel": {
-        "claude-opus-4-7": 1885234
+        "claude-opus-4-7": 10259615,
+        "claude-haiku-4-5-20251001": 3728077
       },
       "byProject": [
         {
           "name": "raven-raven-os",
-          "tokens": 1885234
+          "tokens": 13987692
         }
       ]
     }
