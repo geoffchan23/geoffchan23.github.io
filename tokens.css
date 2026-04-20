@@ -20,9 +20,43 @@
 .tokens-sub {
     font-family: "JetBrains Mono", monospace;
     font-size: 0.8em;
-    opacity: 0.5;
     margin-top: 0.3em;
     margin-bottom: 0.5em;
+    display: flex;
+    align-items: baseline;
+    gap: 0.3em;
+    color: #333;
+}
+
+.tokens-range-select {
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+    background: transparent;
+    border: none;
+    border-bottom: 1px dashed rgba(51, 51, 51, 0.3);
+    padding: 0 14px 1px 2px;
+    margin: 0;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='8' height='5' viewBox='0 0 8 5'><path fill='rgba(51,51,51,0.5)' d='M0 0l4 5 4-5z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 2px center;
+}
+
+.tokens-range-select:hover {
+    border-bottom-color: rgba(51, 51, 51, 0.6);
+}
+
+.tokens-range-select:focus-visible {
+    outline: none;
+    border-bottom-color: rgba(217, 119, 87, 0.7);
+}
+
+.tokens-sub-suffix {
+    opacity: 0.5;
 }
 
 .tokens-timeline h2 {

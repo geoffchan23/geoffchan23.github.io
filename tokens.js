@@ -8,6 +8,13 @@ const TEXT_DIM = "rgba(51,51,51,0.5)";
 const GRID = "rgba(0,0,0,0.08)";
 const BRUSH_OUTSIDE = "rgba(249, 249, 249, 0.65)";
 
+const PRESETS = [
+    { id: "24h", label: "past 24h", ms: 24 * 60 * 60 * 1000 },
+    { id: "48h", label: "past 48h", ms: 48 * 60 * 60 * 1000 },
+    { id: "7d",  label: "past week",  ms: 7 * 24 * 60 * 60 * 1000 },
+    { id: "30d", label: "past month", ms: 30 * 24 * 60 * 60 * 1000 },
+];
+
 const MODEL_DISPLAY = {
     "claude-opus-4-7": "Opus 4.7",
     "claude-opus-4-6": "Opus 4.6",
@@ -105,6 +112,30 @@ function bucketsForRange(data, startMs, endMs) {
             byModel: b.byModel,
         })),
     };
+}
+
+function totalForRange(data, startMs, endMs) {
+    const spanMs = endMs - startMs;
+    const dayMs = 24 * 60 * 60 * 1000;
+    // Hourly buckets give better precision for short windows. Beyond ~3 days,
+    // daily buckets are both sufficient and what the brush/main chart already use.
+    if (spanMs <= 3 * dayMs && data.hourly?.length) {
+        return data.hourly.reduce((sum, b) => {
+            const t = new Date(b.t).getTime();
+            return t >= startMs && t <= endMs ? sum + b.tokens : sum;
+        }, 0);
+    }
+    return (data.daily || []).reduce((sum, b) => {
+        const t = new Date(b.t + "T00:00:00Z").getTime();
+        return t >= startMs && t <= endMs ? sum + b.tokens : sum;
+    }, 0);
+}
+
+function rangeForPreset(presetId) {
+    const p = PRESETS.find(x => x.id === presetId);
+    if (!p) return null;
+    const endMs = Date.now();
+    return { startMs: endMs - p.ms, endMs };
 }
 
 // --- Tooltip renderer ---
@@ -266,8 +297,14 @@ function buildMainChart(canvas, data, initialStartMs, initialEndMs) {
         },
     });
     canvas.addEventListener("dblclick", () => {
-        chart.resetZoom();
-        onChartRangeChange(chart, data);
+        const select = document.getElementById("tokens-range");
+        const preset = select && select.value !== "custom" ? select.value : "24h";
+        if (chart.$applyPreset) {
+            chart.$applyPreset(preset);
+        } else {
+            chart.resetZoom();
+            onChartRangeChange(chart, data);
+        }
     });
     return chart;
 }
@@ -279,6 +316,9 @@ function onChartRangeChange(chart, data) {
     chart.data.datasets[0].granularity = granularity;
     chart.update("none");
     syncBrushWindow(chart);
+    updateHeadlineTotal(data, xScale.min, xScale.max);
+    const selectEl = document.getElementById("tokens-range");
+    if (selectEl) setCustomMode(selectEl, true);
 }
 
 function syncBrushWindow(mainChart) {
@@ -412,15 +452,31 @@ function applyRange(mainChart, brushChart, data, startMs, endMs) {
 
 // --- Headline + meta renderers ---
 
-function renderHeadline(data) {
+function updateHeadlineTotal(data, startMs, endMs) {
     const bigEl = document.getElementById("tokens-big");
-    const subEl = document.getElementById("tokens-sub");
-    const metaEl = document.getElementById("tokens-meta");
-    bigEl.textContent = formatTokens(data.last24h.totalTokens);
+    bigEl.textContent = formatTokens(totalForRange(data, startMs, endMs));
     bigEl.dataset.state = "ready";
-    subEl.textContent = "past 24h · tokens";
+}
+
+function renderMeta(data) {
+    const metaEl = document.getElementById("tokens-meta");
     const updated = new Date(data.generatedAt);
     metaEl.textContent = "updated " + updated.toLocaleString("en-CA", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" });
+}
+
+function setCustomMode(selectEl, on) {
+    let opt = selectEl.querySelector('option[value="custom"]');
+    if (on) {
+        if (!opt) {
+            opt = document.createElement("option");
+            opt.value = "custom";
+            opt.textContent = "custom";
+            selectEl.prepend(opt);
+        }
+        selectEl.value = "custom";
+    } else if (opt) {
+        opt.remove();
+    }
 }
 
 // --- Init ---
@@ -433,15 +489,18 @@ async function init() {
         return;
     }
     const data = await res.json();
-    renderHeadline(data);
+    renderMeta(data);
 
     if (!data.daily || data.daily.length === 0) {
         document.getElementById("tokens-hint").textContent = "no historical data yet";
         return;
     }
 
-    const endMs = Date.now();
-    const startMs = endMs - 30 * 24 * 60 * 60 * 1000;
+    const rangeSelect = document.getElementById("tokens-range");
+    const initialPreset = "24h";
+    const { startMs, endMs } = rangeForPreset(initialPreset);
+    rangeSelect.value = initialPreset;
+    updateHeadlineTotal(data, startMs, endMs);
 
     const mainCanvas = document.getElementById("tokens-chart");
     const brushCanvas = document.getElementById("tokens-brush");
@@ -449,6 +508,26 @@ async function init() {
     const brushChart = buildBrushChart(brushCanvas, data, mainChart);
     mainChart.$brushChart = brushChart;
     syncBrushWindow(mainChart);
+
+    mainChart.$applyPreset = (presetId) => {
+        const r = rangeForPreset(presetId);
+        if (!r) return;
+        mainChart.scales.x.options.min = r.startMs;
+        mainChart.scales.x.options.max = r.endMs;
+        const { granularity, points } = bucketsForRange(data, r.startMs, r.endMs);
+        mainChart.data.datasets[0].data = points.map(p => ({ x: new Date(p.t).getTime(), y: p.tokens, meta: { byModel: p.byModel } }));
+        mainChart.data.datasets[0].granularity = granularity;
+        mainChart.update("none");
+        syncBrushWindow(mainChart);
+        updateHeadlineTotal(data, r.startMs, r.endMs);
+        setCustomMode(rangeSelect, false);
+        rangeSelect.value = presetId;
+    };
+
+    rangeSelect.addEventListener("change", () => {
+        if (rangeSelect.value === "custom") return;
+        mainChart.$applyPreset(rangeSelect.value);
+    });
 }
 
 init().catch((err) => {

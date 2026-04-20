@@ -15,7 +15,15 @@ title: Geoff Chan | Tokens
     <section class="tokens-headline">
         <h2>Token usage</h2>
         <div class="tokens-big" id="tokens-big" data-state="loading">—</div>
-        <div class="tokens-sub" id="tokens-sub">past 24h · loading…</div>
+        <div class="tokens-sub" id="tokens-sub">
+            <select id="tokens-range" class="tokens-range-select" aria-label="Time range">
+                <option value="24h">past 24h</option>
+                <option value="48h">past 48h</option>
+                <option value="7d">past week</option>
+                <option value="30d">past month</option>
+            </select>
+            <span class="tokens-sub-suffix">· tokens</span>
+        </div>
     </section>
     <section class="tokens-timeline">
         <h2>Over time</h2>
