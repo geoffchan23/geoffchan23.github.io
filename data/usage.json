@@ -1,36 +1,16 @@
 {
-  "generatedAt": "2026-04-20T01:29:02Z",
+  "generatedAt": "2026-04-20T02:29:02Z",
   "last24h": {
-    "totalTokens": 6715070,
-    "byModel": {
-      "claude-opus-4-7": 6715070
-    },
-    "byProject": [
-      {
-        "name": "smart-home",
-        "tokens": 6715070
-      }
-    ]
+    "totalTokens": 0,
+    "byModel": {},
+    "byProject": []
   },
   "hourly": [
     {
-      "t": "2026-04-13T01:00:00Z",
-      "tokens": 723271,
-      "byModel": {
-        "claude-opus-4-6": 723271
-      },
-      "byProject": [
-        {
-          "name": "levi-word-game",
-          "tokens": 723271
-        }
-      ]
-    },
-    {
       "t": "2026-04-13T02:00:00Z",
-      "tokens": 9217782,
+      "tokens": 8076096,
       "byModel": {
-        "claude-opus-4-6": 9217782
+        "claude-opus-4-6": 8076096
       },
       "byProject": [
         {
@@ -39,7 +19,7 @@
         },
         {
           "name": "levi-word-game",
-          "tokens": 1319344
+          "tokens": 177658
         }
       ]
     },
