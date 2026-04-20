@@ -78,40 +78,63 @@ function rollupDailyToWeekly(daily) {
 
 function bucketsForRange(data, startMs, endMs) {
     const gran = pickGranularity(startMs, endMs);
+    let points;
     if (gran === "hourly") {
-        return {
-            granularity: "hourly",
-            points: data.hourly.filter(b => {
-                const t = new Date(b.t).getTime();
-                return t >= startMs && t <= endMs;
-            }),
-        };
-    }
-    if (gran === "daily") {
-        return {
-            granularity: "daily",
-            points: data.daily.filter(b => {
-                const t = new Date(b.t + "T00:00:00Z").getTime();
-                return t >= startMs && t <= endMs;
-            }).map(b => ({
-                t: b.t + "T00:00:00Z",
-                tokens: b.tokens,
-                byModel: b.byModel,
-            })),
-        };
-    }
-    const weekly = rollupDailyToWeekly(data.daily);
-    return {
-        granularity: "weekly",
-        points: weekly.filter(b => {
+        points = data.hourly.filter(b => {
+            const t = new Date(b.t).getTime();
+            return t >= startMs && t <= endMs;
+        }).map(b => ({ t: b.t, tokens: b.tokens, byModel: b.byModel }));
+    } else if (gran === "daily") {
+        points = data.daily.filter(b => {
             const t = new Date(b.t + "T00:00:00Z").getTime();
             return t >= startMs && t <= endMs;
         }).map(b => ({
             t: b.t + "T00:00:00Z",
             tokens: b.tokens,
             byModel: b.byModel,
-        })),
-    };
+        }));
+    } else {
+        const weekly = rollupDailyToWeekly(data.daily);
+        points = weekly.filter(b => {
+            const t = new Date(b.t + "T00:00:00Z").getTime();
+            return t >= startMs && t <= endMs;
+        }).map(b => ({
+            t: b.t + "T00:00:00Z",
+            tokens: b.tokens,
+            byModel: b.byModel,
+        }));
+    }
+    anchorLatestToNow(points, gran, endMs);
+    return { granularity: gran, points };
+}
+
+// Pulls the last bucket's x to the right edge of the current window when the
+// bucket represents the still-in-progress current period. Makes the chart line
+// reach "now" instead of stopping at the last bucket's start timestamp, which
+// is what makes the view feel real-time for the current preset.
+function anchorLatestToNow(points, granularity, endMs) {
+    if (!points.length) return;
+    const now = Date.now();
+    const tolerance = 60 * 1000; // 1 min
+    if (endMs < now - tolerance) return; // not looking at "now"
+    const target = Math.min(endMs, now);
+    const last = points[points.length - 1];
+    const lastT = new Date(last.t).getTime();
+    if (lastT >= target) return;
+
+    const hourMs = 60 * 60 * 1000;
+    const dayMs = 24 * hourMs;
+    let bucketCoversNow = false;
+    if (granularity === "hourly") {
+        bucketCoversNow = now - lastT < hourMs;
+    } else if (granularity === "daily") {
+        bucketCoversNow = new Date(lastT).toISOString().slice(0, 10) === new Date(now).toISOString().slice(0, 10);
+    } else if (granularity === "weekly") {
+        bucketCoversNow = now - lastT < 7 * dayMs;
+    }
+    if (bucketCoversNow) {
+        last.t = new Date(target).toISOString();
+    }
 }
 
 function totalForRange(data, startMs, endMs) {
