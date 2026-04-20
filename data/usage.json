@@ -1,52 +1,28 @@
 {
-  "generatedAt": "2026-04-20T13:34:04Z",
+  "generatedAt": "2026-04-20T14:34:04Z",
   "last24h": {
-    "totalTokens": 0,
-    "byModel": {},
-    "byProject": []
+    "totalTokens": 3462654,
+    "byModel": {
+      "claude-opus-4-7": 3462654
+    },
+    "byProject": [
+      {
+        "name": "hologic-customer-knowledge",
+        "tokens": 3462654
+      }
+    ]
   },
   "hourly": [
     {
-      "t": "2026-04-13T13:00:00Z",
-      "tokens": 7401303,
-      "byModel": {
-        "claude-opus-4-6": 1124310,
-        "<synthetic>": 0,
-        "claude-haiku-4-5-20251001": 6276993
-      },
-      "byProject": [
-        {
-          "name": "raven-os",
-          "tokens": 6749343
-        },
-        {
-          "name": "ravenos-mcp-test",
-          "tokens": 651960
-        },
-        {
-          "name": "smart-home",
-          "tokens": 0
-        }
-      ]
-    },
-    {
       "t": "2026-04-13T14:00:00Z",
-      "tokens": 21831129,
+      "tokens": 505937,
       "byModel": {
-        "claude-opus-4-6": 21831129
+        "claude-opus-4-6": 505937
       },
       "byProject": [
         {
-          "name": "agent",
-          "tokens": 10416629
-        },
-        {
           "name": "raven-os",
-          "tokens": 10030623
-        },
-        {
-          "name": "smart-home",
-          "tokens": 1383877
+          "tokens": 505937
         }
       ]
     },
@@ -842,6 +818,32 @@
         {
           "name": "smart-home",
           "tokens": 6715070
+        }
+      ]
+    },
+    {
+      "t": "2026-04-20T13:00:00Z",
+      "tokens": 1549716,
+      "byModel": {
+        "claude-opus-4-7": 1549716
+      },
+      "byProject": [
+        {
+          "name": "hologic-customer-knowledge",
+          "tokens": 1549716
+        }
+      ]
+    },
+    {
+      "t": "2026-04-20T14:00:00Z",
+      "tokens": 1912938,
+      "byModel": {
+        "claude-opus-4-7": 1912938
+      },
+      "byProject": [
+        {
+          "name": "hologic-customer-knowledge",
+          "tokens": 1912938
         }
       ]
     }
@@ -2253,6 +2255,19 @@
         {
           "name": "Random-Projects-smart-home--claude-worktrees-cranky-kepler-d2cb22",
           "tokens": 642145
+        }
+      ]
+    },
+    {
+      "t": "2026-04-20",
+      "tokens": 1885234,
+      "byModel": {
+        "claude-opus-4-7": 1885234
+      },
+      "byProject": [
+        {
+          "name": "raven-raven-os",
+          "tokens": 1885234
         }
       ]
     }
