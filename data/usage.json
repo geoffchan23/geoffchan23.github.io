@@ -1,28 +1,11 @@
 {
-  "generatedAt": "2026-04-20T02:29:02Z",
+  "generatedAt": "2026-04-20T03:29:02Z",
   "last24h": {
     "totalTokens": 0,
     "byModel": {},
     "byProject": []
   },
   "hourly": [
-    {
-      "t": "2026-04-13T02:00:00Z",
-      "tokens": 8076096,
-      "byModel": {
-        "claude-opus-4-6": 8076096
-      },
-      "byProject": [
-        {
-          "name": "raven-os",
-          "tokens": 7898438
-        },
-        {
-          "name": "levi-word-game",
-          "tokens": 177658
-        }
-      ]
-    },
     {
       "t": "2026-04-13T13:00:00Z",
       "tokens": 10654268,
