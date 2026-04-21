@@ -59,6 +59,15 @@
     opacity: 0.5;
 }
 
+.tokens-cost {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.7em;
+    color: rgba(51, 51, 51, 0.55);
+    margin-top: 0.1em;
+    margin-bottom: 0.5em;
+    letter-spacing: 0.01em;
+}
+
 .tokens-timeline h2 {
     margin-top: 2em;
 }

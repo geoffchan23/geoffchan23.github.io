@@ -36,6 +36,14 @@ function formatTokens(n) {
     return String(n);
 }
 
+function formatCostUsd(n) {
+    if (n < 1) return "<$1";
+    if (n < 100) return "$" + n.toFixed(0);
+    if (n < 1000) return "$" + Math.round(n / 10) * 10;
+    if (n < 10000) return "$" + (n / 1000).toFixed(1) + "k";
+    return "$" + Math.round(n / 1000) + "k";
+}
+
 function formatTimestamp(ts, granularity) {
     const d = new Date(ts);
     if (granularity === "hourly") {
@@ -151,6 +159,21 @@ function totalForRange(data, startMs, endMs) {
     return (data.daily || []).reduce((sum, b) => {
         const t = new Date(b.t + "T00:00:00Z").getTime();
         return t >= startMs && t <= endMs ? sum + b.tokens : sum;
+    }, 0);
+}
+
+function costForRange(data, startMs, endMs) {
+    const spanMs = endMs - startMs;
+    const dayMs = 24 * 60 * 60 * 1000;
+    if (spanMs <= 3 * dayMs && data.hourly?.length) {
+        return data.hourly.reduce((sum, b) => {
+            const t = new Date(b.t).getTime();
+            return t >= startMs && t <= endMs ? sum + (b.costUsd ?? 0) : sum;
+        }, 0);
+    }
+    return (data.daily || []).reduce((sum, b) => {
+        const t = new Date(b.t + "T00:00:00Z").getTime();
+        return t >= startMs && t <= endMs ? sum + (b.costUsd ?? 0) : sum;
     }, 0);
 }
 
@@ -489,6 +512,21 @@ function updateHeadlineTotal(data, startMs, endMs) {
     const bigEl = document.getElementById("tokens-big");
     bigEl.textContent = formatTokens(totalForRange(data, startMs, endMs));
     bigEl.dataset.state = "ready";
+
+    const costEl = document.getElementById("tokens-cost");
+    if (!costEl) return;
+    try {
+        const cost = costForRange(data, startMs, endMs);
+        if (cost > 0) {
+            costEl.textContent = "≈ " + formatCostUsd(cost) + " at API rates · flat $200/mo on Max";
+            costEl.hidden = false;
+        } else {
+            costEl.hidden = true;
+        }
+    } catch (err) {
+        console.error("tokens cost render failed:", err);
+        costEl.hidden = true;
+    }
 }
 
 function renderMeta(data) {
