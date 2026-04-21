@@ -321,3 +321,43 @@
 .conf-modal-link:hover {
     color: rgb(217, 119, 87);
 }
+.conf-modal-meta {
+    font-size: .9em;
+    opacity: .75;
+    margin-bottom: .75em;
+    display: flex;
+    flex-direction: column;
+    gap: .15em;
+}
+.conf-modal-url {
+    display: inline-block;
+    margin-top: .5em;
+    color: rgb(217, 119, 87);
+}
+.conf-modal-signal {
+    margin-top: 1.5em;
+    padding-top: 1em;
+    border-top: 1px solid rgba(0,0,0,0.1);
+}
+.conf-modal-signal h4 {
+    margin-top: 0;
+    margin-bottom: .5em;
+    font-size: 1em;
+}
+.conf-modal-sources {
+    padding-left: 1.2em;
+    margin: .5em 0;
+    font-size: .9em;
+}
+.conf-modal-sources li {
+    margin-bottom: .35em;
+}
+.conf-modal-source-type {
+    opacity: .5;
+    font-size: .85em;
+}
+.conf-modal-reviewed {
+    font-size: .8em;
+    opacity: .5;
+    margin-top: .5em;
+}

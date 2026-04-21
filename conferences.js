@@ -158,6 +158,7 @@ function renderCalendar(confs, anchor) {
 
             card.appendChild(logo);
             card.appendChild(text);
+            card.addEventListener("click", () => openConferenceModal(c));
             items.appendChild(card);
         }
         if (hidden > 0) {
@@ -222,6 +223,7 @@ function renderList(conferences) {
         body.appendChild(tags);
         li.appendChild(logo);
         li.appendChild(body);
+        li.addEventListener("click", () => openConferenceModal(c));
         list.appendChild(li);
     }
 }
@@ -313,11 +315,100 @@ function openDayModal(iso, confs) {
         link.type = "button";
         link.className = "conf-modal-link";
         link.textContent = c.edition && c.edition !== c.name ? `${c.name} — ${c.edition}` : c.name;
+        link.addEventListener("click", () => {
+            closeModal();
+            openConferenceModal(c);
+        });
         li.appendChild(link);
         list.appendChild(li);
     }
     container.appendChild(list);
     openModal(container);
+}
+
+function openConferenceModal(c) {
+    const el = document.createElement("div");
+
+    const h = document.createElement("h3");
+    h.id = "conf-modal-title";
+    h.textContent = c.edition && c.edition !== c.name ? `${c.name} — ${c.edition}` : c.name;
+    el.appendChild(h);
+
+    const meta = document.createElement("div");
+    meta.className = "conf-modal-meta";
+    meta.innerHTML = "";
+    const lines = [
+        `${formatDateRange(c.startDate, c.endDate)}`,
+        `${c.city}, ${c.country}`,
+        `Format: ${c.format}`,
+    ];
+    for (const line of lines) {
+        const p = document.createElement("div");
+        p.textContent = line;
+        meta.appendChild(p);
+    }
+    el.appendChild(meta);
+
+    if (c.topics && c.topics.length > 0) {
+        const tags = document.createElement("div");
+        tags.className = "conf-list-tags";
+        for (const slug of c.topics) {
+            const tag = document.createElement("span");
+            tag.className = "conf-tag";
+            tag.textContent = topicLabel(slug);
+            tags.appendChild(tag);
+        }
+        el.appendChild(tags);
+    }
+
+    if (c.url) {
+        const a = document.createElement("a");
+        a.href = c.url;
+        a.target = "_blank";
+        a.rel = "noopener noreferrer";
+        a.className = "conf-modal-url";
+        a.textContent = "Official site ↗";
+        el.appendChild(a);
+    }
+
+    const sig = document.createElement("div");
+    sig.className = "conf-modal-signal";
+    const sigH = document.createElement("h4");
+    sigH.textContent = `Signal: ${c.signal?.rating || "unrated"}`;
+    sig.appendChild(sigH);
+    if (c.signal?.summary) {
+        const p = document.createElement("p");
+        p.textContent = c.signal.summary;
+        sig.appendChild(p);
+    }
+    if (c.signal?.sources && c.signal.sources.length > 0) {
+        const ul = document.createElement("ul");
+        ul.className = "conf-modal-sources";
+        for (const s of c.signal.sources) {
+            const li = document.createElement("li");
+            const a = document.createElement("a");
+            a.href = s.url;
+            a.target = "_blank";
+            a.rel = "noopener noreferrer";
+            a.textContent = s.note || s.url;
+            li.appendChild(a);
+            const typeSpan = document.createElement("span");
+            typeSpan.className = "conf-modal-source-type";
+            typeSpan.textContent = ` · ${s.type}`;
+            li.appendChild(typeSpan);
+            ul.appendChild(li);
+        }
+        sig.appendChild(ul);
+    }
+    if (c.signal?.lastReviewed) {
+        const reviewed = document.createElement("div");
+        reviewed.className = "conf-modal-reviewed";
+        reviewed.textContent = `Last reviewed: ${c.signal.lastReviewed}`;
+        sig.appendChild(reviewed);
+    }
+    el.appendChild(sig);
+
+    openModal(el);
 }
 
 function populateFilters() {
