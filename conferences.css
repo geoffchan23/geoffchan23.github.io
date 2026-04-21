@@ -246,3 +246,78 @@
     background: rgba(217, 119, 87, 0.25);
     color: rgb(217, 119, 87);
 }
+.conf-card-more {
+    border: 0;
+    background: transparent;
+    font-family: inherit;
+    font-size: .7em;
+    color: rgb(217, 119, 87);
+    cursor: pointer;
+    text-align: left;
+    padding: .2em .35em;
+}
+.conf-card-more:hover {
+    text-decoration: underline;
+}
+.conf-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+}
+.conf-modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.35);
+}
+.conf-modal-content {
+    position: absolute;
+    left: 50%;
+    top: 10%;
+    transform: translateX(-50%);
+    width: min(560px, 90vw);
+    max-height: 80vh;
+    overflow: auto;
+    background: #f9f9f9;
+    border: 1px solid #333;
+    border-radius: 5.5px;
+    padding: 1.5em;
+}
+.conf-modal-close {
+    position: absolute;
+    top: .5em;
+    right: .5em;
+    border: 0;
+    background: transparent;
+    font-size: 1.5em;
+    cursor: pointer;
+    color: #333;
+    line-height: 1;
+    padding: .2em .4em;
+}
+.conf-modal-body h3 {
+    margin-top: 0;
+    margin-bottom: 1em;
+}
+.conf-modal-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: .5em;
+}
+.conf-modal-link {
+    border: 0;
+    background: transparent;
+    font-family: inherit;
+    font-size: inherit;
+    color: #333;
+    text-align: left;
+    cursor: pointer;
+    padding: .4em 0;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    width: 100%;
+}
+.conf-modal-link:hover {
+    color: rgb(217, 119, 87);
+}

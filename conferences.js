@@ -19,6 +19,8 @@ const TOPICS = [
     { slug: "general", label: "General" },
 ];
 
+const MAX_CARDS_PER_DAY = 3;
+
 const state = {
     view: "calendar",
     currentMonth: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
@@ -115,7 +117,10 @@ function renderCalendar(confs, anchor) {
 
         const items = document.createElement("div");
         items.className = "conf-cal-items";
-        for (const c of conferencesOnDay(confs, iso)) {
+        const dayConfs = conferencesOnDay(confs, iso);
+        const visible = dayConfs.slice(0, MAX_CARDS_PER_DAY);
+        const hidden = dayConfs.length - visible.length;
+        for (const c of visible) {
             const card = document.createElement("div");
             card.className = "conf-card";
             card.dataset.id = c.id;
@@ -154,6 +159,14 @@ function renderCalendar(confs, anchor) {
             card.appendChild(logo);
             card.appendChild(text);
             items.appendChild(card);
+        }
+        if (hidden > 0) {
+            const more = document.createElement("button");
+            more.type = "button";
+            more.className = "conf-card-more";
+            more.textContent = `+${hidden} more`;
+            more.addEventListener("click", () => openDayModal(iso, dayConfs));
+            items.appendChild(more);
         }
         cell.appendChild(items);
         grid.appendChild(cell);
@@ -253,6 +266,49 @@ function wireControls() {
         state.currentMonth = new Date(state.currentMonth.getFullYear(), state.currentMonth.getMonth() + 1, 1);
         render();
     });
+    for (const el of document.querySelectorAll("#conf-modal [data-close]")) {
+        el.addEventListener("click", closeModal);
+    }
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closeModal();
+    });
+}
+
+function openModal(contentEl) {
+    const modal = document.getElementById("conf-modal");
+    const body = document.getElementById("conf-modal-body");
+    body.innerHTML = "";
+    body.appendChild(contentEl);
+    modal.hidden = false;
+    document.body.style.overflow = "hidden";
+}
+
+function closeModal() {
+    document.getElementById("conf-modal").hidden = true;
+    document.body.style.overflow = "";
+}
+
+function openDayModal(iso, confs) {
+    const container = document.createElement("div");
+    const title = document.createElement("h3");
+    title.id = "conf-modal-title";
+    title.textContent = new Date(iso + "T00:00:00").toLocaleDateString("en-US", {
+        weekday: "long", month: "long", day: "numeric", year: "numeric",
+    });
+    container.appendChild(title);
+    const list = document.createElement("ul");
+    list.className = "conf-modal-list";
+    for (const c of confs) {
+        const li = document.createElement("li");
+        const link = document.createElement("button");
+        link.type = "button";
+        link.className = "conf-modal-link";
+        link.textContent = c.edition && c.edition !== c.name ? `${c.name} — ${c.edition}` : c.name;
+        li.appendChild(link);
+        list.appendChild(li);
+    }
+    container.appendChild(list);
+    openModal(container);
 }
 
 async function init() {
