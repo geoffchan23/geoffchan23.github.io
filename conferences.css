@@ -189,15 +189,41 @@
     gap: 3px;
 }
 .conf-card {
+    display: flex;
+    gap: .35em;
+    align-items: flex-start;
     background: rgba(217, 119, 87, 0.12);
     border-radius: 4px;
-    padding: .25em .35em;
+    padding: .3em .4em;
     font-size: .75em;
     cursor: pointer;
     line-height: 1.2;
 }
 .conf-card:hover {
     background: rgba(217, 119, 87, 0.25);
+}
+.conf-card-logo {
+    width: 20px;
+    height: 20px;
+    flex: 0 0 20px;
+    border-radius: 3px;
+    background: rgb(217, 119, 87);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: .75em;
+    overflow: hidden;
+}
+.conf-card-logo img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+.conf-card-text {
+    min-width: 0;
+    flex: 1;
 }
 .conf-card-name {
     font-weight: 700;
@@ -210,4 +236,13 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+.conf-card-tag {
+    display: inline-block;
+    margin-top: .15em;
+    font-size: .85em;
+    padding: 0 .3em;
+    border-radius: 3px;
+    background: rgba(217, 119, 87, 0.25);
+    color: rgb(217, 119, 87);
 }

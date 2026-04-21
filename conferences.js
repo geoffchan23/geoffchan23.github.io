@@ -119,20 +119,46 @@ function renderCalendar(confs, anchor) {
             const card = document.createElement("div");
             card.className = "conf-card";
             card.dataset.id = c.id;
-            card.innerHTML = `
-                <div class="conf-card-name">${escapeHtml(c.name)}</div>
-                <div class="conf-card-city">${escapeHtml(c.city)}</div>
-            `;
+
+            const logo = document.createElement("div");
+            logo.className = "conf-card-logo";
+            if (c.logo) {
+                const img = document.createElement("img");
+                img.src = "/conferences/" + c.logo;
+                img.alt = "";
+                logo.appendChild(img);
+            } else {
+                logo.classList.add("conf-card-logo-text");
+                logo.textContent = c.name.slice(0, 1).toUpperCase();
+            }
+
+            const text = document.createElement("div");
+            text.className = "conf-card-text";
+            const nameEl = document.createElement("div");
+            nameEl.className = "conf-card-name";
+            nameEl.textContent = c.name;
+            text.appendChild(nameEl);
+
+            const cityEl = document.createElement("div");
+            cityEl.className = "conf-card-city";
+            cityEl.textContent = c.city;
+            text.appendChild(cityEl);
+
+            if (c.topics && c.topics.length > 0) {
+                const tag = document.createElement("span");
+                tag.className = "conf-card-tag";
+                tag.textContent = topicLabel(c.topics[0]);
+                text.appendChild(tag);
+            }
+
+            card.appendChild(logo);
+            card.appendChild(text);
             items.appendChild(card);
         }
         cell.appendChild(items);
         grid.appendChild(cell);
     }
     root.appendChild(grid);
-}
-
-function escapeHtml(s) {
-    return s.replace(/[&<>"']/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch]));
 }
 
 function renderList(conferences) {
