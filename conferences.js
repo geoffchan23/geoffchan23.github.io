@@ -228,15 +228,16 @@ function renderList(conferences) {
 
 function render() {
     document.getElementById("conf-month-label").textContent = formatMonthLabel(state.currentMonth);
-    document.getElementById("conf-empty").hidden = state.conferences.length !== 0;
+    const filtered = applyFilters(state.conferences);
+    document.getElementById("conf-empty").hidden = filtered.length !== 0;
     const listEl = document.getElementById("conf-list");
     const calEl = document.getElementById("conf-calendar");
     listEl.hidden = state.view !== "list";
     calEl.hidden = state.view !== "calendar";
     if (state.view === "list") {
-        renderList(state.conferences);
+        renderList(filtered);
     } else {
-        renderCalendar(state.conferences, state.currentMonth);
+        renderCalendar(filtered, state.currentMonth);
     }
     for (const btn of document.querySelectorAll(".conf-view-toggle button")) {
         const isActive = btn.dataset.view === state.view;
@@ -271,6 +272,14 @@ function wireControls() {
     }
     document.addEventListener("keydown", (e) => {
         if (e.key === "Escape") closeModal();
+    });
+    document.getElementById("conf-region").addEventListener("change", (e) => {
+        state.region = e.target.value;
+        render();
+    });
+    document.getElementById("conf-topic").addEventListener("change", (e) => {
+        state.topic = e.target.value;
+        render();
     });
 }
 
@@ -311,8 +320,34 @@ function openDayModal(iso, confs) {
     openModal(container);
 }
 
+function populateFilters() {
+    const regionSel = document.getElementById("conf-region");
+    for (const r of REGIONS) {
+        const opt = document.createElement("option");
+        opt.value = r.slug;
+        opt.textContent = r.label;
+        regionSel.appendChild(opt);
+    }
+    const topicSel = document.getElementById("conf-topic");
+    for (const t of TOPICS) {
+        const opt = document.createElement("option");
+        opt.value = t.slug;
+        opt.textContent = t.label;
+        topicSel.appendChild(opt);
+    }
+}
+
+function applyFilters(all) {
+    return all.filter(c => {
+        if (state.region && c.region !== state.region) return false;
+        if (state.topic && !(c.topics || []).includes(state.topic)) return false;
+        return true;
+    });
+}
+
 async function init() {
     await load();
+    populateFilters();
     wireControls();
     render();
 }
