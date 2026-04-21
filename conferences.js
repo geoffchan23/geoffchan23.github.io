@@ -53,6 +53,10 @@ function topicLabel(slug) {
     return t ? t.label : slug;
 }
 
+function safeUrl(u) {
+    return typeof u === "string" && /^https?:\/\//i.test(u) ? u : null;
+}
+
 function formatMonthLabel(date) {
     return date.toLocaleDateString("en-US", { month: "long", year: "numeric" });
 }
@@ -377,9 +381,10 @@ function openConferenceModal(c) {
         el.appendChild(tags);
     }
 
-    if (c.url) {
+    const safeConfUrl = safeUrl(c.url);
+    if (safeConfUrl) {
         const a = document.createElement("a");
-        a.href = c.url;
+        a.href = safeConfUrl;
         a.target = "_blank";
         a.rel = "noopener noreferrer";
         a.className = "conf-modal-url";
@@ -401,12 +406,14 @@ function openConferenceModal(c) {
         const ul = document.createElement("ul");
         ul.className = "conf-modal-sources";
         for (const s of c.signal.sources) {
+            const safeSrc = safeUrl(s.url);
+            if (!safeSrc) continue;
             const li = document.createElement("li");
             const a = document.createElement("a");
-            a.href = s.url;
+            a.href = safeSrc;
             a.target = "_blank";
             a.rel = "noopener noreferrer";
-            a.textContent = s.note || s.url;
+            a.textContent = s.note || safeSrc;
             li.appendChild(a);
             const typeSpan = document.createElement("span");
             typeSpan.className = "conf-modal-source-type";
