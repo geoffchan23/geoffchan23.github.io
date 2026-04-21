@@ -1,1 +1,137 @@
 /* /conferences page styles. */
+.conf-intro {
+    margin-bottom: 1.5em;
+}
+.conf-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1em;
+    align-items: center;
+    margin-bottom: 1.5em;
+    font-size: .85em;
+}
+.conf-view-toggle {
+    display: inline-flex;
+    border: 1px solid #333;
+    border-radius: 5.5px;
+    overflow: hidden;
+}
+.conf-view-toggle button {
+    border: 0;
+    background: transparent;
+    font-family: inherit;
+    font-size: inherit;
+    padding: .35em .75em;
+    cursor: pointer;
+    color: #333;
+}
+.conf-view-toggle button.active {
+    background: #333;
+    color: #f9f9f9;
+}
+.conf-month-nav {
+    display: inline-flex;
+    align-items: center;
+    gap: .5em;
+}
+.conf-month-nav button {
+    border: 1px solid #333;
+    background: transparent;
+    font-family: inherit;
+    font-size: inherit;
+    padding: .25em .6em;
+    cursor: pointer;
+    border-radius: 5.5px;
+    color: #333;
+}
+.conf-month-label {
+    min-width: 10em;
+    text-align: center;
+}
+.conf-filters {
+    display: inline-flex;
+    gap: .75em;
+}
+.conf-filter {
+    display: inline-flex;
+    align-items: center;
+    gap: .4em;
+}
+.conf-filter select {
+    font-family: inherit;
+    font-size: inherit;
+    padding: .2em .4em;
+    border: 1px solid #333;
+    border-radius: 5.5px;
+    background: #f9f9f9;
+    color: #333;
+}
+.conf-empty {
+    opacity: .6;
+    padding: 2em 0;
+    text-align: center;
+}
+.conf-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: .75em;
+}
+.conf-list-item {
+    display: flex;
+    gap: .75em;
+    padding: .75em;
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: 5.5px;
+    background: #fff;
+    cursor: pointer;
+}
+.conf-list-item:hover {
+    border-color: #333;
+}
+.conf-logo {
+    width: 40px;
+    height: 40px;
+    flex: 0 0 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5.5px;
+    background: rgb(217, 119, 87);
+    color: #fff;
+    font-weight: 700;
+    overflow: hidden;
+}
+.conf-logo img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+.conf-list-body {
+    display: flex;
+    flex-direction: column;
+    gap: .2em;
+    min-width: 0;
+}
+.conf-list-name {
+    font-weight: 700;
+}
+.conf-list-meta {
+    font-size: .85em;
+    opacity: .7;
+}
+.conf-list-tags {
+    display: flex;
+    gap: .4em;
+    flex-wrap: wrap;
+    margin-top: .2em;
+}
+.conf-tag {
+    font-size: .75em;
+    padding: .15em .5em;
+    border-radius: 5.5px;
+    background: rgba(217, 119, 87, 0.15);
+    color: rgb(217, 119, 87);
+}
