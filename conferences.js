@@ -235,7 +235,13 @@ function renderList(conferences) {
 function render() {
     document.getElementById("conf-month-label").textContent = formatMonthLabel(state.currentMonth);
     const filtered = applyFilters(state.conferences);
-    document.getElementById("conf-empty").hidden = filtered.length !== 0;
+    const emptyEl = document.getElementById("conf-empty");
+    emptyEl.hidden = filtered.length !== 0;
+    if (state.conferences.length === 0) {
+        emptyEl.textContent = "No conference data yet.";
+    } else {
+        emptyEl.textContent = "No conferences match the current filters.";
+    }
     const listEl = document.getElementById("conf-list");
     const calEl = document.getElementById("conf-calendar");
     listEl.hidden = state.view !== "list";
@@ -253,9 +259,15 @@ function render() {
 }
 
 async function load() {
-    const res = await fetch("/data/conferences.json", { cache: "no-store" });
-    const data = await res.json();
-    state.conferences = (data.conferences || []).slice().sort((a, b) => a.startDate.localeCompare(b.startDate));
+    try {
+        const res = await fetch("/data/conferences.json", { cache: "no-store" });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        state.conferences = (data.conferences || []).slice().sort((a, b) => a.startDate.localeCompare(b.startDate));
+    } catch (err) {
+        console.error("Failed to load conferences:", err);
+        state.conferences = [];
+    }
 }
 
 function wireControls() {
