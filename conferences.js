@@ -47,6 +47,10 @@ function topicLabel(slug) {
     return t ? t.label : slug;
 }
 
+function formatMonthLabel(date) {
+    return date.toLocaleDateString("en-US", { month: "long", year: "numeric" });
+}
+
 function renderList(conferences) {
     const list = document.getElementById("conf-list");
     list.innerHTML = "";
@@ -100,6 +104,7 @@ function renderList(conferences) {
 }
 
 function render() {
+    document.getElementById("conf-month-label").textContent = formatMonthLabel(state.currentMonth);
     document.getElementById("conf-empty").hidden = state.conferences.length !== 0;
     const listEl = document.getElementById("conf-list");
     const calEl = document.getElementById("conf-calendar");
@@ -130,6 +135,14 @@ function wireControls() {
             render();
         });
     }
+    document.querySelector(".conf-prev").addEventListener("click", () => {
+        state.currentMonth = new Date(state.currentMonth.getFullYear(), state.currentMonth.getMonth() - 1, 1);
+        render();
+    });
+    document.querySelector(".conf-next").addEventListener("click", () => {
+        state.currentMonth = new Date(state.currentMonth.getFullYear(), state.currentMonth.getMonth() + 1, 1);
+        render();
+    });
 }
 
 async function init() {
