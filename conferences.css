@@ -142,3 +142,72 @@
     border: 1px dashed rgba(0,0,0,0.2);
     border-radius: 5.5px;
 }
+.conf-cal-header {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    font-size: .75em;
+    opacity: .5;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    margin-bottom: 4px;
+}
+.conf-cal-header-cell {
+    padding: .25em .4em;
+}
+.conf-cal-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+}
+.conf-cal-cell {
+    min-height: 110px;
+    background: #fff;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 5.5px;
+    padding: .35em .4em;
+    display: flex;
+    flex-direction: column;
+    gap: .3em;
+    overflow: hidden;
+}
+.conf-cal-cell-outside {
+    background: transparent;
+    opacity: .35;
+}
+.conf-cal-cell-today {
+    border-color: rgb(217, 119, 87);
+    box-shadow: 0 0 0 1px rgb(217, 119, 87);
+}
+.conf-cal-daynum {
+    font-size: .75em;
+    opacity: .6;
+}
+.conf-cal-items {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+.conf-card {
+    background: rgba(217, 119, 87, 0.12);
+    border-radius: 4px;
+    padding: .25em .35em;
+    font-size: .75em;
+    cursor: pointer;
+    line-height: 1.2;
+}
+.conf-card:hover {
+    background: rgba(217, 119, 87, 0.25);
+}
+.conf-card-name {
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.conf-card-city {
+    opacity: .7;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

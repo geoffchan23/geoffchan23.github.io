@@ -51,6 +51,90 @@ function formatMonthLabel(date) {
     return date.toLocaleDateString("en-US", { month: "long", year: "numeric" });
 }
 
+function isoDate(date) {
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, "0");
+    const d = String(date.getDate()).padStart(2, "0");
+    return `${y}-${m}-${d}`;
+}
+
+function conferencesOnDay(confs, isoDay) {
+    return confs.filter(c => c.startDate <= isoDay && isoDay <= c.endDate);
+}
+
+function buildMonthDays(anchor) {
+    const year = anchor.getFullYear();
+    const month = anchor.getMonth();
+    const first = new Date(year, month, 1);
+    const startWeekday = first.getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const cells = [];
+    for (let i = 0; i < startWeekday; i++) {
+        const d = new Date(year, month, 1 - (startWeekday - i));
+        cells.push({ date: d, inMonth: false });
+    }
+    for (let day = 1; day <= daysInMonth; day++) {
+        cells.push({ date: new Date(year, month, day), inMonth: true });
+    }
+    while (cells.length % 7 !== 0) {
+        const last = cells[cells.length - 1].date;
+        const next = new Date(last.getFullYear(), last.getMonth(), last.getDate() + 1);
+        cells.push({ date: next, inMonth: false });
+    }
+    return cells;
+}
+
+function renderCalendar(confs, anchor) {
+    const root = document.getElementById("conf-calendar");
+    root.innerHTML = "";
+
+    const headerRow = document.createElement("div");
+    headerRow.className = "conf-cal-header";
+    for (const label of ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]) {
+        const h = document.createElement("div");
+        h.className = "conf-cal-header-cell";
+        h.textContent = label;
+        headerRow.appendChild(h);
+    }
+    root.appendChild(headerRow);
+
+    const grid = document.createElement("div");
+    grid.className = "conf-cal-grid";
+    const today = isoDate(new Date());
+    for (const { date, inMonth } of buildMonthDays(anchor)) {
+        const iso = isoDate(date);
+        const cell = document.createElement("div");
+        cell.className = "conf-cal-cell";
+        if (!inMonth) cell.classList.add("conf-cal-cell-outside");
+        if (iso === today) cell.classList.add("conf-cal-cell-today");
+
+        const num = document.createElement("div");
+        num.className = "conf-cal-daynum";
+        num.textContent = String(date.getDate());
+        cell.appendChild(num);
+
+        const items = document.createElement("div");
+        items.className = "conf-cal-items";
+        for (const c of conferencesOnDay(confs, iso)) {
+            const card = document.createElement("div");
+            card.className = "conf-card";
+            card.dataset.id = c.id;
+            card.innerHTML = `
+                <div class="conf-card-name">${escapeHtml(c.name)}</div>
+                <div class="conf-card-city">${escapeHtml(c.city)}</div>
+            `;
+            items.appendChild(card);
+        }
+        cell.appendChild(items);
+        grid.appendChild(cell);
+    }
+    root.appendChild(grid);
+}
+
+function escapeHtml(s) {
+    return s.replace(/[&<>"']/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch]));
+}
+
 function renderList(conferences) {
     const list = document.getElementById("conf-list");
     list.innerHTML = "";
@@ -113,7 +197,7 @@ function render() {
     if (state.view === "list") {
         renderList(state.conferences);
     } else {
-        calEl.innerHTML = '<div class="conf-placeholder">calendar coming soon</div>';
+        renderCalendar(state.conferences, state.currentMonth);
     }
     for (const btn of document.querySelectorAll(".conf-view-toggle button")) {
         const isActive = btn.dataset.view === state.view;
