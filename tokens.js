@@ -332,14 +332,24 @@ function buildMainChart(canvas, data, initialStartMs, initialEndMs) {
     return chart;
 }
 
-function onChartRangeChange(chart, data) {
-    const xScale = chart.scales.x;
-    const { granularity, points } = bucketsForRange(data, xScale.min, xScale.max);
+function applyChartRange(chart, data, startMs, endMs) {
+    // Write to the root config so Chart.js keeps the range on subsequent updates.
+    // Writing only to chart.scales.x.options.min/max (the scale instance's
+    // merged view) is unreliable: the axis can revert on update while the
+    // data is filtered to the new range, producing a wider-than-expected axis.
+    chart.options.scales.x.min = startMs;
+    chart.options.scales.x.max = endMs;
+    const { granularity, points } = bucketsForRange(data, startMs, endMs);
     chart.data.datasets[0].data = points.map(p => ({ x: new Date(p.t).getTime(), y: p.tokens, meta: { byModel: p.byModel } }));
     chart.data.datasets[0].granularity = granularity;
     chart.update("none");
     syncBrushWindow(chart);
-    updateHeadlineTotal(data, xScale.min, xScale.max);
+    updateHeadlineTotal(data, startMs, endMs);
+}
+
+function onChartRangeChange(chart, data) {
+    const xScale = chart.scales.x;
+    applyChartRange(chart, data, xScale.min, xScale.max);
     const selectEl = document.getElementById("tokens-range");
     if (selectEl) setCustomMode(selectEl, true);
 }
@@ -468,9 +478,9 @@ function applyRange(mainChart, brushChart, data, startMs, endMs) {
         start = Math.max(brushScale.min, mid - minWindow / 2);
         end = Math.min(brushScale.max, mid + minWindow / 2);
     }
-    mainChart.scales.x.options.min = start;
-    mainChart.scales.x.options.max = end;
-    onChartRangeChange(mainChart, data);
+    applyChartRange(mainChart, data, start, end);
+    const selectEl = document.getElementById("tokens-range");
+    if (selectEl) setCustomMode(selectEl, true);
 }
 
 // --- Headline + meta renderers ---
@@ -535,14 +545,7 @@ async function init() {
     mainChart.$applyPreset = (presetId) => {
         const r = rangeForPreset(presetId);
         if (!r) return;
-        mainChart.scales.x.options.min = r.startMs;
-        mainChart.scales.x.options.max = r.endMs;
-        const { granularity, points } = bucketsForRange(data, r.startMs, r.endMs);
-        mainChart.data.datasets[0].data = points.map(p => ({ x: new Date(p.t).getTime(), y: p.tokens, meta: { byModel: p.byModel } }));
-        mainChart.data.datasets[0].granularity = granularity;
-        mainChart.update("none");
-        syncBrushWindow(mainChart);
-        updateHeadlineTotal(data, r.startMs, r.endMs);
+        applyChartRange(mainChart, data, r.startMs, r.endMs);
         setCustomMode(rangeSelect, false);
         rangeSelect.value = presetId;
     };
