@@ -1,71 +1,43 @@
 {
-  "generatedAt": "2026-04-21T17:00:00Z",
+  "generatedAt": "2026-04-21T20:00:00Z",
   "conferences": [
-    {
-      "id": "ai-engineer-worlds-fair-sf-2026",
-      "series": "ai-engineer-worlds-fair",
-      "name": "AI Engineer World's Fair",
-      "edition": "SF (flagship)",
-      "startDate": "2026-06-03",
-      "endDate": "2026-06-05",
-      "city": "San Francisco",
-      "country": "USA",
-      "region": "north-america",
-      "format": "in-person",
-      "url": "https://ai.engineer",
-      "topics": ["ai-engineering"],
-      "logo": null,
-      "signal": {
-        "rating": "high",
-        "summary": "Seed entry. Replace with agent-validated signal on first skill run.",
-        "sources": [],
-        "lastReviewed": "2026-04-21"
-      },
-      "source": "manual"
-    },
-    {
-      "id": "kubecon-na-2026",
-      "series": "kubecon",
-      "name": "KubeCon + CloudNativeCon North America",
-      "edition": "North America",
-      "startDate": "2026-11-09",
-      "endDate": "2026-11-12",
-      "city": "Atlanta",
-      "country": "USA",
-      "region": "north-america",
-      "format": "in-person",
-      "url": "https://events.linuxfoundation.org/kubecon-cloudnativecon-north-america/",
-      "topics": ["systems"],
-      "logo": null,
-      "signal": {
-        "rating": "high",
-        "summary": "Seed entry. Replace with agent-validated signal on first skill run.",
-        "sources": [],
-        "lastReviewed": "2026-04-21"
-      },
-      "source": "manual"
-    },
     {
       "id": "ndc-toronto-2026",
       "series": "ndc",
       "name": "NDC Toronto",
       "edition": "Toronto",
-      "startDate": "2026-10-26",
-      "endDate": "2026-10-30",
+      "startDate": "2026-05-05",
+      "endDate": "2026-05-08",
       "city": "Toronto",
       "country": "Canada",
       "region": "north-america",
       "format": "in-person",
       "url": "https://ndctoronto.com/",
-      "topics": ["general", "web"],
+      "topics": ["general", "web", "systems"],
       "logo": null,
       "signal": {
-        "rating": "high",
-        "summary": "Seed entry. Replace with agent-validated signal on first skill run.",
-        "sources": [],
+        "rating": "medium",
+        "summary": "North America edition of the established NDC brand; NDC Oslo draws 2,500+ developers with strong practitioner-written recaps and named speakers. Toronto edition is new (expanded from CPP North) so no independent attendee signal for this specific city yet.",
+        "sources": [
+          {
+            "type": "blog",
+            "url": "https://improveandrepeat.com/2025/06/my-highlights-of-ndc-oslo-2025/",
+            "note": "Practitioner recap of NDC Oslo 2025 highlights positive community and session quality"
+          },
+          {
+            "type": "blog",
+            "url": "https://chris-ayers.com/2025/05/24/ndc-oslo-2025-wrapup/",
+            "note": "Developer wrap-up of NDC Oslo 2025 from practitioner perspective"
+          },
+          {
+            "type": "other",
+            "url": "https://ndctoronto.com/",
+            "note": "Official site confirms May 5-8 at The Westin Harbour Castle, Toronto"
+          }
+        ],
         "lastReviewed": "2026-04-21"
       },
-      "source": "manual"
+      "source": "agent"
     },
     {
       "id": "pycon-us-2026",
@@ -78,16 +50,326 @@
       "country": "USA",
       "region": "north-america",
       "format": "in-person",
-      "url": "https://us.pycon.org/",
-      "topics": ["languages"],
+      "url": "https://us.pycon.org/2026/",
+      "topics": ["languages", "ai-engineering"],
       "logo": null,
       "signal": {
         "rating": "high",
-        "summary": "Seed entry. Replace with agent-validated signal on first skill run.",
-        "sources": [],
+        "summary": "Python's flagship community conference with 2,000+ attendees and multiple independent practitioner recaps; 2026 adds dedicated AI and security tracks with practitioner speakers.",
+        "sources": [
+          {
+            "type": "blog",
+            "url": "https://treyhunner.com/2025/06/pycon-us-2025-recap/",
+            "note": "Trey Hunner's personal PyCon US 2025 recap — prominent Python educator, strong signal"
+          },
+          {
+            "type": "blog",
+            "url": "https://wsvincent.com/pyconus-recap/",
+            "note": "Will Vincent (Django News) recap of PyCon US 2025"
+          },
+          {
+            "type": "blog",
+            "url": "https://simonwillison.net/2026/Apr/17/pycon-us-2026/",
+            "note": "Simon Willison (prominent practitioner) preview post for PyCon US 2026"
+          },
+          {
+            "type": "other",
+            "url": "https://us.pycon.org/2026/",
+            "note": "Official site confirms May 13-21 at Long Beach Convention Center"
+          }
+        ],
         "lastReviewed": "2026-04-21"
       },
-      "source": "manual"
+      "source": "agent"
+    },
+    {
+      "id": "ai-engineer-singapore-2026",
+      "series": "ai-engineer-worlds-fair",
+      "name": "AI Engineer Singapore",
+      "edition": "Singapore",
+      "startDate": "2026-05-15",
+      "endDate": "2026-05-17",
+      "city": "Singapore",
+      "country": "Singapore",
+      "region": "asia-pacific",
+      "format": "in-person",
+      "url": "https://www.ai.engineer/singapore",
+      "topics": ["ai-engineering"],
+      "logo": null,
+      "signal": {
+        "rating": "medium",
+        "summary": "First Asia edition of the AI Engineer brand; backed by OpenAI, Google DeepMind, Cursor, and Z.ai with 50+ speakers. No independent practitioner recap yet as it's a new event, but the series has strong track record.",
+        "sources": [
+          {
+            "type": "other",
+            "url": "https://www.65labs.org/newsroom/ai-engineer-singapore-first-asia-edition",
+            "note": "65labs coverage of AI Engineer Singapore launch with speaker and sponsor details"
+          },
+          {
+            "type": "other",
+            "url": "https://missionmedia.asia/ai-engineer-conference-singapore-2026-openai-google/",
+            "note": "Mission Media coverage confirming OpenAI, DeepMind, Cursor participation"
+          }
+        ],
+        "lastReviewed": "2026-04-21"
+      },
+      "source": "agent"
+    },
+    {
+      "id": "ai-engineer-worlds-fair-sf-2026",
+      "series": "ai-engineer-worlds-fair",
+      "name": "AI Engineer World's Fair",
+      "edition": "SF (flagship)",
+      "startDate": "2026-06-29",
+      "endDate": "2026-07-02",
+      "city": "San Francisco",
+      "country": "USA",
+      "region": "north-america",
+      "format": "in-person",
+      "url": "https://www.ai.engineer/worldsfair",
+      "topics": ["ai-engineering"],
+      "logo": null,
+      "signal": {
+        "rating": "high",
+        "summary": "The flagship practitioner AI engineering conference; 2025 drew 3,098 attendees (22% principal/staff eng) with 10+ tracks and widespread independent blog coverage. Multiple engineers call it the highest-signal AI conf of the year.",
+        "sources": [
+          {
+            "type": "blog",
+            "url": "https://www.latent.space/p/aiewf-2025-keynotes",
+            "note": "Latent.Space in-depth recap of 2025 keynotes with practitioner analysis"
+          },
+          {
+            "type": "blog",
+            "url": "https://slyracoon23.github.io/blog/posts/2025-06-06_ai_engineer_worlds_fair.html",
+            "note": "Engineer personal experience post from 2025 World's Fair"
+          },
+          {
+            "type": "blog",
+            "url": "https://ainativedev.io/news/ai-engineering-sf-fair-2025-learnings",
+            "note": "7 learnings from the 2025 AI Engineering SF World Fair — practitioner-written"
+          },
+          {
+            "type": "other",
+            "url": "https://www.ai.engineer/worldsfair",
+            "note": "Official site confirms June 29 - July 2, 2026 at Moscone Center, SF"
+          }
+        ],
+        "lastReviewed": "2026-04-21"
+      },
+      "source": "agent"
+    },
+    {
+      "id": "icml-2026",
+      "series": "icml",
+      "name": "ICML",
+      "edition": "2026",
+      "startDate": "2026-07-06",
+      "endDate": "2026-07-11",
+      "city": "Seoul",
+      "country": "South Korea",
+      "region": "asia-pacific",
+      "format": "in-person",
+      "url": "https://icml.cc/Conferences/2026",
+      "topics": ["ml-research", "ai-engineering"],
+      "logo": null,
+      "signal": {
+        "rating": "high",
+        "summary": "Premier ML research conference (ICML 2025: 12,107 submissions, 3,260 accepted papers); consistently the highest-density venue for ML researchers and practitioners. 2026 at COEX, Seoul.",
+        "sources": [
+          {
+            "type": "x",
+            "url": "https://x.com/icmlconf/status/2000638528762659257",
+            "note": "Official ICML X post announcing Seoul dates for 2026"
+          },
+          {
+            "type": "other",
+            "url": "https://icml.cc/Conferences/2026",
+            "note": "Official ICML 2026 conference page confirming July 6-11, COEX Seoul"
+          },
+          {
+            "type": "blog",
+            "url": "https://yashlara.medium.com/what-i-learned-from-attending-the-worlds-4-biggest-ai-conferences-this-year-8785a32fe2a1",
+            "note": "Practitioner blog covering ICML and other major AI conferences — recommends for depth"
+          }
+        ],
+        "lastReviewed": "2026-04-21"
+      },
+      "source": "agent"
+    },
+    {
+      "id": "ai-engineer-nyc-2026",
+      "series": "ai-engineer-worlds-fair",
+      "name": "AI Engineer NYC",
+      "edition": "NYC",
+      "startDate": "2026-10-12",
+      "endDate": "2026-10-14",
+      "city": "New York City",
+      "country": "USA",
+      "region": "north-america",
+      "format": "in-person",
+      "url": "https://www.ai.engineer/nyc",
+      "topics": ["ai-engineering"],
+      "logo": null,
+      "signal": {
+        "rating": "medium",
+        "summary": "Official AI Engineer conference in NYC; same high-quality brand as the SF flagship but East Coast edition. No separate attendee signal yet beyond the series reputation.",
+        "sources": [
+          {
+            "type": "other",
+            "url": "https://www.ai.engineer/nyc",
+            "note": "Official AI Engineer NYC page confirms October 12-14, 2026 in Manhattan"
+          }
+        ],
+        "lastReviewed": "2026-04-21"
+      },
+      "source": "agent"
+    },
+    {
+      "id": "goto-copenhagen-2026",
+      "series": "goto-copenhagen",
+      "name": "GOTO Copenhagen",
+      "edition": "Copenhagen",
+      "startDate": "2026-09-28",
+      "endDate": "2026-10-02",
+      "city": "Copenhagen",
+      "country": "Denmark",
+      "region": "europe",
+      "format": "in-person",
+      "url": "https://gotocph.com/2026",
+      "topics": ["general", "systems", "ai-engineering"],
+      "logo": null,
+      "signal": {
+        "rating": "medium",
+        "summary": "Long-running practitioner software conference with Martin Fowler, Kent Beck, and other named practitioners on the program. Strong European dev community presence but independent Reddit/blog signal is thin.",
+        "sources": [
+          {
+            "type": "blog",
+            "url": "https://www.abundly.ai/blog/goto-2025-ai-agents-in-practice",
+            "note": "Practitioner recap of GOTO 2025 Copenhagen — AI agents in practice session"
+          },
+          {
+            "type": "other",
+            "url": "https://gotocph.com/2026/speakers",
+            "note": "Official speakers page for GOTO Copenhagen 2026 lists named practitioners"
+          }
+        ],
+        "lastReviewed": "2026-04-21"
+      },
+      "source": "agent"
+    },
+    {
+      "id": "kubecon-na-2026",
+      "series": "kubecon",
+      "name": "KubeCon + CloudNativeCon North America",
+      "edition": "North America",
+      "startDate": "2026-11-09",
+      "endDate": "2026-11-12",
+      "city": "Salt Lake City",
+      "country": "USA",
+      "region": "north-america",
+      "format": "in-person",
+      "url": "https://events.linuxfoundation.org/kubecon-cloudnativecon-north-america/",
+      "topics": ["systems"],
+      "logo": null,
+      "signal": {
+        "rating": "high",
+        "summary": "CNCF's flagship conference; draws 10,000+ cloud-native practitioners annually with extensive practitioner blog coverage and O'Reilly/Harness/CNCF-authored recaps. Attendance slightly down but remains top-tier for Kubernetes/cloud-native.",
+        "sources": [
+          {
+            "type": "blog",
+            "url": "https://www.oreilly.com/radar/kubecon-cloudnativecon-na-2025-recap/",
+            "note": "O'Reilly Radar full recap of KubeCon NA 2025 with practitioner takeaways"
+          },
+          {
+            "type": "blog",
+            "url": "https://www.harness.io/blog/kubecon-2025-recap",
+            "note": "Harness engineering blog KubeCon NA 2025 recap — AI-native era focus"
+          },
+          {
+            "type": "other",
+            "url": "https://events.linuxfoundation.org/kubecon-cloudnativecon-north-america/",
+            "note": "Official LF Events page confirms Nov 9-12, 2026, Salt Lake City, Utah"
+          }
+        ],
+        "lastReviewed": "2026-04-21"
+      },
+      "source": "agent"
+    },
+    {
+      "id": "qcon-sf-2026",
+      "series": "qcon",
+      "name": "QCon San Francisco",
+      "edition": "San Francisco",
+      "startDate": "2026-11-16",
+      "endDate": "2026-11-20",
+      "city": "San Francisco",
+      "country": "USA",
+      "region": "north-america",
+      "format": "in-person",
+      "url": "https://qconsf.com/",
+      "topics": ["general", "systems", "ai-engineering"],
+      "logo": null,
+      "signal": {
+        "rating": "high",
+        "summary": "Practitioner-curated senior engineering conference run by InfoQ; keynotes from named engineers at Google, Microsoft, and others. No vendor marketing — presentations are experience-based.",
+        "sources": [
+          {
+            "type": "blog",
+            "url": "https://eranstiller.com/portfolio/qcon-san-francisco-2025",
+            "note": "Practitioner recap of QCon SF 2025 with session highlights"
+          },
+          {
+            "type": "other",
+            "url": "https://www.infoq.com/qcon-san-francisco-2025/",
+            "note": "InfoQ QCon SF 2025 hub with speaker list and session summaries"
+          },
+          {
+            "type": "other",
+            "url": "https://qconsf.com/registration/event/nov2026",
+            "note": "Official registration page confirms Nov 16-20, 2026 at Hyatt Regency SF"
+          }
+        ],
+        "lastReviewed": "2026-04-21"
+      },
+      "source": "agent"
+    },
+    {
+      "id": "neurips-2026",
+      "series": "neurips",
+      "name": "NeurIPS",
+      "edition": "2026",
+      "startDate": "2026-12-06",
+      "endDate": "2026-12-12",
+      "city": "Sydney",
+      "country": "Australia",
+      "region": "asia-pacific",
+      "format": "in-person",
+      "url": "https://neurips.cc/Conferences/2026",
+      "topics": ["ml-research"],
+      "logo": null,
+      "signal": {
+        "rating": "high",
+        "summary": "The world's largest ML research conference; 21,575 submissions in 2025 with broad practitioner and researcher attendance. Sydney venue is first time in Australia — high buzz and accessibility for APAC ML community.",
+        "sources": [
+          {
+            "type": "blog",
+            "url": "https://www.amplifypartners.com/blog-posts/neurips-2025-recap",
+            "note": "Amplify Partners NeurIPS 2025 recap covering key research trends"
+          },
+          {
+            "type": "blog",
+            "url": "https://wassimseifeddine.com/posts/neurips_2025/",
+            "note": "Researcher's personal thoughts on NeurIPS 2025 experience"
+          },
+          {
+            "type": "other",
+            "url": "https://neurips.cc/Conferences/2026/Dates",
+            "note": "Official NeurIPS 2026 dates page confirms Dec 6-12, Sydney ICC"
+          }
+        ],
+        "lastReviewed": "2026-04-21"
+      },
+      "source": "agent"
     }
   ]
 }
