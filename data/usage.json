@@ -1,24 +1,17 @@
 {
-  "generatedAt": "2026-04-21T16:09:58Z",
+  "generatedAt": "2026-04-21T17:14:18Z",
   "last24h": {
-    "totalTokens": 144414442,
+    "totalTokens": 183065013,
     "byModel": {
-      "claude-opus-4-7": 144414442
+      "claude-opus-4-7": 183065013
     }
   },
   "hourly": [
     {
-      "t": "2026-04-14T16:00:00Z",
-      "tokens": 1044416,
-      "byModel": {
-        "claude-opus-4-6": 1044416
-      }
-    },
-    {
       "t": "2026-04-14T17:00:00Z",
-      "tokens": 24941281,
+      "tokens": 17643176,
       "byModel": {
-        "claude-opus-4-6": 24941281
+        "claude-opus-4-6": 17643176
       }
     },
     {
@@ -403,9 +396,16 @@
     },
     {
       "t": "2026-04-21T16:00:00Z",
-      "tokens": 4783392,
+      "tokens": 36855867,
       "byModel": {
-        "claude-opus-4-7": 4783392
+        "claude-opus-4-7": 36855867
+      }
+    },
+    {
+      "t": "2026-04-21T17:00:00Z",
+      "tokens": 6578096,
+      "byModel": {
+        "claude-opus-4-7": 6578096
       }
     }
   ],
@@ -1187,9 +1187,9 @@
     },
     {
       "t": "2026-04-21",
-      "tokens": 83995129,
+      "tokens": 122645700,
       "byModel": {
-        "claude-opus-4-7": 83995129
+        "claude-opus-4-7": 122645700
       }
     }
   ]
