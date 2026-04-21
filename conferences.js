@@ -21,8 +21,12 @@ const TOPICS = [
 
 const MAX_CARDS_PER_DAY = 3;
 
+function pickInitialView() {
+    return window.matchMedia && window.matchMedia("(max-width: 640px)").matches ? "list" : "calendar";
+}
+
 const state = {
-    view: "calendar",
+    view: pickInitialView(),
     currentMonth: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
     region: "",
     topic: "",
