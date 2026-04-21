@@ -1,29 +1,21 @@
 {
-  "generatedAt": "2026-04-21T20:18:13Z",
+  "generatedAt": "2026-04-21T21:22:40Z",
   "last24h": {
-    "totalTokens": 229714746,
-    "costUsd": 670.99651865,
+    "totalTokens": 321083974,
+    "costUsd": 807.6060520499999,
     "byModel": {
-      "claude-opus-4-7": 227734835,
-      "claude-haiku-4-5-20251001": 1979911
+      "claude-opus-4-7": 291318661,
+      "claude-haiku-4-5-20251001": 23659215,
+      "claude-sonnet-4-6": 6106098
     }
   },
   "hourly": [
     {
-      "t": "2026-04-14T20:00:00Z",
-      "tokens": 12893547,
-      "costUsd": 30.661809400000017,
-      "byModel": {
-        "claude-opus-4-6": 6405387,
-        "claude-haiku-4-5-20251001": 6488160
-      }
-    },
-    {
       "t": "2026-04-14T21:00:00Z",
-      "tokens": 7175901,
-      "costUsd": 19.428573,
+      "tokens": 4070866,
+      "costUsd": 11.30650875,
       "byModel": {
-        "claude-opus-4-6": 7175901
+        "claude-opus-4-6": 4070866
       }
     },
     {
@@ -466,11 +458,21 @@
     },
     {
       "t": "2026-04-21T20:00:00Z",
-      "tokens": 22159752,
-      "costUsd": 98.54140115000004,
+      "tokens": 106653410,
+      "costUsd": 227.81772614999997,
       "byModel": {
-        "claude-opus-4-7": 20179841,
-        "claude-haiku-4-5-20251001": 1979911
+        "claude-opus-4-7": 76955186,
+        "claude-haiku-4-5-20251001": 23659215,
+        "claude-sonnet-4-6": 6039009
+      }
+    },
+    {
+      "t": "2026-04-21T21:00:00Z",
+      "tokens": 10273213,
+      "costUsd": 23.746779899999996,
+      "byModel": {
+        "claude-opus-4-7": 10206124,
+        "claude-sonnet-4-6": 67089
       }
     }
   ],
@@ -1354,11 +1356,12 @@
     },
     {
       "t": "2026-04-21",
-      "tokens": 226317103,
-      "costUsd": 654.5829471499997,
+      "tokens": 321083974,
+      "costUsd": 807.6060520500006,
       "byModel": {
-        "claude-opus-4-7": 224337192,
-        "claude-haiku-4-5-20251001": 1979911
+        "claude-opus-4-7": 291318661,
+        "claude-haiku-4-5-20251001": 23659215,
+        "claude-sonnet-4-6": 6106098
       }
     }
   ]
