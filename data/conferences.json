@@ -1,0 +1,93 @@
+{
+  "generatedAt": "2026-04-21T17:00:00Z",
+  "conferences": [
+    {
+      "id": "ai-engineer-worlds-fair-sf-2026",
+      "series": "ai-engineer-worlds-fair",
+      "name": "AI Engineer World's Fair",
+      "edition": "SF (flagship)",
+      "startDate": "2026-06-03",
+      "endDate": "2026-06-05",
+      "city": "San Francisco",
+      "country": "USA",
+      "region": "north-america",
+      "format": "in-person",
+      "url": "https://ai.engineer",
+      "topics": ["ai-engineering"],
+      "logo": null,
+      "signal": {
+        "rating": "high",
+        "summary": "Seed entry. Replace with agent-validated signal on first skill run.",
+        "sources": [],
+        "lastReviewed": "2026-04-21"
+      },
+      "source": "manual"
+    },
+    {
+      "id": "kubecon-na-2026",
+      "series": "kubecon",
+      "name": "KubeCon + CloudNativeCon North America",
+      "edition": "North America",
+      "startDate": "2026-11-09",
+      "endDate": "2026-11-12",
+      "city": "Atlanta",
+      "country": "USA",
+      "region": "north-america",
+      "format": "in-person",
+      "url": "https://events.linuxfoundation.org/kubecon-cloudnativecon-north-america/",
+      "topics": ["systems"],
+      "logo": null,
+      "signal": {
+        "rating": "high",
+        "summary": "Seed entry. Replace with agent-validated signal on first skill run.",
+        "sources": [],
+        "lastReviewed": "2026-04-21"
+      },
+      "source": "manual"
+    },
+    {
+      "id": "ndc-toronto-2026",
+      "series": "ndc",
+      "name": "NDC Toronto",
+      "edition": "Toronto",
+      "startDate": "2026-10-26",
+      "endDate": "2026-10-30",
+      "city": "Toronto",
+      "country": "Canada",
+      "region": "north-america",
+      "format": "in-person",
+      "url": "https://ndctoronto.com/",
+      "topics": ["general", "web"],
+      "logo": null,
+      "signal": {
+        "rating": "high",
+        "summary": "Seed entry. Replace with agent-validated signal on first skill run.",
+        "sources": [],
+        "lastReviewed": "2026-04-21"
+      },
+      "source": "manual"
+    },
+    {
+      "id": "pycon-us-2026",
+      "series": "pycon-us",
+      "name": "PyCon US",
+      "edition": "US",
+      "startDate": "2026-05-13",
+      "endDate": "2026-05-21",
+      "city": "Long Beach",
+      "country": "USA",
+      "region": "north-america",
+      "format": "in-person",
+      "url": "https://us.pycon.org/",
+      "topics": ["languages"],
+      "logo": null,
+      "signal": {
+        "rating": "high",
+        "summary": "Seed entry. Replace with agent-validated signal on first skill run.",
+        "sources": [],
+        "lastReviewed": "2026-04-21"
+      },
+      "source": "manual"
+    }
+  ]
+}
