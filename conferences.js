@@ -101,8 +101,20 @@ function renderList(conferences) {
 
 function render() {
     document.getElementById("conf-empty").hidden = state.conferences.length !== 0;
-    document.getElementById("conf-list").hidden = false;
-    renderList(state.conferences);
+    const listEl = document.getElementById("conf-list");
+    const calEl = document.getElementById("conf-calendar");
+    listEl.hidden = state.view !== "list";
+    calEl.hidden = state.view !== "calendar";
+    if (state.view === "list") {
+        renderList(state.conferences);
+    } else {
+        calEl.innerHTML = '<div class="conf-placeholder">calendar coming soon</div>';
+    }
+    for (const btn of document.querySelectorAll(".conf-view-toggle button")) {
+        const isActive = btn.dataset.view === state.view;
+        btn.classList.toggle("active", isActive);
+        btn.setAttribute("aria-selected", isActive ? "true" : "false");
+    }
 }
 
 async function load() {
@@ -111,8 +123,18 @@ async function load() {
     state.conferences = (data.conferences || []).slice().sort((a, b) => a.startDate.localeCompare(b.startDate));
 }
 
+function wireControls() {
+    for (const btn of document.querySelectorAll(".conf-view-toggle button")) {
+        btn.addEventListener("click", () => {
+            state.view = btn.dataset.view;
+            render();
+        });
+    }
+}
+
 async function init() {
     await load();
+    wireControls();
     render();
 }
 

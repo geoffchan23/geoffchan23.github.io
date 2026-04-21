@@ -135,3 +135,10 @@
     background: rgba(217, 119, 87, 0.15);
     color: rgb(217, 119, 87);
 }
+.conf-placeholder {
+    padding: 2em;
+    text-align: center;
+    opacity: .5;
+    border: 1px dashed rgba(0,0,0,0.2);
+    border-radius: 5.5px;
+}
