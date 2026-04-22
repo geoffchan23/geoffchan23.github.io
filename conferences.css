@@ -1,0 +1,383 @@
+/* /conferences page styles. */
+.conf-intro {
+    margin-bottom: 1.5em;
+}
+.conf-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1em;
+    align-items: center;
+    margin-bottom: 1.5em;
+    font-size: .85em;
+}
+.conf-view-toggle {
+    display: inline-flex;
+    border: 1px solid #333;
+    border-radius: 5.5px;
+    overflow: hidden;
+}
+.conf-view-toggle button {
+    border: 0;
+    background: transparent;
+    font-family: inherit;
+    font-size: inherit;
+    padding: .35em .75em;
+    cursor: pointer;
+    color: #333;
+}
+.conf-view-toggle button.active {
+    background: #333;
+    color: #f9f9f9;
+}
+.conf-month-nav {
+    display: inline-flex;
+    align-items: center;
+    gap: .5em;
+}
+.conf-month-nav button {
+    border: 1px solid #333;
+    background: transparent;
+    font-family: inherit;
+    font-size: inherit;
+    padding: .25em .6em;
+    cursor: pointer;
+    border-radius: 5.5px;
+    color: #333;
+}
+.conf-month-label {
+    min-width: 10em;
+    text-align: center;
+}
+.conf-filters {
+    display: inline-flex;
+    gap: .75em;
+}
+.conf-filter {
+    display: inline-flex;
+    align-items: center;
+    gap: .4em;
+}
+.conf-filter select {
+    font-family: inherit;
+    font-size: inherit;
+    padding: .2em .4em;
+    border: 1px solid #333;
+    border-radius: 5.5px;
+    background: #f9f9f9;
+    color: #333;
+}
+.conf-empty {
+    opacity: .6;
+    padding: 2em 0;
+    text-align: center;
+}
+.conf-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: .75em;
+}
+.conf-list-item {
+    display: flex;
+    gap: .75em;
+    padding: .75em;
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: 5.5px;
+    background: #fff;
+    cursor: pointer;
+}
+.conf-list-item:hover {
+    border-color: #333;
+}
+.conf-logo {
+    width: 40px;
+    height: 40px;
+    flex: 0 0 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5.5px;
+    background: rgb(217, 119, 87);
+    color: #fff;
+    font-weight: 700;
+    overflow: hidden;
+}
+.conf-logo img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+.conf-list-body {
+    display: flex;
+    flex-direction: column;
+    gap: .2em;
+    min-width: 0;
+}
+.conf-list-name {
+    font-weight: 700;
+}
+.conf-list-meta {
+    font-size: .85em;
+    opacity: .7;
+}
+.conf-list-tags {
+    display: flex;
+    gap: .4em;
+    flex-wrap: wrap;
+    margin-top: .2em;
+}
+.conf-tag {
+    font-size: .75em;
+    padding: .15em .5em;
+    border-radius: 5.5px;
+    background: rgba(217, 119, 87, 0.15);
+    color: rgb(217, 119, 87);
+}
+.conf-placeholder {
+    padding: 2em;
+    text-align: center;
+    opacity: .5;
+    border: 1px dashed rgba(0,0,0,0.2);
+    border-radius: 5.5px;
+}
+.conf-cal-header {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    font-size: .75em;
+    opacity: .5;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    margin-bottom: 4px;
+}
+.conf-cal-header-cell {
+    padding: .25em .4em;
+}
+.conf-cal-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+}
+.conf-cal-cell {
+    min-height: 110px;
+    background: #fff;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 5.5px;
+    padding: .35em .4em;
+    display: flex;
+    flex-direction: column;
+    gap: .3em;
+    overflow: hidden;
+}
+.conf-cal-cell-outside {
+    background: transparent;
+    opacity: .35;
+}
+.conf-cal-cell-today {
+    border-color: rgb(217, 119, 87);
+    box-shadow: 0 0 0 1px rgb(217, 119, 87);
+}
+.conf-cal-daynum {
+    font-size: .75em;
+    opacity: .6;
+}
+.conf-cal-items {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+.conf-card {
+    display: flex;
+    gap: .35em;
+    align-items: flex-start;
+    background: rgba(217, 119, 87, 0.12);
+    border-radius: 4px;
+    padding: .3em .4em;
+    font-size: .75em;
+    cursor: pointer;
+    line-height: 1.2;
+}
+.conf-card:hover {
+    background: rgba(217, 119, 87, 0.25);
+}
+.conf-card-logo {
+    width: 20px;
+    height: 20px;
+    flex: 0 0 20px;
+    border-radius: 3px;
+    background: rgb(217, 119, 87);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: .75em;
+    overflow: hidden;
+}
+.conf-card-logo img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+.conf-card-text {
+    min-width: 0;
+    flex: 1;
+}
+.conf-card-name {
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.conf-card-city {
+    opacity: .7;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.conf-card-tag {
+    display: inline-block;
+    margin-top: .15em;
+    font-size: .85em;
+    padding: 0 .3em;
+    border-radius: 3px;
+    background: rgba(217, 119, 87, 0.25);
+    color: rgb(217, 119, 87);
+}
+.conf-card-more {
+    border: 0;
+    background: transparent;
+    font-family: inherit;
+    font-size: .7em;
+    color: rgb(217, 119, 87);
+    cursor: pointer;
+    text-align: left;
+    padding: .2em .35em;
+}
+.conf-card-more:hover {
+    text-decoration: underline;
+}
+.conf-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+}
+.conf-modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.35);
+}
+.conf-modal-content {
+    position: absolute;
+    left: 50%;
+    top: 10%;
+    transform: translateX(-50%);
+    width: min(560px, 90vw);
+    max-height: 80vh;
+    overflow: auto;
+    background: #f9f9f9;
+    border: 1px solid #333;
+    border-radius: 5.5px;
+    padding: 1.5em;
+}
+.conf-modal-close {
+    position: absolute;
+    top: .5em;
+    right: .5em;
+    border: 0;
+    background: transparent;
+    font-size: 1.5em;
+    cursor: pointer;
+    color: #333;
+    line-height: 1;
+    padding: .2em .4em;
+}
+.conf-modal-body h3 {
+    margin-top: 0;
+    margin-bottom: 1em;
+}
+.conf-modal-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: .5em;
+}
+.conf-modal-link {
+    border: 0;
+    background: transparent;
+    font-family: inherit;
+    font-size: inherit;
+    color: #333;
+    text-align: left;
+    cursor: pointer;
+    padding: .4em 0;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    width: 100%;
+}
+.conf-modal-link:hover {
+    color: rgb(217, 119, 87);
+}
+.conf-modal-meta {
+    font-size: .9em;
+    opacity: .75;
+    margin-bottom: .75em;
+    display: flex;
+    flex-direction: column;
+    gap: .15em;
+}
+.conf-modal-url {
+    display: inline-block;
+    margin-top: .5em;
+    color: rgb(217, 119, 87);
+}
+.conf-modal-signal {
+    margin-top: 1.5em;
+    padding-top: 1em;
+    border-top: 1px solid rgba(0,0,0,0.1);
+}
+.conf-modal-signal h4 {
+    margin-top: 0;
+    margin-bottom: .5em;
+    font-size: 1em;
+}
+.conf-modal-sources {
+    padding-left: 1.2em;
+    margin: .5em 0;
+    font-size: .9em;
+}
+.conf-modal-sources li {
+    margin-bottom: .35em;
+}
+.conf-modal-source-type {
+    opacity: .5;
+    font-size: .85em;
+}
+.conf-modal-reviewed {
+    font-size: .8em;
+    opacity: .5;
+    margin-top: .5em;
+}
+@media (max-width: 640px) {
+    .conf-controls {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .conf-cal-cell {
+        min-height: 70px;
+    }
+    .conf-cal-daynum {
+        font-size: .7em;
+    }
+    .conf-card {
+        font-size: .65em;
+    }
+    .conf-card-logo {
+        width: 16px;
+        height: 16px;
+        flex-basis: 16px;
+    }
+}

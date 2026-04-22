@@ -34,3 +34,10 @@ When the user asks to add a new art post, follow the format documented in `_art/
 - The agent commits appear in git history as `data: update usage stats` with author `Geoff Chan <geoffchan23@gmail.com>` (the publisher uses a path-scoped commit so only `data/usage.json` is included).
 - Page lives at `tokens.html` (serves at `/tokens`). Styles in `tokens.css`. Renderer in `tokens.js` (uses Chart.js v4 + chartjs-plugin-zoom via CDN).
 - If the agent is down, `data/usage.json` becomes stale but the page still renders the most recent snapshot.
+
+## /conferences Page (Agent-Maintained)
+
+- `data/conferences.json` is maintained by the skill at `.claude/skills/maintaining-conference-calendar/SKILL.md`. A human can also hand-edit entries; mark those with `"source": "manual"`.
+- Page lives at `conferences.html` (serves at `/conferences`). Styles in `conferences.css`. Renderer in `conferences.js`.
+- Logos (optional) live under `conferences/logos/` and are referenced by relative path in each entry's `logo` field.
+- Agent updates should be committed with `data: update conference calendar`.

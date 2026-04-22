@@ -1,0 +1,57 @@
+---
+layout: default
+title: Geoff Chan | Conferences
+---
+<header>
+    <div>
+        <a href="/"><h1>geoff chan</h1></a>
+        <span>ai product engineer + ex-founder</span>
+    </div>
+    <nav>
+        <a href="/">About</a>
+    </nav>
+</header>
+<main>
+    <section class="conf-intro">
+        <h2>Conferences</h2>
+        <p>High-signal software engineering conferences with an AI engineering bias. Low noise, practitioner-validated.</p>
+    </section>
+    <section class="conf-controls">
+        <div class="conf-view-toggle" role="tablist" aria-label="View mode">
+            <button type="button" data-view="calendar" class="active" role="tab" aria-selected="true">Calendar</button>
+            <button type="button" data-view="list" role="tab" aria-selected="false">List</button>
+        </div>
+        <div class="conf-month-nav" aria-label="Month navigation">
+            <button type="button" class="conf-prev" aria-label="Previous month">←</button>
+            <span class="conf-month-label" id="conf-month-label">—</span>
+            <button type="button" class="conf-next" aria-label="Next month">→</button>
+        </div>
+        <div class="conf-filters">
+            <label class="conf-filter">
+                <span>Region</span>
+                <select id="conf-region">
+                    <option value="">All regions</option>
+                </select>
+            </label>
+            <label class="conf-filter">
+                <span>Topic</span>
+                <select id="conf-topic">
+                    <option value="">All topics</option>
+                </select>
+            </label>
+        </div>
+    </section>
+    <section class="conf-view">
+        <div class="conf-empty" id="conf-empty" hidden>No conferences to show.</div>
+        <div class="conf-calendar" id="conf-calendar"></div>
+        <ul class="conf-list" id="conf-list" hidden></ul>
+    </section>
+</main>
+<div class="conf-modal" id="conf-modal" hidden>
+    <div class="conf-modal-backdrop" data-close></div>
+    <div class="conf-modal-content" role="dialog" aria-modal="true" aria-labelledby="conf-modal-title">
+        <button type="button" class="conf-modal-close" aria-label="Close" data-close>×</button>
+        <div class="conf-modal-body" id="conf-modal-body"></div>
+    </div>
+</div>
+<script type="module" src="/conferences.js"></script>
