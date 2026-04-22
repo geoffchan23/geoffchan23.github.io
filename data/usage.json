@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-04-22T17:30:32Z",
+  "generatedAt": "2026-04-22T18:30:32Z",
   "last24h": {
-    "totalTokens": 457820947,
-    "costUsd": 356.64791499999995,
+    "totalTokens": 447955073,
+    "costUsd": 340.810184,
     "byModel": {
-      "claude-opus-4-7": 411072343,
+      "claude-opus-4-7": 401206469,
       "claude-haiku-4-5-20251001": 25100142,
       "claude-sonnet-4-6": 21648462
     }
