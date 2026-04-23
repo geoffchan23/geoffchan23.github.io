@@ -1,11 +1,13 @@
 title: Geoff Chan
-description: Personal website of Geoffrey Chan
-url: https://geoffchan23.github.io
+description: Geoff Chan is an AI product engineer and ex-founder. Head of Product & AI at Raven.ai, previously founder of Stack Five and engineering lead at Code4rena.
+url: https://geoffreychan.com
 baseurl: ""
 
 # Build settings
 markdown: kramdown
 permalink: pretty
+plugins:
+  - jekyll-sitemap
 collections:
   art:
     output: true
@@ -13,6 +15,8 @@ collections:
 
 exclude:
   - docs/
+  - README.md
+  - _art/README.md
 
 defaults:
   - scope:
