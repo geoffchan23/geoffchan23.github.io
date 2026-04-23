@@ -3,12 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% assign art_description = page.content | strip_html | strip_newlines | truncate: 160 %}
-    {% if art_description == '' %}{% assign art_description = 'Art by Geoff Chan — ' | append: page.title %}{% endif %}
-    <title>{{ page.title }} | Art by Geoff Chan</title>
+    {% assign art_description = page.content | strip_html | strip_newlines | truncate: 155 %}
+    {% if art_description == '' %}
+      {% assign art_date = page.date | date: '%B %-d, %Y' %}
+      {% capture art_description %}A drawing by Geoff Chan titled “{{ page.title }}”, posted {{ art_date }}. Part of the ongoing art and sketchbook archive at geoffreychan.com.{% endcapture %}
+    {% endif %}
+    <title>{{ page.title }} — Art & Sketchbook by Geoff Chan</title>
     <meta name="description" content="{{ art_description }}">
     <link rel="canonical" href="{{ site.url }}{{ page.url }}">
-    <meta property="og:title" content="{{ page.title }} | Art by Geoff Chan">
+    <meta property="og:title" content="{{ page.title }} — Art & Sketchbook by Geoff Chan">
     <meta property="og:description" content="{{ art_description }}">
     <meta property="og:type" content="article">
     <meta property="og:url" content="{{ site.url }}{{ page.url }}">
@@ -18,7 +21,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="{{ site.url }}/art/images/{{ slug }}/{{ page.images.first }}">
     {% endif %}
-    <meta name="twitter:title" content="{{ page.title }} | Art by Geoff Chan">
+    <meta name="twitter:title" content="{{ page.title }} — Art & Sketchbook by Geoff Chan">
     <meta name="twitter:description" content="{{ art_description }}">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
