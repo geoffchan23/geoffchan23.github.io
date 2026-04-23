@@ -3,15 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ page.title }} | Geoff Chan</title>
-    <meta name="description" content="{{ page.content | strip_html | truncate: 160 }}">
-    <meta property="og:title" content="{{ page.title }} | Geoff Chan">
-    <meta property="og:type" content="website">
+    {% assign art_description = page.content | strip_html | strip_newlines | truncate: 160 %}
+    {% if art_description == '' %}{% assign art_description = 'Art by Geoff Chan — ' | append: page.title %}{% endif %}
+    <title>{{ page.title }} | Art by Geoff Chan</title>
+    <meta name="description" content="{{ art_description }}">
+    <link rel="canonical" href="{{ site.url }}{{ page.url }}">
+    <meta property="og:title" content="{{ page.title }} | Art by Geoff Chan">
+    <meta property="og:description" content="{{ art_description }}">
+    <meta property="og:type" content="article">
     <meta property="og:url" content="{{ site.url }}{{ page.url }}">
     {% if page.images %}
     {% assign slug = page.path | replace: '.md', '' | split: '/' | last %}
     <meta property="og:image" content="{{ site.url }}/art/images/{{ slug }}/{{ page.images.first }}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="{{ site.url }}/art/images/{{ slug }}/{{ page.images.first }}">
     {% endif %}
+    <meta name="twitter:title" content="{{ page.title }} | Art by Geoff Chan">
+    <meta name="twitter:description" content="{{ art_description }}">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link rel="alternate" type="application/rss+xml" title="Geoff Chan's Art" href="/art/feed.xml">
