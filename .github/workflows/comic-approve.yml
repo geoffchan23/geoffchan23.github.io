@@ -1,0 +1,46 @@
+name: Comic Factory — Approve
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: write
+  issues: write
+  actions: write  # to dispatch comic-publish.yml
+
+jobs:
+  approve:
+    if: |
+      github.event.issue.pull_request == null &&
+      startsWith(github.event.comment.body, '/approve') &&
+      github.event.comment.user.login == github.event.repository.owner.login &&
+      contains(toJSON(github.event.issue.labels.*.name), 'comic:review')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    concurrency:
+      group: comic-${{ github.event.issue.number }}
+      cancel-in-progress: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+          cache-dependency-path: scripts/requirements.txt
+
+      - name: Install dependencies
+        run: pip install -r scripts/requirements.txt
+
+      - name: Run approve
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          COMMENT_BODY: ${{ github.event.comment.body }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          python scripts/comic_approve.py \
+            --issue "$ISSUE_NUMBER" \
+            --comment "$COMMENT_BODY"
