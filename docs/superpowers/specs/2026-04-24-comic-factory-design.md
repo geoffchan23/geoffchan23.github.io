@@ -108,7 +108,7 @@ comics.css                            # page styling (may reuse art.css patterns
 title: Dog Taxes
 date: 2026-04-25
 issue: 42
-panels:
+images:
   - 01.png
   - 02.png
   - 03.png
@@ -121,6 +121,8 @@ generated: 2026-04-23T14:12:09Z
 ---
 Optional caption/thoughts.
 ```
+
+(Field is `images` — matches `_art/` convention so the `/comics/` layout can be a direct port of the art layout. Carousel, RSS feed, and OG image all read from `images`.)
 
 ### Art-post flag for style references
 
