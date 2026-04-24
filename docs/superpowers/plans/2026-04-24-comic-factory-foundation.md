@@ -22,10 +22,11 @@
 
 ---
 
-## Task 1: Register the `_comics/` collection in `_config.yml`
+## Task 1: Register the `_comics/` collection in `_config.yml` + allowlist comic images in `.gitignore`
 
 **Files:**
 - Modify: `_config.yml`
+- Modify: `.gitignore`
 
 - [ ] **Step 1: Read the current `_config.yml` to locate the `collections:`, `defaults:`, and `exclude:` sections**
 
@@ -91,11 +92,76 @@ Failure mode: if you see "Warning: unrecognised property `comics`", check YAML i
 Run: `ls _site/comics/ 2>&1 || echo "not present"`
 Expected: either "not present" or an empty directory (the collection is registered but has no entries). Either is acceptable at this stage.
 
-- [ ] **Step 5: Commit**
+- [ ] **Step 5: Update `.gitignore` to allowlist comic images**
+
+The repo has `*.png` gitignored with explicit allowlist entries for art images. Add equivalent entries for the three comic image locations: published comic panels, per-comic references, and generator drafts.
+
+Read current contents:
+```bash
+cat .gitignore
+```
+
+Expected:
+```
+_site/
+.jekyll-cache/
+.jekyll-metadata
+.playwright-mcp/
+Gemfile.lock
+vendor/
+*.png
+!favicon-*.png
+!art/images/**/*.png
+!art/images/**/*.jpg
+!art/images/**/*.webp
+```
+
+Replace `.gitignore` with:
+```
+_site/
+.jekyll-cache/
+.jekyll-metadata
+.playwright-mcp/
+Gemfile.lock
+vendor/
+*.png
+!favicon-*.png
+!art/images/**/*.png
+!art/images/**/*.jpg
+!art/images/**/*.webp
+!comics/images/**/*.png
+!comics/images/**/*.jpg
+!comics/images/**/*.webp
+!comics/references-draft/**/*.png
+!comics/references-draft/**/*.jpg
+!comics/references-draft/**/*.webp
+!_comic_drafts/**/*.png
+!_comic_drafts/**/*.jpg
+!_comic_drafts/**/*.webp
+```
+
+- [ ] **Step 6: Verify the allowlist works**
+
+Create a temporary test PNG in each target path and confirm `git status` would track it (don't actually commit it):
 
 ```bash
-git add _config.yml
-git commit -m "comics: register Jekyll collection + defaults"
+mkdir -p comics/images/test _comic_drafts/test comics/references-draft/test
+touch comics/images/test/x.png _comic_drafts/test/x.png comics/references-draft/test/x.png
+git check-ignore -v comics/images/test/x.png _comic_drafts/test/x.png comics/references-draft/test/x.png 2>&1 || echo "all three PATHS are trackable (good)"
+```
+
+Expected: "all three PATHS are trackable (good)" — `git check-ignore` exits non-zero when paths are NOT ignored, which is what we want.
+
+Clean up the test files:
+```bash
+rm -rf comics/images/test _comic_drafts/test comics/references-draft/test
+```
+
+- [ ] **Step 7: Commit**
+
+```bash
+git add _config.yml .gitignore
+git commit -m "comics: register Jekyll collection + allowlist images in gitignore"
 ```
 
 ---
