@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% assign art_description = page.content | strip_html | strip_newlines | truncate: 155 %}
+    {% if art_description == '' %}
+      {% assign art_date = page.date | date: '%B %-d, %Y' %}
+      {% capture art_description %}An AI-generated gag comic by Geoff Chan titled "{{ page.title }}", posted {{ art_date }}. Part of the Comic Factory experiment at geoffreychan.com.{% endcapture %}
+    {% endif %}
+    <title>{{ page.title }} — Comic Factory by Geoff Chan</title>
+    <meta name="description" content="{{ art_description }}">
+    <link rel="canonical" href="{{ site.url }}{{ page.url }}">
+    <meta property="og:title" content="{{ page.title }} — Comic Factory by Geoff Chan">
+    <meta property="og:description" content="{{ art_description }}">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="{{ site.url }}{{ page.url }}">
+    {% if page.images %}
+    {% assign slug = page.path | replace: '.md', '' | split: '/' | last %}
+    <meta property="og:image" content="{{ site.url }}/comics/images/{{ slug }}/{{ page.images.first }}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="{{ site.url }}/comics/images/{{ slug }}/{{ page.images.first }}">
+    {% endif %}
+    <meta name="twitter:title" content="{{ page.title }} — Comic Factory by Geoff Chan">
+    <meta name="twitter:description" content="{{ art_description }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="alternate" type="application/rss+xml" title="Geoff Chan's Comics" href="/comics/feed.xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/reset.css">
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/art.css">
+</head>
+<body>
+    <div class="container comics-container">
+        <header>
+            <div>
+                <a href="/comics/"><h1>comic factory</h1></a>
+                <span>AI slop from geoff's scripts</span>
+            </div>
+            <nav>
+                <a href="/">Home</a>
+                <a href="/comics/">Grid</a>
+            </nav>
+        </header>
+
+        <main>
+            {% assign all_comics = site.comics | sort: 'date' | reverse %}
+
+            {% if all_comics.size == 0 %}
+            <p class="empty-state">No comics yet. Check back soon.</p>
+            {% endif %}
+
+            {% for comic in all_comics %}
+            {% assign slug = comic.path | replace: '.md', '' | split: '/' | last %}
+            <article class="comic-post" id="post-{{ slug }}">
+                <div class="comic-carousel" data-post="{{ slug }}">
+                    {% for image in comic.images %}
+                    <div class="carousel-slide{% if forloop.first %} active{% endif %}">
+                        <img src="/comics/images/{{ slug }}/{{ image }}" alt="{{ comic.title }}{% if comic.images.size > 1 %} - panel {{ forloop.index }} of {{ comic.images.size }}{% endif %}" loading="lazy">
+                    </div>
+                    {% endfor %}
+
+                    {% if comic.images.size > 1 %}
+                    <button class="carousel-btn carousel-prev" aria-label="Previous panel">&lsaquo;</button>
+                    <button class="carousel-btn carousel-next" aria-label="Next panel">&rsaquo;</button>
+                    <div class="carousel-dots">
+                        {% for image in comic.images %}
+                        <span class="carousel-dot{% if forloop.first %} active{% endif %}" data-index="{{ forloop.index0 }}"></span>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="comic-caption">
+                    <time class="comic-date" datetime="{{ comic.date | date: '%Y-%m-%d' }}">{{ comic.date | date: "%B %-d, %Y" }}</time>
+                    {% if comic.content != "" %}
+                    <div class="comic-text">{{ comic.content }}</div>
+                    {% endif %}
+                    {% if comic.script %}
+                    <details class="comic-script">
+                        <summary>Script</summary>
+                        <pre>{{ comic.script }}</pre>
+                    </details>
+                    {% endif %}
+                    {% if comic.model %}
+                    <p class="comic-meta">Generated with {{ comic.model }}{% if comic.generated %} on <time datetime="{{ comic.generated }}">{{ comic.generated | date: "%Y-%m-%d" }}</time>{% endif %}</p>
+                    {% endif %}
+                </div>
+            </article>
+            {% endfor %}
+        </main>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.comic-carousel').forEach(function(carousel) {
+            var slides = carousel.querySelectorAll('.carousel-slide');
+            var dots = carousel.querySelectorAll('.carousel-dot');
+            var prevBtn = carousel.querySelector('.carousel-prev');
+            var nextBtn = carousel.querySelector('.carousel-next');
+            var current = 0;
+
+            function goTo(index) {
+                slides[current].classList.remove('active');
+                if (dots.length) dots[current].classList.remove('active');
+                current = (index + slides.length) % slides.length;
+                slides[current].classList.add('active');
+                if (dots.length) dots[current].classList.add('active');
+            }
+
+            if (prevBtn) prevBtn.addEventListener('click', function() { goTo(current - 1); });
+            if (nextBtn) nextBtn.addEventListener('click', function() { goTo(current + 1); });
+            dots.forEach(function(dot) {
+                dot.addEventListener('click', function() { goTo(parseInt(this.dataset.index)); });
+            });
+        });
+    });
+    </script>
+</body>
+</html>
