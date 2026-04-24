@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-04-24T14:46:39Z",
+  "generatedAt": "2026-04-24T15:46:39Z",
   "last24h": {
-    "totalTokens": 728220700,
-    "costUsd": 534.2080192999999,
+    "totalTokens": 656254056,
+    "costUsd": 494.85075255,
     "byModel": {
-      "claude-opus-4-7": 705299593,
+      "claude-opus-4-7": 630679424,
       "<synthetic>": 0,
       "claude-haiku-4-5-20251001": 15784886,
-      "claude-sonnet-4-6": 7136221
+      "claude-sonnet-4-6": 9789746
     }
   },
   "hourly": [
     {
       "t": "2026-04-17T15:00:00Z",
-      "tokens": 12322404,
-      "costUsd": 12.13395625,
+      "tokens": 4472569,
+      "costUsd": 3.48592425,
       "byModel": {
-        "claude-opus-4-7": 12322404
+        "claude-opus-4-7": 4472569
       }
     },
     {
@@ -565,12 +565,20 @@
     },
     {
       "t": "2026-04-24T14:00:00Z",
-      "tokens": 107313729,
-      "costUsd": 75.07000069999998,
+      "tokens": 123658409,
+      "costUsd": 86.07975994999991,
       "byModel": {
-        "claude-opus-4-7": 97655912,
-        "claude-sonnet-4-6": 7136221,
+        "claude-opus-4-7": 111347067,
+        "claude-sonnet-4-6": 9789746,
         "claude-haiku-4-5-20251001": 2521596
+      }
+    },
+    {
+      "t": "2026-04-24T15:00:00Z",
+      "tokens": 25670386,
+      "costUsd": 14.800451249999995,
+      "byModel": {
+        "claude-opus-4-7": 25670386
       }
     }
   ],
@@ -1484,11 +1492,11 @@
     },
     {
       "t": "2026-04-24",
-      "tokens": 290806096,
-      "costUsd": 228.59697820000048,
+      "tokens": 332821162,
+      "costUsd": 254.40718870000063,
       "byModel": {
-        "claude-opus-4-7": 281148279,
-        "claude-sonnet-4-6": 7136221,
+        "claude-opus-4-7": 320509820,
+        "claude-sonnet-4-6": 9789746,
         "claude-haiku-4-5-20251001": 2521596
       }
     }
