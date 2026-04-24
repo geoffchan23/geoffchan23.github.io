@@ -1,4 +1,29 @@
 ---
-redirect_to: /art/
-sitemap: false
+layout: default
+title: Comic Factory by Geoff Chan
+description: AI-generated gag comics from Geoff Chan's scripts. An experiment in using gpt-image-2 to execute pre-written comic scripts.
 ---
+<header>
+    <div>
+        <a href="/comics/"><h1>comic factory</h1></a>
+        <span>AI slop from geoff's scripts</span>
+    </div>
+    <nav>
+        <a href="/">Home</a>
+    </nav>
+</header>
+<main>
+    {% assign all_comics = site.comics | sort: 'date' | reverse %}
+    {% if all_comics.size == 0 %}
+    <p class="empty-state">No comics yet. Check back soon.</p>
+    {% else %}
+    <div class="comics-grid">
+        {% for comic in all_comics %}
+        {% assign slug = comic.path | replace: '.md', '' | split: '/' | last %}
+        <a href="{{ comic.url }}" class="grid-item">
+            <img src="/comics/images/{{ slug }}/{{ comic.images.first }}" alt="{{ comic.title }}" loading="lazy">
+        </a>
+        {% endfor %}
+    </div>
+    {% endif %}
+</main>
