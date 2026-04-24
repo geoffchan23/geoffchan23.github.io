@@ -13,15 +13,21 @@ collections:
   art:
     output: true
     permalink: /art/:title/
+  comics:
+    output: true
+    permalink: /comics/:title/
 
 exclude:
   - docs/
   - README.md
   - _art/README.md
+  - _comics/README.md
   - CLAUDE.md
   - .claude/
   - Gemfile
   - Gemfile.lock
+  - _comic_drafts/
+  - scripts/
 
 defaults:
   - scope:
@@ -29,3 +35,8 @@ defaults:
       type: art
     values:
       layout: art
+  - scope:
+      path: ""
+      type: comics
+    values:
+      layout: comic

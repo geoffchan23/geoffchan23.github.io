@@ -9,3 +9,12 @@ vendor/
 !art/images/**/*.png
 !art/images/**/*.jpg
 !art/images/**/*.webp
+!comics/images/**/*.png
+!comics/images/**/*.jpg
+!comics/images/**/*.webp
+!comics/references-draft/**/*.png
+!comics/references-draft/**/*.jpg
+!comics/references-draft/**/*.webp
+!_comic_drafts/**/*.png
+!_comic_drafts/**/*.jpg
+!_comic_drafts/**/*.webp
