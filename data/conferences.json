@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-27T17:41:14Z",
+  "generatedAt": "2026-04-27T19:20:54Z",
   "conferences": [
     {
       "id": "ndc-toronto-2026",
@@ -40,6 +40,37 @@
           }
         ],
         "lastReviewed": "2026-04-21"
+      },
+      "source": "agent"
+    },
+    {
+      "id": "code-with-claude-sf-2026",
+      "series": "code-with-claude",
+      "name": "Code with Claude",
+      "edition": "San Francisco",
+      "startDate": "2026-05-06",
+      "endDate": "2026-05-07",
+      "city": "San Francisco",
+      "country": "USA",
+      "region": "north-america",
+      "format": "hybrid",
+      "url": "https://claude.com/code-with-claude",
+      "topics": [
+        "ai-engineering"
+      ],
+      "logo": null,
+      "vendorDriven": true,
+      "signal": {
+        "rating": "medium",
+        "summary": "Vendor-driven Anthropic developer conference; expect Claude product launches, live workshops, and 1:1 office hours with Claude teams. Main day May 6 plus extended day May 7.",
+        "sources": [
+          {
+            "type": "other",
+            "url": "https://claude.com/code-with-claude",
+            "note": "Official site confirms May 6 main + May 7 extended in SF"
+          }
+        ],
+        "lastReviewed": "2026-04-27"
       },
       "source": "agent"
     },
@@ -170,6 +201,100 @@
       "source": "agent"
     },
     {
+      "id": "code-with-claude-london-2026",
+      "series": "code-with-claude",
+      "name": "Code with Claude",
+      "edition": "London",
+      "startDate": "2026-05-19",
+      "endDate": "2026-05-20",
+      "city": "London",
+      "country": "UK",
+      "region": "europe",
+      "format": "hybrid",
+      "url": "https://claude.com/code-with-claude",
+      "topics": [
+        "ai-engineering"
+      ],
+      "logo": null,
+      "vendorDriven": true,
+      "signal": {
+        "rating": "medium",
+        "summary": "Vendor-driven Anthropic developer conference; expect Claude product launches, live workshops, and 1:1 office hours. Main day May 19 plus extended day May 20.",
+        "sources": [
+          {
+            "type": "other",
+            "url": "https://claude.com/code-with-claude",
+            "note": "Official site confirms May 19 main + May 20 extended in London"
+          }
+        ],
+        "lastReviewed": "2026-04-27"
+      },
+      "source": "agent"
+    },
+    {
+      "id": "google-io-2026",
+      "series": "google-io",
+      "name": "Google I/O",
+      "edition": "Mountain View",
+      "startDate": "2026-05-19",
+      "endDate": "2026-05-20",
+      "city": "Mountain View",
+      "country": "USA",
+      "region": "north-america",
+      "format": "hybrid",
+      "url": "https://io.google/2026/",
+      "topics": [
+        "ai-engineering",
+        "general"
+      ],
+      "logo": null,
+      "vendorDriven": true,
+      "signal": {
+        "rating": "medium",
+        "summary": "Vendor-driven Google flagship developer keynote; expect Gemini, Android 17, Chrome, and Cloud announcements. Held at Shoreline Amphitheatre.",
+        "sources": [
+          {
+            "type": "other",
+            "url": "https://io.google/2026/",
+            "note": "Official site confirms May 19-20, 2026 at Shoreline Amphitheatre"
+          }
+        ],
+        "lastReviewed": "2026-04-27"
+      },
+      "source": "agent"
+    },
+    {
+      "id": "kotlinconf-2026",
+      "series": "kotlinconf",
+      "name": "KotlinConf",
+      "edition": "Munich",
+      "startDate": "2026-05-20",
+      "endDate": "2026-05-22",
+      "city": "Munich",
+      "country": "Germany",
+      "region": "europe",
+      "format": "in-person",
+      "url": "https://kotlinconf.com/",
+      "topics": [
+        "languages"
+      ],
+      "logo": null,
+      "vendorDriven": true,
+      "signal": {
+        "rating": "medium",
+        "summary": "Vendor-driven JetBrains conference for the Kotlin ecosystem; expect Kotlin/JetBrains roadmap and tooling announcements. Workshops May 20, sessions May 21-22.",
+        "sources": [
+          {
+            "type": "other",
+            "url": "https://kotlinconf.com/",
+            "note": "Official site confirms May 20-22, 2026 in Munich"
+          }
+        ],
+        "lastReviewed": "2026-04-27"
+      },
+      "source": "agent"
+    },
+    {
       "id": "pycon-italy-2026",
       "series": "pycon-italy",
       "name": "PyCon Italia",
@@ -209,6 +334,291 @@
             "type": "other",
             "url": "https://2026.pycon.it/en",
             "note": "Official site confirms May 27-30, 2026 at Savoia Hotel Regency, Bologna"
+          }
+        ],
+        "lastReviewed": "2026-04-27"
+      },
+      "source": "agent"
+    },
+    {
+      "id": "snowflake-summit-2026",
+      "series": "snowflake-summit",
+      "name": "Snowflake Summit",
+      "edition": "San Francisco",
+      "startDate": "2026-06-01",
+      "endDate": "2026-06-04",
+      "city": "San Francisco",
+      "country": "USA",
+      "region": "north-america",
+      "format": "hybrid",
+      "url": "https://www.snowflake.com/en/summit/",
+      "topics": [
+        "ai-engineering",
+        "general"
+      ],
+      "logo": null,
+      "vendorDriven": true,
+      "signal": {
+        "rating": "medium",
+        "summary": "Vendor-driven Snowflake user conference; expect Snowflake AI platform updates and a keynote conversation with Anthropic President Daniela Amodei.",
+        "sources": [
+          {
+            "type": "other",
+            "url": "https://www.snowflake.com/en/summit/",
+            "note": "Official site confirms June 1-4, 2026 in San Francisco"
+          }
+        ],
+        "lastReviewed": "2026-04-27"
+      },
+      "source": "agent"
+    },
+    {
+      "id": "ms-build-2026",
+      "series": "ms-build",
+      "name": "Microsoft Build",
+      "edition": "San Francisco",
+      "startDate": "2026-06-02",
+      "endDate": "2026-06-03",
+      "city": "San Francisco",
+      "country": "USA",
+      "region": "north-america",
+      "format": "hybrid",
+      "url": "https://build.microsoft.com/en-US/home",
+      "topics": [
+        "ai-engineering",
+        "general"
+      ],
+      "logo": null,
+      "vendorDriven": true,
+      "signal": {
+        "rating": "medium",
+        "summary": "Vendor-driven Microsoft developer keynote and product launch event; expect Azure, Copilot, and AI tooling announcements. Moved from Seattle to San Francisco for 2026.",
+        "sources": [
+          {
+            "type": "other",
+            "url": "https://build.microsoft.com/en-US/home",
+            "note": "Official site confirms June 2-3, 2026 in San Francisco"
+          }
+        ],
+        "lastReviewed": "2026-04-27"
+      },
+      "source": "agent"
+    },
+    {
+      "id": "ai-engineer-melbourne-2026",
+      "series": "ai-engineer-melbourne",
+      "name": "AI Engineer Melbourne",
+      "edition": "Melbourne",
+      "startDate": "2026-06-03",
+      "endDate": "2026-06-04",
+      "city": "Melbourne",
+      "country": "Australia",
+      "region": "asia-pacific",
+      "format": "in-person",
+      "url": "https://webdirections.org/ai-engineer/",
+      "topics": [
+        "ai-engineering"
+      ],
+      "logo": null,
+      "vendorDriven": true,
+      "signal": {
+        "rating": "medium",
+        "summary": "Partner-run regional edition of the AI Engineer conference; expect production LLM systems content, evaluation, and AI-native product talks. Held at ACMI and Zinc in Federation Square.",
+        "sources": [
+          {
+            "type": "other",
+            "url": "https://webdirections.org/ai-engineer/",
+            "note": "Official site confirms June 3-4, 2026 in Melbourne"
+          }
+        ],
+        "lastReviewed": "2026-04-27"
+      },
+      "source": "agent"
+    },
+    {
+      "id": "wwdc-2026",
+      "series": "wwdc",
+      "name": "Apple WWDC",
+      "edition": "Cupertino",
+      "startDate": "2026-06-08",
+      "endDate": "2026-06-12",
+      "city": "Cupertino",
+      "country": "USA",
+      "region": "north-america",
+      "format": "hybrid",
+      "url": "https://developer.apple.com/wwdc26/",
+      "topics": [
+        "general"
+      ],
+      "logo": null,
+      "vendorDriven": true,
+      "signal": {
+        "rating": "medium",
+        "summary": "Vendor-driven Apple developer keynote; expect iOS 27, macOS 27, and Apple Intelligence announcements. Online globally with a special in-person day at Apple Park on June 8.",
+        "sources": [
+          {
+            "type": "other",
+            "url": "https://developer.apple.com/wwdc26/",
+            "note": "Apple newsroom confirms June 8-12, 2026"
+          }
+        ],
+        "lastReviewed": "2026-04-27"
+      },
+      "source": "agent"
+    },
+    {
+      "id": "datadog-dash-2026",
+      "series": "datadog-dash",
+      "name": "Datadog DASH",
+      "edition": "New York",
+      "startDate": "2026-06-09",
+      "endDate": "2026-06-10",
+      "city": "New York",
+      "country": "USA",
+      "region": "north-america",
+      "format": "in-person",
+      "url": "https://dash.datadoghq.com/",
+      "topics": [
+        "systems",
+        "ai-engineering"
+      ],
+      "logo": null,
+      "vendorDriven": true,
+      "signal": {
+        "rating": "medium",
+        "summary": "Vendor-driven Datadog customer conference focused on observability, security, and AI; expect platform launches and customer-led sessions.",
+        "sources": [
+          {
+            "type": "other",
+            "url": "https://dash.datadoghq.com/",
+            "note": "Official site confirms June 9-10, 2026 at North Javits Center, NYC"
+          }
+        ],
+        "lastReviewed": "2026-04-27"
+      },
+      "source": "agent"
+    },
+    {
+      "id": "code-with-claude-tokyo-2026",
+      "series": "code-with-claude",
+      "name": "Code with Claude",
+      "edition": "Tokyo",
+      "startDate": "2026-06-10",
+      "endDate": "2026-06-11",
+      "city": "Tokyo",
+      "country": "Japan",
+      "region": "asia-pacific",
+      "format": "hybrid",
+      "url": "https://claude.com/code-with-claude",
+      "topics": [
+        "ai-engineering"
+      ],
+      "logo": null,
+      "vendorDriven": true,
+      "signal": {
+        "rating": "medium",
+        "summary": "Vendor-driven Anthropic developer conference; expect Claude product launches, live workshops, and 1:1 office hours. Main day June 10 plus extended day June 11.",
+        "sources": [
+          {
+            "type": "other",
+            "url": "https://claude.com/code-with-claude/tokyo-extended",
+            "note": "Official site confirms June 10 main + June 11 extended in Tokyo"
+          }
+        ],
+        "lastReviewed": "2026-04-27"
+      },
+      "source": "agent"
+    },
+    {
+      "id": "databricks-data-ai-summit-2026",
+      "series": "databricks-data-ai-summit",
+      "name": "Databricks Data + AI Summit",
+      "edition": "San Francisco",
+      "startDate": "2026-06-15",
+      "endDate": "2026-06-18",
+      "city": "San Francisco",
+      "country": "USA",
+      "region": "north-america",
+      "format": "hybrid",
+      "url": "https://www.databricks.com/dataaisummit",
+      "topics": [
+        "ai-engineering",
+        "ml-research"
+      ],
+      "logo": null,
+      "vendorDriven": true,
+      "signal": {
+        "rating": "medium",
+        "summary": "Vendor-driven Databricks user conference; expect Lakehouse, Mosaic, and AI/ML product launches. 800+ sessions at Moscone.",
+        "sources": [
+          {
+            "type": "other",
+            "url": "https://www.databricks.com/dataaisummit",
+            "note": "Official site confirms June 15-18, 2026 at Moscone"
+          }
+        ],
+        "lastReviewed": "2026-04-27"
+      },
+      "source": "agent"
+    },
+    {
+      "id": "vercel-ship-london-2026",
+      "series": "vercel-ship",
+      "name": "Vercel Ship",
+      "edition": "London",
+      "startDate": "2026-06-17",
+      "endDate": "2026-06-17",
+      "city": "London",
+      "country": "UK",
+      "region": "europe",
+      "format": "in-person",
+      "url": "https://vercel.com/ship",
+      "topics": [
+        "web",
+        "ai-engineering"
+      ],
+      "logo": null,
+      "vendorDriven": true,
+      "signal": {
+        "rating": "medium",
+        "summary": "Vendor-driven Vercel one-day AI conference and product showcase; expect Next.js, v0, and AI SDK announcements.",
+        "sources": [
+          {
+            "type": "other",
+            "url": "https://vercel.com/ship",
+            "note": "Official site confirms June 17, 2026 London"
+          }
+        ],
+        "lastReviewed": "2026-04-27"
+      },
+      "source": "agent"
+    },
+    {
+      "id": "vercel-ship-berlin-2026",
+      "series": "vercel-ship",
+      "name": "Vercel Ship",
+      "edition": "Berlin",
+      "startDate": "2026-06-25",
+      "endDate": "2026-06-25",
+      "city": "Berlin",
+      "country": "Germany",
+      "region": "europe",
+      "format": "in-person",
+      "url": "https://vercel.com/ship",
+      "topics": [
+        "web",
+        "ai-engineering"
+      ],
+      "logo": null,
+      "vendorDriven": true,
+      "signal": {
+        "rating": "medium",
+        "summary": "Vendor-driven Vercel one-day AI conference and product showcase; expect Next.js, v0, and AI SDK announcements.",
+        "sources": [
+          {
+            "type": "other",
+            "url": "https://vercel.com/ship",
+            "note": "Official site confirms June 25, 2026 Berlin"
           }
         ],
         "lastReviewed": "2026-04-27"
@@ -257,6 +667,38 @@
           }
         ],
         "lastReviewed": "2026-04-21"
+      },
+      "source": "agent"
+    },
+    {
+      "id": "vercel-ship-nyc-2026",
+      "series": "vercel-ship",
+      "name": "Vercel Ship",
+      "edition": "New York City",
+      "startDate": "2026-06-30",
+      "endDate": "2026-06-30",
+      "city": "New York",
+      "country": "USA",
+      "region": "north-america",
+      "format": "in-person",
+      "url": "https://vercel.com/ship",
+      "topics": [
+        "web",
+        "ai-engineering"
+      ],
+      "logo": null,
+      "vendorDriven": true,
+      "signal": {
+        "rating": "medium",
+        "summary": "Vendor-driven Vercel one-day AI conference and product showcase; expect Next.js, v0, and AI SDK announcements.",
+        "sources": [
+          {
+            "type": "other",
+            "url": "https://vercel.com/ship",
+            "note": "Official site confirms June 30, 2026 NYC"
+          }
+        ],
+        "lastReviewed": "2026-04-27"
       },
       "source": "agent"
     },
@@ -341,6 +783,38 @@
             "type": "other",
             "url": "https://blog.europython.eu/tickets-sessions-call-for-2026-host-venues/",
             "note": "EuroPython Society blog confirms July 13-19, 2026 in Krakow"
+          }
+        ],
+        "lastReviewed": "2026-04-27"
+      },
+      "source": "agent"
+    },
+    {
+      "id": "vercel-ship-sydney-2026",
+      "series": "vercel-ship",
+      "name": "Vercel Ship",
+      "edition": "Sydney",
+      "startDate": "2026-07-30",
+      "endDate": "2026-07-30",
+      "city": "Sydney",
+      "country": "Australia",
+      "region": "asia-pacific",
+      "format": "in-person",
+      "url": "https://vercel.com/ship",
+      "topics": [
+        "web",
+        "ai-engineering"
+      ],
+      "logo": null,
+      "vendorDriven": true,
+      "signal": {
+        "rating": "medium",
+        "summary": "Vendor-driven Vercel one-day AI conference and product showcase; expect Next.js, v0, and AI SDK announcements.",
+        "sources": [
+          {
+            "type": "other",
+            "url": "https://vercel.com/ship",
+            "note": "Official site confirms July 30, 2026 Sydney"
           }
         ],
         "lastReviewed": "2026-04-27"
@@ -518,6 +992,69 @@
       "source": "agent"
     },
     {
+      "id": "jetbrains-transformconf-2026",
+      "series": "jetbrains-transformconf",
+      "name": "TransformConf",
+      "edition": "London",
+      "startDate": "2026-09-15",
+      "endDate": "2026-09-16",
+      "city": "London",
+      "country": "UK",
+      "region": "europe",
+      "format": "in-person",
+      "url": "https://www.jetbrains.com/company/conferences/",
+      "topics": [
+        "ai-engineering"
+      ],
+      "logo": null,
+      "vendorDriven": true,
+      "signal": {
+        "rating": "medium",
+        "summary": "Vendor-driven JetBrains conference on AI in software development; new event for 2026 at Tobacco Dock.",
+        "sources": [
+          {
+            "type": "other",
+            "url": "https://blog.jetbrains.com/blog/2026/01/15/transformconf-a-new-conference-on-ai-in-software-development/",
+            "note": "JetBrains announcement confirms September 15-16, 2026 at Tobacco Dock, London"
+          }
+        ],
+        "lastReviewed": "2026-04-27"
+      },
+      "source": "agent"
+    },
+    {
+      "id": "dreamforce-2026",
+      "series": "dreamforce",
+      "name": "Salesforce Dreamforce",
+      "edition": "San Francisco",
+      "startDate": "2026-09-15",
+      "endDate": "2026-09-17",
+      "city": "San Francisco",
+      "country": "USA",
+      "region": "north-america",
+      "format": "hybrid",
+      "url": "https://www.salesforce.com/dreamforce/",
+      "topics": [
+        "general",
+        "ai-engineering"
+      ],
+      "logo": null,
+      "vendorDriven": true,
+      "signal": {
+        "rating": "medium",
+        "summary": "Vendor-driven Salesforce flagship customer conference; expect Agentforce, Data Cloud, and CRM AI product launches. Held at Moscone Center.",
+        "sources": [
+          {
+            "type": "other",
+            "url": "https://www.salesforce.com/dreamforce/",
+            "note": "Official site confirms September 15-17, 2026 in San Francisco"
+          }
+        ],
+        "lastReviewed": "2026-04-27"
+      },
+      "source": "agent"
+    },
+    {
       "id": "goto-copenhagen-2026",
       "series": "goto-copenhagen",
       "name": "GOTO Copenhagen",
@@ -585,6 +1122,38 @@
       "source": "agent"
     },
     {
+      "id": "vercel-ship-sf-2026",
+      "series": "vercel-ship",
+      "name": "Vercel Ship",
+      "edition": "San Francisco",
+      "startDate": "2026-10-15",
+      "endDate": "2026-10-15",
+      "city": "San Francisco",
+      "country": "USA",
+      "region": "north-america",
+      "format": "in-person",
+      "url": "https://vercel.com/ship",
+      "topics": [
+        "web",
+        "ai-engineering"
+      ],
+      "logo": null,
+      "vendorDriven": true,
+      "signal": {
+        "rating": "medium",
+        "summary": "Vendor-driven Vercel one-day AI conference and product showcase; expect Next.js, v0, and AI SDK announcements.",
+        "sources": [
+          {
+            "type": "other",
+            "url": "https://vercel.com/ship",
+            "note": "Official site confirms October 15, 2026 SF"
+          }
+        ],
+        "lastReviewed": "2026-04-27"
+      },
+      "source": "agent"
+    },
+    {
       "id": "all-things-open-2026",
       "series": "all-things-open",
       "name": "All Things Open",
@@ -620,6 +1189,103 @@
             "type": "other",
             "url": "https://allthingsopen.org/events/all-things-open-2026",
             "note": "Official site confirms Oct 18-20, 2026 in Raleigh, NC (co-located events Oct 18, main Oct 19-20)"
+          }
+        ],
+        "lastReviewed": "2026-04-27"
+      },
+      "source": "agent"
+    },
+    {
+      "id": "nvidia-gtc-berlin-2026",
+      "series": "nvidia-gtc",
+      "name": "NVIDIA GTC",
+      "edition": "Berlin",
+      "startDate": "2026-10-20",
+      "endDate": "2026-10-22",
+      "city": "Berlin",
+      "country": "Germany",
+      "region": "europe",
+      "format": "in-person",
+      "url": "https://www.nvidia.com/gtc/events/",
+      "topics": [
+        "ai-engineering",
+        "ml-research",
+        "systems"
+      ],
+      "logo": null,
+      "vendorDriven": true,
+      "signal": {
+        "rating": "medium",
+        "summary": "Vendor-driven NVIDIA GTC EMEA edition; expect AI infrastructure, CUDA, and developer tooling announcements for European audience.",
+        "sources": [
+          {
+            "type": "other",
+            "url": "https://www.nvidia.com/gtc/events/",
+            "note": "Official NVIDIA GTC events page confirms October 20-22, 2026 in Berlin"
+          }
+        ],
+        "lastReviewed": "2026-04-27"
+      },
+      "source": "agent"
+    },
+    {
+      "id": "hashiconf-2026",
+      "series": "hashiconf",
+      "name": "HashiConf at IBM TechXchange",
+      "edition": "Atlanta",
+      "startDate": "2026-10-26",
+      "endDate": "2026-10-29",
+      "city": "Atlanta",
+      "country": "USA",
+      "region": "north-america",
+      "format": "in-person",
+      "url": "https://www.hashicorp.com/en/conferences/hashiconf",
+      "topics": [
+        "systems",
+        "security"
+      ],
+      "logo": null,
+      "vendorDriven": true,
+      "signal": {
+        "rating": "medium",
+        "summary": "Vendor-driven HashiCorp conference, now co-located with IBM TechXchange post-acquisition; expect Terraform, Vault, and infrastructure-security announcements.",
+        "sources": [
+          {
+            "type": "other",
+            "url": "https://www.hashicorp.com/en/conferences/hashiconf",
+            "note": "Official site confirms October 26-29, 2026 in Atlanta"
+          }
+        ],
+        "lastReviewed": "2026-04-27"
+      },
+      "source": "agent"
+    },
+    {
+      "id": "github-universe-2026",
+      "series": "github-universe",
+      "name": "GitHub Universe",
+      "edition": "San Francisco",
+      "startDate": "2026-10-28",
+      "endDate": "2026-10-29",
+      "city": "San Francisco",
+      "country": "USA",
+      "region": "north-america",
+      "format": "in-person",
+      "url": "https://githubuniverse.com/",
+      "topics": [
+        "ai-engineering",
+        "general"
+      ],
+      "logo": null,
+      "vendorDriven": true,
+      "signal": {
+        "rating": "medium",
+        "summary": "Vendor-driven GitHub flagship developer conference; expect Copilot, Actions, and developer-platform launches. Held at Fort Mason Center.",
+        "sources": [
+          {
+            "type": "other",
+            "url": "https://githubuniverse.com/",
+            "note": "Official site confirms October 28-29, 2026 at Fort Mason, SF"
           }
         ],
         "lastReviewed": "2026-04-27"
@@ -705,6 +1371,72 @@
           }
         ],
         "lastReviewed": "2026-04-21"
+      },
+      "source": "agent"
+    },
+    {
+      "id": "ms-ignite-2026",
+      "series": "ms-ignite",
+      "name": "Microsoft Ignite",
+      "edition": "San Francisco",
+      "startDate": "2026-11-17",
+      "endDate": "2026-11-20",
+      "city": "San Francisco",
+      "country": "USA",
+      "region": "north-america",
+      "format": "hybrid",
+      "url": "https://ignite.microsoft.com/en-US/home",
+      "topics": [
+        "ai-engineering",
+        "systems",
+        "security"
+      ],
+      "logo": null,
+      "vendorDriven": true,
+      "signal": {
+        "rating": "medium",
+        "summary": "Vendor-driven Microsoft IT/enterprise conference; expect Azure, Microsoft 365, Copilot, and security announcements. Held at Moscone Center.",
+        "sources": [
+          {
+            "type": "other",
+            "url": "https://ignite.microsoft.com/en-US/home",
+            "note": "Microsoft Events confirms November 17-20, 2026 at Moscone, SF"
+          }
+        ],
+        "lastReviewed": "2026-04-27"
+      },
+      "source": "agent"
+    },
+    {
+      "id": "aws-reinvent-2026",
+      "series": "aws-reinvent",
+      "name": "AWS re:Invent",
+      "edition": "Las Vegas",
+      "startDate": "2026-11-30",
+      "endDate": "2026-12-04",
+      "city": "Las Vegas",
+      "country": "USA",
+      "region": "north-america",
+      "format": "in-person",
+      "url": "https://aws.amazon.com/events/reinvent/",
+      "topics": [
+        "ai-engineering",
+        "systems",
+        "security"
+      ],
+      "logo": null,
+      "vendorDriven": true,
+      "signal": {
+        "rating": "medium",
+        "summary": "Vendor-driven AWS flagship cloud conference; expect AWS service launches across AI, infrastructure, and security. re:Inforce security content merges into re:Invent for 2026.",
+        "sources": [
+          {
+            "type": "other",
+            "url": "https://aws.amazon.com/events/reinvent/",
+            "note": "Official site confirms November 30 - December 4, 2026 in Las Vegas"
+          }
+        ],
+        "lastReviewed": "2026-04-27"
       },
       "source": "agent"
     },
