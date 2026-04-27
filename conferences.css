@@ -1,4 +1,11 @@
 /* /conferences page styles. */
+/* Override the global 600px container — only loaded on /conferences. */
+.container {
+    margin: 1.5em auto;
+    max-width: 1600px;
+    padding: 0 2em;
+    box-sizing: border-box;
+}
 .conf-intro {
     margin-bottom: 1.5em;
 }
@@ -99,9 +106,7 @@
 }
 .conf-controls,
 .conf-view {
-    --conf-width: min(1100px, calc(100vw - 2em));
-    width: var(--conf-width);
-    margin-left: calc((100% - var(--conf-width)) / 2);
+    width: 100%;
 }
 .conf-list-item {
     display: flex;
@@ -194,7 +199,7 @@
     gap: 4px;
 }
 .conf-cal-cell {
-    min-height: 110px;
+    min-height: 140px;
     background: #fff;
     border: 1px solid rgba(0,0,0,0.08);
     border-radius: 5.5px;
@@ -220,10 +225,13 @@
     display: flex;
     flex-direction: column;
     gap: 3px;
+    flex: 1;
+    min-height: 0;
 }
 .conf-card {
     width: 100%;
-    height: 26px;
+    flex: 1 1 0;
+    min-height: 24px;
     padding: 3px 4px;
     background: #fff;
     border: 1px solid rgba(0,0,0,0.15);
@@ -371,18 +379,21 @@
     margin-top: .5em;
 }
 @media (max-width: 640px) {
+    .container {
+        padding: 0 1em;
+    }
     .conf-controls {
         flex-direction: column;
         align-items: flex-start;
     }
     .conf-cal-cell {
-        min-height: 70px;
+        min-height: 80px;
     }
     .conf-cal-daynum {
         font-size: .7em;
     }
     .conf-card {
-        height: 22px;
+        min-height: 20px;
         padding: 2px 3px;
         font-size: .6em;
     }
