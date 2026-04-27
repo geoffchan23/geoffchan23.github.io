@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-21T20:00:00Z",
+  "generatedAt": "2026-04-27T17:41:14Z",
   "conferences": [
     {
       "id": "ndc-toronto-2026",
@@ -13,8 +13,12 @@
       "region": "north-america",
       "format": "in-person",
       "url": "https://ndctoronto.com/",
-      "topics": ["general", "web", "systems"],
-      "logo": null,
+      "topics": [
+        "general",
+        "web",
+        "systems"
+      ],
+      "logo": "logos/ndc.svg",
       "signal": {
         "rating": "medium",
         "summary": "North America edition of the established NDC brand; NDC Oslo draws 2,500+ developers with strong practitioner-written recaps and named speakers. Toronto edition is new (expanded from CPP North) so no independent attendee signal for this specific city yet.",
@@ -51,8 +55,11 @@
       "region": "north-america",
       "format": "in-person",
       "url": "https://us.pycon.org/2026/",
-      "topics": ["languages", "ai-engineering"],
-      "logo": null,
+      "topics": [
+        "languages",
+        "ai-engineering"
+      ],
+      "logo": "logos/pycon.svg",
       "signal": {
         "rating": "high",
         "summary": "Python's flagship community conference with 2,000+ attendees and multiple independent practitioner recaps; 2026 adds dedicated AI and security tracks with practitioner speakers.",
@@ -83,6 +90,51 @@
       "source": "agent"
     },
     {
+      "id": "langchain-interrupt-2026",
+      "series": "langchain-interrupt",
+      "name": "LangChain Interrupt",
+      "edition": "San Francisco",
+      "startDate": "2026-05-13",
+      "endDate": "2026-05-14",
+      "city": "San Francisco",
+      "country": "USA",
+      "region": "north-america",
+      "format": "in-person",
+      "url": "https://interrupt.langchain.com/",
+      "topics": [
+        "ai-engineering"
+      ],
+      "logo": "logos/langchain-interrupt.svg",
+      "signal": {
+        "rating": "high",
+        "summary": "LangChain's annual practitioner conference focused on production AI agents; 2025 inaugural edition drew 800 attendees with talks from Cisco, Uber, Replit, LinkedIn, Blackrock, JPMorgan, and Harvey. Multiple independent practitioner recaps from 2025 cover concrete agent-engineering takeaways, not vendor pitches.",
+        "sources": [
+          {
+            "type": "blog",
+            "url": "https://lawwu.github.io/posts/2025-05-23-langchain-interrupt-2025-recap/",
+            "note": "Lawrence Wu personal practitioner recap of Interrupt 2025 with technical takeaways"
+          },
+          {
+            "type": "blog",
+            "url": "https://cameronrohn.com/blog/langchain-interrupt-2025-highlights/",
+            "note": "Cameron Rohn practitioner highlights from Interrupt 2025: 'rise of the agent engineer'"
+          },
+          {
+            "type": "blog",
+            "url": "https://medium.com/99p-labs/applied-ai-insights-key-takeaways-from-langchains-2025-interrupt-conference-fb317345e04e",
+            "note": "99P Labs (Ryan Lingo) applied-AI takeaways from Interrupt 2025"
+          },
+          {
+            "type": "other",
+            "url": "https://interrupt.langchain.com/",
+            "note": "Official site confirms May 13-14, 2026 at The Midway, San Francisco"
+          }
+        ],
+        "lastReviewed": "2026-04-27"
+      },
+      "source": "agent"
+    },
+    {
       "id": "ai-engineer-singapore-2026",
       "series": "ai-engineer-worlds-fair",
       "name": "AI Engineer Singapore",
@@ -94,8 +146,10 @@
       "region": "asia-pacific",
       "format": "in-person",
       "url": "https://www.ai.engineer/singapore",
-      "topics": ["ai-engineering"],
-      "logo": null,
+      "topics": [
+        "ai-engineering"
+      ],
+      "logo": "logos/ai-engineer.svg",
       "signal": {
         "rating": "medium",
         "summary": "First Asia edition of the AI Engineer brand; backed by OpenAI, Google DeepMind, Cursor, and Z.ai with 50+ speakers. No independent practitioner recap yet as it's a new event, but the series has strong track record.",
@@ -116,6 +170,52 @@
       "source": "agent"
     },
     {
+      "id": "pycon-italy-2026",
+      "series": "pycon-italy",
+      "name": "PyCon Italia",
+      "edition": "Bologna",
+      "startDate": "2026-05-27",
+      "endDate": "2026-05-30",
+      "city": "Bologna",
+      "country": "Italy",
+      "region": "europe",
+      "format": "in-person",
+      "url": "https://2026.pycon.it/en",
+      "topics": [
+        "languages",
+        "ai-engineering"
+      ],
+      "logo": "logos/pycon-italy.png",
+      "signal": {
+        "rating": "medium",
+        "summary": "Highly community-driven Python conference (~670 attendees in 2025) consistently praised by named Python practitioners. 2026 program includes Nicholas Tollervy, Sofie Van Landeghem and other recognized speakers; 2025 had three independent practitioner recaps from Rodrigo Girao Serrao (mathspp), Paolo Melchiorre, and Stefanie Molin.",
+        "sources": [
+          {
+            "type": "blog",
+            "url": "https://mathspp.com/blog/personal-highlights-of-pycon-italy-2025",
+            "note": "Rodrigo Girao Serrao's personal highlights from PyCon Italy 2025"
+          },
+          {
+            "type": "blog",
+            "url": "https://www.paulox.net/2025/07/01/my-pycon-italia-2025/",
+            "note": "Paolo Melchiorre's organizer/speaker/attendee perspective on PyCon Italy 2025"
+          },
+          {
+            "type": "blog",
+            "url": "https://stefaniemolin.com/blog/travel/2025/pycon-italia/",
+            "note": "Stefanie Molin (author, data scientist) personal recap of PyCon Italy 2025"
+          },
+          {
+            "type": "other",
+            "url": "https://2026.pycon.it/en",
+            "note": "Official site confirms May 27-30, 2026 at Savoia Hotel Regency, Bologna"
+          }
+        ],
+        "lastReviewed": "2026-04-27"
+      },
+      "source": "agent"
+    },
+    {
       "id": "ai-engineer-worlds-fair-sf-2026",
       "series": "ai-engineer-worlds-fair",
       "name": "AI Engineer World's Fair",
@@ -127,8 +227,10 @@
       "region": "north-america",
       "format": "in-person",
       "url": "https://www.ai.engineer/worldsfair",
-      "topics": ["ai-engineering"],
-      "logo": null,
+      "topics": [
+        "ai-engineering"
+      ],
+      "logo": "logos/ai-engineer.svg",
       "signal": {
         "rating": "high",
         "summary": "The flagship practitioner AI engineering conference; 2025 drew 3,098 attendees (22% principal/staff eng) with 10+ tracks and widespread independent blog coverage. Multiple engineers call it the highest-signal AI conf of the year.",
@@ -170,8 +272,11 @@
       "region": "asia-pacific",
       "format": "in-person",
       "url": "https://icml.cc/Conferences/2026",
-      "topics": ["ml-research", "ai-engineering"],
-      "logo": null,
+      "topics": [
+        "ml-research",
+        "ai-engineering"
+      ],
+      "logo": "logos/icml.svg",
       "signal": {
         "rating": "high",
         "summary": "Premier ML research conference (ICML 2025: 12,107 submissions, 3,260 accepted papers); consistently the highest-density venue for ML researchers and practitioners. 2026 at COEX, Seoul.",
@@ -197,30 +302,218 @@
       "source": "agent"
     },
     {
-      "id": "ai-engineer-nyc-2026",
-      "series": "ai-engineer-worlds-fair",
-      "name": "AI Engineer NYC",
-      "edition": "NYC",
-      "startDate": "2026-10-12",
-      "endDate": "2026-10-14",
-      "city": "New York City",
+      "id": "europython-2026",
+      "series": "europython",
+      "name": "EuroPython",
+      "edition": "Krakow",
+      "startDate": "2026-07-13",
+      "endDate": "2026-07-19",
+      "city": "Krakow",
+      "country": "Poland",
+      "region": "europe",
+      "format": "in-person",
+      "url": "https://ep2026.europython.eu/",
+      "topics": [
+        "languages",
+        "ai-engineering"
+      ],
+      "logo": "logos/europython.svg",
+      "signal": {
+        "rating": "high",
+        "summary": "Largest European Python conference, run by the EuroPython Society. 2025 in Prague drew 1,200+ attendees with multiple independent practitioner recaps; key takeaway from Will Vincent's recap was that 'professional developers are using AI tools but no one had fully automated workflows' — exactly the practitioner signal worth attending for.",
+        "sources": [
+          {
+            "type": "blog",
+            "url": "https://wsvincent.com/europython2025-recap/",
+            "note": "Will Vincent (Django News) recap of EuroPython 2025 with practitioner takeaways on AI adoption"
+          },
+          {
+            "type": "blog",
+            "url": "https://mathspp.com/blog/personal-highlights-of-europython-2025",
+            "note": "Rodrigo Girao Serrao personal highlights from EuroPython 2025"
+          },
+          {
+            "type": "blog",
+            "url": "https://cheuk.dev/posts/2025-07-24-europython25-recap/",
+            "note": "Cheuk Ting Ho personal practitioner recap of EuroPython 2025"
+          },
+          {
+            "type": "other",
+            "url": "https://blog.europython.eu/tickets-sessions-call-for-2026-host-venues/",
+            "note": "EuroPython Society blog confirms July 13-19, 2026 in Krakow"
+          }
+        ],
+        "lastReviewed": "2026-04-27"
+      },
+      "source": "agent"
+    },
+    {
+      "id": "gophercon-2026",
+      "series": "gophercon",
+      "name": "GopherCon",
+      "edition": "Seattle",
+      "startDate": "2026-08-03",
+      "endDate": "2026-08-06",
+      "city": "Seattle",
       "country": "USA",
       "region": "north-america",
       "format": "in-person",
-      "url": "https://www.ai.engineer/nyc",
-      "topics": ["ai-engineering"],
-      "logo": null,
+      "url": "https://www.gophercon.com/",
+      "topics": [
+        "languages",
+        "systems"
+      ],
+      "logo": "logos/gophercon.png",
       "signal": {
         "rating": "medium",
-        "summary": "Official AI Engineer conference in NYC; same high-quality brand as the SF flagship but East Coast edition. No separate attendee signal yet beyond the series reputation.",
+        "summary": "The flagship Go programming conference, traditionally featuring core Go team members and named OSS contributors. 2025 NYC edition (Aug 26-28) had practitioner recaps; 2026 program (150+ submissions, lineup expected May 2026) is being reviewed by an evaluation committee — venue and dates confirmed.",
         "sources": [
           {
+            "type": "blog",
+            "url": "https://ikristina.github.io/blog/gophercon-2025/",
+            "note": "Kristina Ivanova practitioner recap of GopherCon 2025 NYC with technical takeaways"
+          },
+          {
+            "type": "blog",
+            "url": "https://www.diagrid.io/blog/gophercon-2024-with-diagrids-digital-twins",
+            "note": "Diagrid engineering blog GopherCon 2024 recap"
+          },
+          {
             "type": "other",
-            "url": "https://www.ai.engineer/nyc",
-            "note": "Official AI Engineer NYC page confirms October 12-14, 2026 in Manhattan"
+            "url": "https://www.gophercon.com/",
+            "note": "Official site confirms Aug 3-6, 2026 at Seattle Convention Center | Summit"
           }
         ],
-        "lastReviewed": "2026-04-21"
+        "lastReviewed": "2026-04-27"
+      },
+      "source": "agent"
+    },
+    {
+      "id": "djangocon-us-2026",
+      "series": "djangocon-us",
+      "name": "DjangoCon US",
+      "edition": "Chicago",
+      "startDate": "2026-08-24",
+      "endDate": "2026-08-28",
+      "city": "Chicago",
+      "country": "USA",
+      "region": "north-america",
+      "format": "in-person",
+      "url": "https://2026.djangocon.us/",
+      "topics": [
+        "languages",
+        "web"
+      ],
+      "logo": "logos/djangocon-us.svg",
+      "signal": {
+        "rating": "medium",
+        "summary": "Community-run Django conference; 2025 (Chicago, 20-year Django anniversary) drew 400+ attendees with three independent practitioner recaps and named speakers like Carson Gross (HTMX). Strong community signal but smaller in scope than PyCon US.",
+        "sources": [
+          {
+            "type": "blog",
+            "url": "https://wsvincent.com/djangoconus-2025-recap/",
+            "note": "Will Vincent (Django News) DjangoCon US 2025 recap"
+          },
+          {
+            "type": "blog",
+            "url": "https://www.caktusgroup.com/blog/2025/10/06/djangocon-us-2025-celebration-community-code-20-years/",
+            "note": "Caktus Group practitioner recap of DjangoCon US 2025"
+          },
+          {
+            "type": "blog",
+            "url": "https://blog.gitguardian.com/djangocon-us-2025/",
+            "note": "GitGuardian engineering blog: 'DjangoCon US 2025: Security, Simplicity, and Community'"
+          },
+          {
+            "type": "other",
+            "url": "https://2026.djangocon.us/",
+            "note": "Official site confirms Aug 24-28, 2026 at voco Chicago Downtown"
+          }
+        ],
+        "lastReviewed": "2026-04-27"
+      },
+      "source": "agent"
+    },
+    {
+      "id": "rustconf-2026",
+      "series": "rustconf",
+      "name": "RustConf",
+      "edition": "Montreal",
+      "startDate": "2026-09-08",
+      "endDate": "2026-09-11",
+      "city": "Montreal",
+      "country": "Canada",
+      "region": "north-america",
+      "format": "hybrid",
+      "url": "https://rustconf.com/",
+      "topics": [
+        "languages",
+        "systems"
+      ],
+      "logo": "logos/rustconf.svg",
+      "signal": {
+        "rating": "medium",
+        "summary": "Rust Foundation's flagship community conference; 2025 (Seattle) featured async Rust workshops, automotive (Rivian) and edge AI talks. Practitioner recaps available from corrode.dev and the Rust Foundation. 2026 marks the 10th anniversary edition.",
+        "sources": [
+          {
+            "type": "blog",
+            "url": "https://corrode.dev/blog/rust-conferences-2025/",
+            "note": "corrode Rust Consulting comparative review of 2025 Rust conferences including RustConf"
+          },
+          {
+            "type": "blog",
+            "url": "https://rustfoundation.org/media/rustconf-2025-in-review-rust-for-the-road-ahead/",
+            "note": "Rust Foundation review of RustConf 2025 with talk highlights"
+          },
+          {
+            "type": "other",
+            "url": "https://rustconf.com/",
+            "note": "Official site confirms Sept 8-11, 2026 at Palais des Congres de Montreal"
+          }
+        ],
+        "lastReviewed": "2026-04-27"
+      },
+      "source": "agent"
+    },
+    {
+      "id": "ndc-oslo-2026",
+      "series": "ndc",
+      "name": "NDC Oslo",
+      "edition": "Oslo",
+      "startDate": "2026-09-14",
+      "endDate": "2026-09-18",
+      "city": "Oslo",
+      "country": "Norway",
+      "region": "europe",
+      "format": "in-person",
+      "url": "https://ndcoslo.com/",
+      "topics": [
+        "general",
+        "web",
+        "systems"
+      ],
+      "logo": "logos/ndc.svg",
+      "signal": {
+        "rating": "high",
+        "summary": "Flagship NDC edition; 150+ named speakers including Mads Torgersen (C# lead designer) and 2,500+ practitioner attendees historically. Independent practitioner recaps consistently appear after every edition; quality of speakers rated highly via NDC's green/amber/red feedback cards.",
+        "sources": [
+          {
+            "type": "blog",
+            "url": "https://improveandrepeat.com/2025/06/my-highlights-of-ndc-oslo-2025/",
+            "note": "Practitioner highlights of NDC Oslo 2025 (Improve & Repeat blog)"
+          },
+          {
+            "type": "blog",
+            "url": "https://chris-ayers.com/2025/05/24/ndc-oslo-2025-wrapup/",
+            "note": "Chris Ayers developer wrap-up of NDC Oslo 2025"
+          },
+          {
+            "type": "other",
+            "url": "https://ndcoslo.com/",
+            "note": "Official site confirms Sept 14-18, 2026 at Oslo Spektrum with 150 speakers, 160 sessions"
+          }
+        ],
+        "lastReviewed": "2026-04-27"
       },
       "source": "agent"
     },
@@ -236,8 +529,12 @@
       "region": "europe",
       "format": "in-person",
       "url": "https://gotocph.com/2026",
-      "topics": ["general", "systems", "ai-engineering"],
-      "logo": null,
+      "topics": [
+        "general",
+        "systems",
+        "ai-engineering"
+      ],
+      "logo": "logos/goto.svg",
       "signal": {
         "rating": "medium",
         "summary": "Long-running practitioner software conference with Martin Fowler, Kent Beck, and other named practitioners on the program. Strong European dev community presence but independent Reddit/blog signal is thin.",
@@ -258,6 +555,78 @@
       "source": "agent"
     },
     {
+      "id": "ai-engineer-nyc-2026",
+      "series": "ai-engineer-worlds-fair",
+      "name": "AI Engineer NYC",
+      "edition": "NYC",
+      "startDate": "2026-10-12",
+      "endDate": "2026-10-14",
+      "city": "New York City",
+      "country": "USA",
+      "region": "north-america",
+      "format": "in-person",
+      "url": "https://www.ai.engineer/nyc",
+      "topics": [
+        "ai-engineering"
+      ],
+      "logo": "logos/ai-engineer.svg",
+      "signal": {
+        "rating": "medium",
+        "summary": "Official AI Engineer conference in NYC; same high-quality brand as the SF flagship but East Coast edition. No separate attendee signal yet beyond the series reputation.",
+        "sources": [
+          {
+            "type": "other",
+            "url": "https://www.ai.engineer/nyc",
+            "note": "Official AI Engineer NYC page confirms October 12-14, 2026 in Manhattan"
+          }
+        ],
+        "lastReviewed": "2026-04-21"
+      },
+      "source": "agent"
+    },
+    {
+      "id": "all-things-open-2026",
+      "series": "all-things-open",
+      "name": "All Things Open",
+      "edition": "Raleigh",
+      "startDate": "2026-10-18",
+      "endDate": "2026-10-20",
+      "city": "Raleigh",
+      "country": "USA",
+      "region": "north-america",
+      "format": "in-person",
+      "url": "https://2026.allthingsopen.org/",
+      "topics": [
+        "general",
+        "ai-engineering",
+        "languages"
+      ],
+      "logo": "logos/all-things-open.svg",
+      "signal": {
+        "rating": "medium",
+        "summary": "Long-running open-source conference; 2025 (13th edition) drew 6,500+ registrants across 200+ sessions and 18 tracks including AI, dev tooling, and community. Practitioner recaps highlight strong hallway-track and community-driven content rather than vendor pitches.",
+        "sources": [
+          {
+            "type": "blog",
+            "url": "https://ciq.com/blog/strengthening-the-future-of-open-source/",
+            "note": "CIQ engineering blog recap of All Things Open 2025: open-source community focus"
+          },
+          {
+            "type": "blog",
+            "url": "https://ctl.duke.edu/blog/2025/03/takeaways-from-the-all-things-open-ai-conference/",
+            "note": "Duke Center for Teaching and Learning takeaways from All Things Open AI track"
+          },
+          {
+            "type": "other",
+            "url": "https://allthingsopen.org/events/all-things-open-2026",
+            "note": "Official site confirms Oct 18-20, 2026 in Raleigh, NC (co-located events Oct 18, main Oct 19-20)"
+          }
+        ],
+        "lastReviewed": "2026-04-27"
+      },
+      "source": "agent"
+    },
+    {
       "id": "kubecon-na-2026",
       "series": "kubecon",
       "name": "KubeCon + CloudNativeCon North America",
@@ -269,8 +638,10 @@
       "region": "north-america",
       "format": "in-person",
       "url": "https://events.linuxfoundation.org/kubecon-cloudnativecon-north-america/",
-      "topics": ["systems"],
-      "logo": null,
+      "topics": [
+        "systems"
+      ],
+      "logo": "logos/kubecon.svg",
       "signal": {
         "rating": "high",
         "summary": "CNCF's flagship conference; draws 10,000+ cloud-native practitioners annually with extensive practitioner blog coverage and O'Reilly/Harness/CNCF-authored recaps. Attendance slightly down but remains top-tier for Kubernetes/cloud-native.",
@@ -307,8 +678,12 @@
       "region": "north-america",
       "format": "in-person",
       "url": "https://qconsf.com/",
-      "topics": ["general", "systems", "ai-engineering"],
-      "logo": null,
+      "topics": [
+        "general",
+        "systems",
+        "ai-engineering"
+      ],
+      "logo": "logos/qcon.svg",
       "signal": {
         "rating": "high",
         "summary": "Practitioner-curated senior engineering conference run by InfoQ; keynotes from named engineers at Google, Microsoft, and others. No vendor marketing — presentations are experience-based.",
@@ -345,8 +720,10 @@
       "region": "asia-pacific",
       "format": "in-person",
       "url": "https://neurips.cc/Conferences/2026",
-      "topics": ["ml-research"],
-      "logo": null,
+      "topics": [
+        "ml-research"
+      ],
+      "logo": "logos/neurips.svg",
       "signal": {
         "rating": "high",
         "summary": "The world's largest ML research conference; 21,575 submissions in 2025 with broad practitioner and researcher attendance. Sydney venue is first time in Australia — high buzz and accessibility for APAC ML community.",

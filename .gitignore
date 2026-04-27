@@ -18,3 +18,4 @@ vendor/
 !_comic_drafts/**/*.png
 !_comic_drafts/**/*.jpg
 !_comic_drafts/**/*.webp
+!conferences/logos/**/*.png
