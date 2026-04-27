@@ -189,62 +189,38 @@
     gap: 3px;
 }
 .conf-card {
-    display: flex;
-    gap: .35em;
-    align-items: flex-start;
-    background: rgba(217, 119, 87, 0.12);
+    width: 100%;
+    height: 26px;
+    padding: 3px 4px;
+    background: #fff;
+    border: 1px solid rgba(0,0,0,0.15);
     border-radius: 4px;
-    padding: .3em .4em;
-    font-size: .75em;
     cursor: pointer;
-    line-height: 1.2;
-}
-.conf-card:hover {
-    background: rgba(217, 119, 87, 0.25);
-}
-.conf-card-logo {
-    width: 20px;
-    height: 20px;
-    flex: 0 0 20px;
-    border-radius: 3px;
-    background: rgb(217, 119, 87);
-    color: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 700;
-    font-size: .75em;
     overflow: hidden;
+    font-family: inherit;
+    color: #333;
+    font-weight: 700;
+    font-size: .7em;
+    line-height: 1;
+    transition: border-color .1s ease, box-shadow .1s ease;
 }
-.conf-card-logo img {
+.conf-card:hover {
+    border-color: rgb(217, 119, 87);
+    box-shadow: 0 0 0 1px rgb(217, 119, 87);
+}
+.conf-card img {
     max-width: 100%;
     max-height: 100%;
     object-fit: contain;
+    display: block;
 }
-.conf-card-text {
-    min-width: 0;
-    flex: 1;
-}
-.conf-card-name {
-    font-weight: 700;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-.conf-card-city {
-    opacity: .7;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-.conf-card-tag {
-    display: inline-block;
-    margin-top: .15em;
-    font-size: .85em;
-    padding: 0 .3em;
-    border-radius: 3px;
-    background: rgba(217, 119, 87, 0.25);
-    color: rgb(217, 119, 87);
+.conf-card.conf-card-textfallback {
+    background: rgb(217, 119, 87);
+    color: #fff;
+    border-color: rgb(217, 119, 87);
 }
 .conf-card-more {
     border: 0;
@@ -373,11 +349,8 @@
         font-size: .7em;
     }
     .conf-card {
-        font-size: .65em;
-    }
-    .conf-card-logo {
-        width: 16px;
-        height: 16px;
-        flex-basis: 16px;
+        height: 22px;
+        padding: 2px 3px;
+        font-size: .6em;
     }
 }

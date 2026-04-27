@@ -129,43 +129,24 @@ function renderCalendar(confs, anchor) {
         const visible = dayConfs.slice(0, MAX_CARDS_PER_DAY);
         const hidden = dayConfs.length - visible.length;
         for (const c of visible) {
-            const card = document.createElement("div");
+            const card = document.createElement("button");
+            card.type = "button";
             card.className = "conf-card";
             card.dataset.id = c.id;
+            const editionLabel = c.edition && c.edition !== c.name ? `${c.name} — ${c.edition}` : c.name;
+            card.title = editionLabel;
+            card.setAttribute("aria-label", editionLabel);
 
-            const logo = document.createElement("div");
-            logo.className = "conf-card-logo";
             if (c.logo) {
                 const img = document.createElement("img");
                 img.src = "/conferences/" + c.logo;
-                img.alt = "";
-                logo.appendChild(img);
+                img.alt = editionLabel;
+                card.appendChild(img);
             } else {
-                logo.classList.add("conf-card-logo-text");
-                logo.textContent = c.name.slice(0, 1).toUpperCase();
+                card.classList.add("conf-card-textfallback");
+                card.textContent = c.name.slice(0, 1).toUpperCase();
             }
 
-            const text = document.createElement("div");
-            text.className = "conf-card-text";
-            const nameEl = document.createElement("div");
-            nameEl.className = "conf-card-name";
-            nameEl.textContent = c.name;
-            text.appendChild(nameEl);
-
-            const cityEl = document.createElement("div");
-            cityEl.className = "conf-card-city";
-            cityEl.textContent = c.city;
-            text.appendChild(cityEl);
-
-            if (c.topics && c.topics.length > 0) {
-                const tag = document.createElement("span");
-                tag.className = "conf-card-tag";
-                tag.textContent = topicLabel(c.topics[0]);
-                text.appendChild(tag);
-            }
-
-            card.appendChild(logo);
-            card.appendChild(text);
             card.addEventListener("click", () => openConferenceModal(c));
             items.appendChild(card);
         }
