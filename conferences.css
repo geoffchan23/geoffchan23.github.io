@@ -66,6 +66,20 @@
     background: #f9f9f9;
     color: #333;
 }
+.conf-filter-checkbox {
+    cursor: pointer;
+}
+.conf-filter-checkbox input {
+    margin: 0;
+}
+.conf-card-vendor {
+    border-style: dashed;
+    opacity: .65;
+}
+.conf-list-item-vendor {
+    border-style: dashed;
+    opacity: .75;
+}
 .conf-empty {
     opacity: .6;
     padding: 2em 0;
@@ -78,6 +92,16 @@
     display: flex;
     flex-direction: column;
     gap: .75em;
+}
+.conf-list[hidden],
+.conf-calendar[hidden] {
+    display: none;
+}
+.conf-controls,
+.conf-view {
+    --conf-width: min(1100px, calc(100vw - 2em));
+    width: var(--conf-width);
+    margin-left: calc((100% - var(--conf-width)) / 2);
 }
 .conf-list-item {
     display: flex;
@@ -99,10 +123,19 @@
     align-items: center;
     justify-content: center;
     border-radius: 5.5px;
-    background: rgb(217, 119, 87);
-    color: #fff;
+    background: #fff;
+    border: 1px solid rgba(0,0,0,0.15);
+    color: #333;
     font-weight: 700;
     overflow: hidden;
+    padding: 4px;
+    box-sizing: border-box;
+}
+.conf-logo.conf-logo-text {
+    background: rgb(217, 119, 87);
+    border-color: rgb(217, 119, 87);
+    color: #fff;
+    padding: 0;
 }
 .conf-logo img {
     max-width: 100%;

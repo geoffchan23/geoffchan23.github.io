@@ -30,6 +30,7 @@ const state = {
     currentMonth: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
     region: "",
     topic: "",
+    includeVendor: false,
     conferences: [],
 };
 
@@ -131,7 +132,7 @@ function renderCalendar(confs, anchor) {
         for (const c of visible) {
             const card = document.createElement("button");
             card.type = "button";
-            card.className = "conf-card";
+            card.className = c.vendorDriven ? "conf-card conf-card-vendor" : "conf-card";
             card.dataset.id = c.id;
             const editionLabel = c.edition && c.edition !== c.name ? `${c.name} — ${c.edition}` : c.name;
             card.title = editionLabel;
@@ -172,7 +173,7 @@ function renderList(conferences) {
     }
     for (const c of conferences) {
         const li = document.createElement("li");
-        li.className = "conf-list-item";
+        li.className = c.vendorDriven ? "conf-list-item conf-list-item-vendor" : "conf-list-item";
         li.dataset.id = c.id;
 
         const logo = document.createElement("div");
@@ -282,6 +283,10 @@ function wireControls() {
     });
     document.getElementById("conf-topic").addEventListener("change", (e) => {
         state.topic = e.target.value;
+        render();
+    });
+    document.getElementById("conf-vendor").addEventListener("change", (e) => {
+        state.includeVendor = e.target.checked;
         render();
     });
 }
@@ -436,6 +441,7 @@ function applyFilters(all) {
     return all.filter(c => {
         if (state.region && c.region !== state.region) return false;
         if (state.topic && !(c.topics || []).includes(state.topic)) return false;
+        if (!state.includeVendor && c.vendorDriven === true) return false;
         return true;
     });
 }
