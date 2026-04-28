@@ -232,6 +232,8 @@ function render() {
     const calEl = document.getElementById("conf-calendar");
     listEl.hidden = state.view !== "list";
     calEl.hidden = state.view !== "calendar";
+    const monthNavEl = document.querySelector(".conf-month-nav");
+    if (monthNavEl) monthNavEl.hidden = state.view !== "calendar";
     if (state.view === "list") {
         renderList(filtered);
     } else {
