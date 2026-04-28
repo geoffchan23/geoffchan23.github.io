@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-28T13:58:40Z",
+  "generatedAt": "2026-04-28T16:25:17Z",
   "conferences": [
     {
       "id": "ndc-london-2026",
@@ -53,7 +53,7 @@
         "systems",
         "general"
       ],
-      "logo": null,
+      "logo": "logos/fosdem.svg",
       "signal": {
         "rating": "high",
         "summary": "Free, volunteer-run open-source conference with 1200+ speakers across 65+ devrooms (Rust, Go, Python, Kernel, Observability). The largest practitioner-driven OSS gathering in Europe.",
@@ -94,7 +94,7 @@
         "languages",
         "general"
       ],
-      "logo": null,
+      "logo": "logos/jfokus.svg",
       "signal": {
         "rating": "high",
         "summary": "Sweden's largest developer conference (2,000+ devs) at Stockholm Waterfront, six parallel tracks covering Java, AI/ML, DevOps. Long-running practitioner program with hands-on labs.",
@@ -118,6 +118,38 @@
         "lastReviewed": "2026-04-27"
       },
       "source": "agent"
+    },
+    {
+      "id": "confoo-2026",
+      "series": "confoo",
+      "name": "ConFoo Montreal",
+      "edition": "2026",
+      "startDate": "2026-02-25",
+      "endDate": "2026-02-27",
+      "city": "Montreal",
+      "country": "Canada",
+      "region": "north-america",
+      "format": "in-person",
+      "url": "https://confoo.ca/en/2026",
+      "topics": [
+        "general",
+        "web",
+        "languages"
+      ],
+      "logo": "logos/confoo.png",
+      "signal": {
+        "rating": "medium",
+        "summary": "24th edition of Montreal's full-stack developer conference at Hotel Bonaventure. Multi-track program covering web, languages, AI, and DevOps with practitioner speakers.",
+        "sources": [
+          {
+            "type": "other",
+            "url": "https://confoo.ca/en/2026",
+            "note": "Official site"
+          }
+        ],
+        "lastReviewed": "2026-04-27"
+      },
+      "source": "manual"
     },
     {
       "id": "qcon-london-2026",
@@ -171,7 +203,7 @@
         "ai-engineering",
         "ml-research"
       ],
-      "logo": null,
+      "logo": "logos/nvidia-gtc.svg",
       "vendorDriven": true,
       "signal": {
         "rating": "high",
@@ -208,7 +240,7 @@
         "systems",
         "ai-engineering"
       ],
-      "logo": "logos/kubecon.svg",
+      "logo": "logos/kubecon-europe.svg",
       "signal": {
         "rating": "high",
         "summary": "CNCF flagship Europe event at RAI Amsterdam, ~13,500 attendees. Strong practitioner program across Kubernetes, observability, and (in 2026) production AI/agentic workloads on K8s.",
@@ -249,7 +281,7 @@
         "languages",
         "ai-engineering"
       ],
-      "logo": "logos/pycon.svg",
+      "logo": "logos/pycon-lithuania.svg",
       "signal": {
         "rating": "medium",
         "summary": "15th edition of the largest Python/PyData event in the Baltics and Nordics, 600+ attendees, 50+ practitioner talks across themed Python, Data, and AI days.",
@@ -285,7 +317,7 @@
         "languages",
         "ai-engineering"
       ],
-      "logo": "logos/pycon.svg",
+      "logo": "logos/pycon-de.png",
       "signal": {
         "rating": "high",
         "summary": "Europe's largest combined Python and PyData gathering, 2,000+ attendees and 100+ practitioner talks at the darmstadtium. Sprints Apr 13, masterclasses Apr 17.",
@@ -321,7 +353,7 @@
         "web",
         "languages"
       ],
-      "logo": null,
+      "logo": "logos/djangocon-europe.svg",
       "signal": {
         "rating": "medium",
         "summary": "Community-run Django conference with three days of practitioner talks (Apr 15-17) at the Athens Conservatoire plus two days of sprints. Engineer-driven schedule covers Django/Postgres indexing, public-sector Django at scale.",
@@ -342,6 +374,36 @@
       "source": "agent"
     },
     {
+      "id": "ai-engineer-miami-2026",
+      "series": "ai-engineer-miami",
+      "name": "AI Engineer Miami",
+      "edition": "2026",
+      "startDate": "2026-04-20",
+      "endDate": "2026-04-21",
+      "city": "Miami",
+      "country": "United States",
+      "region": "north-america",
+      "format": "in-person",
+      "url": "https://www.ai.engineer/miami",
+      "topics": [
+        "ai-engineering"
+      ],
+      "logo": "logos/ai-engineer.svg",
+      "signal": {
+        "rating": "medium",
+        "summary": "Regional AI Engineer event at Hyatt Regency Miami. ~500 engineers, VPs of AI, and founders shipping LLM/agent products; talks from companies like OpenAI, Google DeepMind, Cloudflare.",
+        "sources": [
+          {
+            "type": "other",
+            "url": "https://www.ai.engineer/miami",
+            "note": "Official site listing engineer/founder speaker mix"
+          }
+        ],
+        "lastReviewed": "2026-04-27"
+      },
+      "source": "manual"
+    },
+    {
       "id": "google-cloud-next-2026",
       "series": "google-cloud-next",
       "name": "Google Cloud Next",
@@ -357,7 +419,7 @@
         "ai-engineering",
         "systems"
       ],
-      "logo": null,
+      "logo": "logos/google-cloud-next.svg",
       "vendorDriven": true,
       "signal": {
         "rating": "medium",
@@ -393,7 +455,7 @@
       "topics": [
         "web"
       ],
-      "logo": null,
+      "logo": "logos/react-miami.svg",
       "signal": {
         "rating": "medium",
         "summary": "Sold-out two-day React conference at Hyatt Regency Miami with engineer-led talks (Aurora Scharff/Vercel, Rizel Scarlett, Brooks Lybrand/Shopify). The major US-based React event in the Jan-Apr window.",
