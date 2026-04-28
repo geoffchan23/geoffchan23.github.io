@@ -1,6 +1,418 @@
 {
-  "generatedAt": "2026-04-27T19:20:54Z",
+  "generatedAt": "2026-04-28T13:58:40Z",
   "conferences": [
+    {
+      "id": "ndc-london-2026",
+      "series": "ndc-london",
+      "name": "NDC London",
+      "edition": "2026",
+      "startDate": "2026-01-28",
+      "endDate": "2026-01-30",
+      "city": "London",
+      "country": "United Kingdom",
+      "region": "europe",
+      "format": "in-person",
+      "url": "https://ndclondon.com/",
+      "topics": [
+        "general",
+        "languages"
+      ],
+      "logo": "logos/ndc.svg",
+      "signal": {
+        "rating": "high",
+        "summary": "Long-running multi-track developer conference at the QEII Centre with 90+ practitioner speakers (Sam Newman, Kevlin Henney, Steve Sanderson, Dylan Beattie). Pre-conference workshops Jan 26-27.",
+        "sources": [
+          {
+            "type": "blog",
+            "url": "https://marcduiker.dev/articles/speaking-at-ndc-london-2026/",
+            "note": "Speaker Marc Duiker's post-event blog"
+          },
+          {
+            "type": "blog",
+            "url": "https://devblogs.microsoft.com/dotnet/join-us-at-ndc-london-2026/",
+            "note": "Microsoft .NET team post listing engineer-led sessions"
+          }
+        ],
+        "lastReviewed": "2026-04-27"
+      },
+      "source": "agent"
+    },
+    {
+      "id": "fosdem-2026",
+      "series": "fosdem",
+      "name": "FOSDEM",
+      "edition": "2026",
+      "startDate": "2026-01-31",
+      "endDate": "2026-02-01",
+      "city": "Brussels",
+      "country": "Belgium",
+      "region": "europe",
+      "format": "in-person",
+      "url": "https://fosdem.org/2026/",
+      "topics": [
+        "systems",
+        "general"
+      ],
+      "logo": null,
+      "signal": {
+        "rating": "high",
+        "summary": "Free, volunteer-run open-source conference with 1200+ speakers across 65+ devrooms (Rust, Go, Python, Kernel, Observability). The largest practitioner-driven OSS gathering in Europe.",
+        "sources": [
+          {
+            "type": "blog",
+            "url": "https://dev.to/janderssonse/fosdem-26-a-quick-summary-46d2",
+            "note": "Engineer day-by-day recap covering security, observability, Rust devrooms"
+          },
+          {
+            "type": "blog",
+            "url": "https://rustfoundation.org/media/guest-blog-fosdem-2026-rust-devroom-in-review/",
+            "note": "Rust Foundation guest recap of the 16-talk Rust devroom"
+          },
+          {
+            "type": "other",
+            "url": "https://news.ycombinator.com/item?id=46845103",
+            "note": "Hacker News Day 1 thread with substantive practitioner discussion"
+          }
+        ],
+        "lastReviewed": "2026-04-27"
+      },
+      "source": "agent"
+    },
+    {
+      "id": "jfokus-2026",
+      "series": "jfokus",
+      "name": "JFokus",
+      "edition": "2026",
+      "startDate": "2026-02-02",
+      "endDate": "2026-02-04",
+      "city": "Stockholm",
+      "country": "Sweden",
+      "region": "europe",
+      "format": "in-person",
+      "url": "https://www.jfokus.se/",
+      "topics": [
+        "languages",
+        "general"
+      ],
+      "logo": null,
+      "signal": {
+        "rating": "high",
+        "summary": "Sweden's largest developer conference (2,000+ devs) at Stockholm Waterfront, six parallel tracks covering Java, AI/ML, DevOps. Long-running practitioner program with hands-on labs.",
+        "sources": [
+          {
+            "type": "blog",
+            "url": "https://blogs.eclipse.org/post/ivar-grimstad/jfokus-2026",
+            "note": "Eclipse Foundation's Ivar Grimstad recap"
+          },
+          {
+            "type": "blog",
+            "url": "https://www.agilejava.eu/2026/02/04/jfokus-2026/",
+            "note": "agilejava.eu attendee recap covering the new mentoring hub"
+          },
+          {
+            "type": "other",
+            "url": "https://www.i-programmer.info/news/80-java/18809-jfokus-2026-the-highlights.html",
+            "note": "i-programmer post-event highlights"
+          }
+        ],
+        "lastReviewed": "2026-04-27"
+      },
+      "source": "agent"
+    },
+    {
+      "id": "qcon-london-2026",
+      "series": "qcon-london",
+      "name": "QCon London",
+      "edition": "2026",
+      "startDate": "2026-03-16",
+      "endDate": "2026-03-18",
+      "city": "London",
+      "country": "United Kingdom",
+      "region": "europe",
+      "format": "in-person",
+      "url": "https://qconlondon.com/",
+      "topics": [
+        "general",
+        "ai-engineering"
+      ],
+      "logo": "logos/qcon.svg",
+      "signal": {
+        "rating": "high",
+        "summary": "InfoQ-organised, peer-selected talks across 15 curated tracks (Production AI Engineering, Connectivity, Tech of Finance, Staff+ Engineering). Senior-engineer-targeted with optional architect cert workshop Mar 19.",
+        "sources": [
+          {
+            "type": "blog",
+            "url": "https://blog.thestateofme.com/2026/03/28/qcon-london-2026/",
+            "note": "Chris Swan's recap calling 2026 the best edition yet"
+          },
+          {
+            "type": "other",
+            "url": "https://www.infoq.com/news/2026/01/qcon-london-2026-ai-engineering/",
+            "note": "InfoQ track announcement detailing practitioner-led AI Engineering content"
+          }
+        ],
+        "lastReviewed": "2026-04-27"
+      },
+      "source": "agent"
+    },
+    {
+      "id": "nvidia-gtc-2026",
+      "series": "nvidia-gtc",
+      "name": "NVIDIA GTC",
+      "edition": "2026",
+      "startDate": "2026-03-16",
+      "endDate": "2026-03-19",
+      "city": "San Jose",
+      "country": "United States",
+      "region": "north-america",
+      "format": "hybrid",
+      "url": "https://www.nvidia.com/gtc/",
+      "topics": [
+        "ai-engineering",
+        "ml-research"
+      ],
+      "logo": null,
+      "vendorDriven": true,
+      "signal": {
+        "rating": "high",
+        "summary": "NVIDIA's flagship AI conference, 1,000+ sessions and 2,000 speakers. Beyond the keynote, deep practitioner content on inference at scale, multimodal/multi-agent systems, and 70+ hands-on training labs.",
+        "sources": [
+          {
+            "type": "blog",
+            "url": "https://blog.glennklockwood.com/2026/03/gtc-2026-recap.html",
+            "note": "HPC engineer Glenn Lockwood's technical recap"
+          },
+          {
+            "type": "blog",
+            "url": "https://www.exxactcorp.com/blog/news/nvidia-gtc-2026-recap-era-of-tokens-and-inference",
+            "note": "Practitioner-oriented recap on inference economics"
+          }
+        ],
+        "lastReviewed": "2026-04-27"
+      },
+      "source": "agent"
+    },
+    {
+      "id": "kubecon-europe-2026",
+      "series": "kubecon-europe",
+      "name": "KubeCon + CloudNativeCon Europe",
+      "edition": "2026",
+      "startDate": "2026-03-23",
+      "endDate": "2026-03-26",
+      "city": "Amsterdam",
+      "country": "Netherlands",
+      "region": "europe",
+      "format": "in-person",
+      "url": "https://events.linuxfoundation.org/kubecon-cloudnativecon-europe/",
+      "topics": [
+        "systems",
+        "ai-engineering"
+      ],
+      "logo": "logos/kubecon.svg",
+      "signal": {
+        "rating": "high",
+        "summary": "CNCF flagship Europe event at RAI Amsterdam, ~13,500 attendees. Strong practitioner program across Kubernetes, observability, and (in 2026) production AI/agentic workloads on K8s.",
+        "sources": [
+          {
+            "type": "blog",
+            "url": "https://www.pulumi.com/blog/kubecon-eu-2026-recap/",
+            "note": "Pulumi engineering recap focused on AI in production on Kubernetes"
+          },
+          {
+            "type": "blog",
+            "url": "https://metalbear.com/blog/kubecon-amsterdam-2026-recap/",
+            "note": "MetalBear engineering team recap"
+          },
+          {
+            "type": "blog",
+            "url": "https://www.k8s.guide/news/ecosystem/2026-03-28-kubecon-europe-2026-amsterdam-recap/",
+            "note": "Independent k8s.guide practitioner recap"
+          }
+        ],
+        "lastReviewed": "2026-04-27"
+      },
+      "source": "agent"
+    },
+    {
+      "id": "pycon-lithuania-2026",
+      "series": "pycon-lithuania",
+      "name": "PyCon Lithuania",
+      "edition": "2026",
+      "startDate": "2026-04-08",
+      "endDate": "2026-04-10",
+      "city": "Vilnius",
+      "country": "Lithuania",
+      "region": "europe",
+      "format": "in-person",
+      "url": "https://pycon.lt/2026",
+      "topics": [
+        "languages",
+        "ai-engineering"
+      ],
+      "logo": "logos/pycon.svg",
+      "signal": {
+        "rating": "medium",
+        "summary": "15th edition of the largest Python/PyData event in the Baltics and Nordics, 600+ attendees, 50+ practitioner talks across themed Python, Data, and AI days.",
+        "sources": [
+          {
+            "type": "blog",
+            "url": "https://mathspp.com/blog/personal-highlights-of-pycon-lithuania-2026",
+            "note": "Engineer Rodrigo Girao Serrao's personal post-event recap"
+          },
+          {
+            "type": "other",
+            "url": "https://www.python.org/events/python-events/2139/",
+            "note": "Official python.org listing"
+          }
+        ],
+        "lastReviewed": "2026-04-27"
+      },
+      "source": "agent"
+    },
+    {
+      "id": "pycon-de-2026",
+      "series": "pycon-de",
+      "name": "PyCon DE & PyData",
+      "edition": "2026",
+      "startDate": "2026-04-14",
+      "endDate": "2026-04-17",
+      "city": "Darmstadt",
+      "country": "Germany",
+      "region": "europe",
+      "format": "in-person",
+      "url": "https://2026.pycon.de/",
+      "topics": [
+        "languages",
+        "ai-engineering"
+      ],
+      "logo": "logos/pycon.svg",
+      "signal": {
+        "rating": "high",
+        "summary": "Europe's largest combined Python and PyData gathering, 2,000+ attendees and 100+ practitioner talks at the darmstadtium. Sprints Apr 13, masterclasses Apr 17.",
+        "sources": [
+          {
+            "type": "blog",
+            "url": "https://pioneershub.org/en/blog/20250428-pyconde-pydata-recap/",
+            "note": "Pioneers Hub recap of the 2025 edition (same series) showing engineer-led program"
+          },
+          {
+            "type": "other",
+            "url": "https://www.python.org/events/python-events/2102/",
+            "note": "Official python.org listing"
+          }
+        ],
+        "lastReviewed": "2026-04-27"
+      },
+      "source": "agent"
+    },
+    {
+      "id": "djangocon-europe-2026",
+      "series": "djangocon-europe",
+      "name": "DjangoCon Europe",
+      "edition": "2026",
+      "startDate": "2026-04-15",
+      "endDate": "2026-04-19",
+      "city": "Athens",
+      "country": "Greece",
+      "region": "europe",
+      "format": "in-person",
+      "url": "https://2026.djangocon.eu/",
+      "topics": [
+        "web",
+        "languages"
+      ],
+      "logo": null,
+      "signal": {
+        "rating": "medium",
+        "summary": "Community-run Django conference with three days of practitioner talks (Apr 15-17) at the Athens Conservatoire plus two days of sprints. Engineer-driven schedule covers Django/Postgres indexing, public-sector Django at scale.",
+        "sources": [
+          {
+            "type": "blog",
+            "url": "https://withlogic.co/var/log/2025/11/28/bringing-djangocon-europe-2026-to-athens",
+            "note": "Organising team's blog post on the 2026 edition"
+          },
+          {
+            "type": "other",
+            "url": "https://www.djangoproject.com/weblog/2025/nov/03/announcing-djangocon-europe-2026-in-athens-greece/",
+            "note": "Official Django project announcement"
+          }
+        ],
+        "lastReviewed": "2026-04-27"
+      },
+      "source": "agent"
+    },
+    {
+      "id": "google-cloud-next-2026",
+      "series": "google-cloud-next",
+      "name": "Google Cloud Next",
+      "edition": "2026",
+      "startDate": "2026-04-22",
+      "endDate": "2026-04-24",
+      "city": "Las Vegas",
+      "country": "United States",
+      "region": "north-america",
+      "format": "in-person",
+      "url": "https://cloud.withgoogle.com/next",
+      "topics": [
+        "ai-engineering",
+        "systems"
+      ],
+      "logo": null,
+      "vendorDriven": true,
+      "signal": {
+        "rating": "medium",
+        "summary": "Vendor flagship at Mandalay Bay, 32,000+ attendees, 700+ breakouts. Heavy product-marketing layer but a meaningful practitioner track on production agents, data engineering, and SecOps with hands-on labs.",
+        "sources": [
+          {
+            "type": "blog",
+            "url": "https://cloud.google.com/blog/topics/google-cloud-next/google-cloud-next-2026-wrap-up",
+            "note": "Official Day 1+wrap-up recap of practitioner sessions and labs"
+          },
+          {
+            "type": "blog",
+            "url": "https://workspace.google.com/blog/events/10-must-see-sessions-at-cloud-next-2026",
+            "note": "Curated list of practitioner-oriented Workspace/Gemini sessions"
+          }
+        ],
+        "lastReviewed": "2026-04-27"
+      },
+      "source": "agent"
+    },
+    {
+      "id": "react-miami-2026",
+      "series": "react-miami",
+      "name": "React Miami",
+      "edition": "2026",
+      "startDate": "2026-04-23",
+      "endDate": "2026-04-24",
+      "city": "Miami",
+      "country": "United States",
+      "region": "north-america",
+      "format": "in-person",
+      "url": "https://www.reactmiami.com/",
+      "topics": [
+        "web"
+      ],
+      "logo": null,
+      "signal": {
+        "rating": "medium",
+        "summary": "Sold-out two-day React conference at Hyatt Regency Miami with engineer-led talks (Aurora Scharff/Vercel, Rizel Scarlett, Brooks Lybrand/Shopify). The major US-based React event in the Jan-Apr window.",
+        "sources": [
+          {
+            "type": "blog",
+            "url": "https://agentuity.com/blog/react-miami-2025-recap",
+            "note": "Agentuity engineer recap of React Miami 2025 (same series)"
+          },
+          {
+            "type": "blog",
+            "url": "https://keegan.codes/blog/react-miami-2024-recap",
+            "note": "Keegan Leitz's earlier React Miami recap establishing program quality"
+          }
+        ],
+        "lastReviewed": "2026-04-27"
+      },
+      "source": "agent"
+    },
     {
       "id": "ndc-toronto-2026",
       "series": "ndc",
@@ -98,7 +510,7 @@
           {
             "type": "blog",
             "url": "https://treyhunner.com/2025/06/pycon-us-2025-recap/",
-            "note": "Trey Hunner's personal PyCon US 2025 recap — prominent Python educator, strong signal"
+            "note": "Trey Hunner's personal PyCon US 2025 recap \u2014 prominent Python educator, strong signal"
           },
           {
             "type": "blog",
@@ -658,7 +1070,7 @@
           {
             "type": "blog",
             "url": "https://ainativedev.io/news/ai-engineering-sf-fair-2025-learnings",
-            "note": "7 learnings from the 2025 AI Engineering SF World Fair — practitioner-written"
+            "note": "7 learnings from the 2025 AI Engineering SF World Fair \u2014 practitioner-written"
           },
           {
             "type": "other",
@@ -736,7 +1148,7 @@
           {
             "type": "blog",
             "url": "https://yashlara.medium.com/what-i-learned-from-attending-the-worlds-4-biggest-ai-conferences-this-year-8785a32fe2a1",
-            "note": "Practitioner blog covering ICML and other major AI conferences — recommends for depth"
+            "note": "Practitioner blog covering ICML and other major AI conferences \u2014 recommends for depth"
           }
         ],
         "lastReviewed": "2026-04-21"
@@ -762,7 +1174,7 @@
       "logo": "logos/europython.svg",
       "signal": {
         "rating": "high",
-        "summary": "Largest European Python conference, run by the EuroPython Society. 2025 in Prague drew 1,200+ attendees with multiple independent practitioner recaps; key takeaway from Will Vincent's recap was that 'professional developers are using AI tools but no one had fully automated workflows' — exactly the practitioner signal worth attending for.",
+        "summary": "Largest European Python conference, run by the EuroPython Society. 2025 in Prague drew 1,200+ attendees with multiple independent practitioner recaps; key takeaway from Will Vincent's recap was that 'professional developers are using AI tools but no one had fully automated workflows' \u2014 exactly the practitioner signal worth attending for.",
         "sources": [
           {
             "type": "blog",
@@ -840,7 +1252,7 @@
       "logo": "logos/gophercon.png",
       "signal": {
         "rating": "medium",
-        "summary": "The flagship Go programming conference, traditionally featuring core Go team members and named OSS contributors. 2025 NYC edition (Aug 26-28) had practitioner recaps; 2026 program (150+ submissions, lineup expected May 2026) is being reviewed by an evaluation committee — venue and dates confirmed.",
+        "summary": "The flagship Go programming conference, traditionally featuring core Go team members and named OSS contributors. 2025 NYC edition (Aug 26-28) had practitioner recaps; 2026 program (150+ submissions, lineup expected May 2026) is being reviewed by an evaluation committee \u2014 venue and dates confirmed.",
         "sources": [
           {
             "type": "blog",
@@ -1079,7 +1491,7 @@
           {
             "type": "blog",
             "url": "https://www.abundly.ai/blog/goto-2025-ai-agents-in-practice",
-            "note": "Practitioner recap of GOTO 2025 Copenhagen — AI agents in practice session"
+            "note": "Practitioner recap of GOTO 2025 Copenhagen \u2014 AI agents in practice session"
           },
           {
             "type": "other",
@@ -1320,7 +1732,7 @@
           {
             "type": "blog",
             "url": "https://www.harness.io/blog/kubecon-2025-recap",
-            "note": "Harness engineering blog KubeCon NA 2025 recap — AI-native era focus"
+            "note": "Harness engineering blog KubeCon NA 2025 recap \u2014 AI-native era focus"
           },
           {
             "type": "other",
@@ -1352,7 +1764,7 @@
       "logo": "logos/qcon.svg",
       "signal": {
         "rating": "high",
-        "summary": "Practitioner-curated senior engineering conference run by InfoQ; keynotes from named engineers at Google, Microsoft, and others. No vendor marketing — presentations are experience-based.",
+        "summary": "Practitioner-curated senior engineering conference run by InfoQ; keynotes from named engineers at Google, Microsoft, and others. No vendor marketing \u2014 presentations are experience-based.",
         "sources": [
           {
             "type": "blog",
@@ -1458,7 +1870,7 @@
       "logo": "logos/neurips.svg",
       "signal": {
         "rating": "high",
-        "summary": "The world's largest ML research conference; 21,575 submissions in 2025 with broad practitioner and researcher attendance. Sydney venue is first time in Australia — high buzz and accessibility for APAC ML community.",
+        "summary": "The world's largest ML research conference; 21,575 submissions in 2025 with broad practitioner and researcher attendance. Sydney venue is first time in Australia \u2014 high buzz and accessibility for APAC ML community.",
         "sources": [
           {
             "type": "blog",
