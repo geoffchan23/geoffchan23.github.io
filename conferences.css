@@ -95,6 +95,24 @@
     border-style: dashed;
     opacity: .75;
 }
+.conf-card-attending {
+    border-color: rgb(217, 119, 87);
+    box-shadow: 0 0 0 2px rgb(217, 119, 87);
+}
+.conf-list-item-attending {
+    border-color: rgb(217, 119, 87);
+    box-shadow: 0 0 0 2px rgb(217, 119, 87);
+}
+.conf-modal-attending {
+    display: inline-block;
+    margin-bottom: 1em;
+    padding: .25em .6em;
+    background: rgb(217, 119, 87);
+    color: #fff;
+    border-radius: 5.5px;
+    font-size: .8em;
+    font-weight: 700;
+}
 .conf-empty {
     opacity: .6;
     padding: 2em 0;

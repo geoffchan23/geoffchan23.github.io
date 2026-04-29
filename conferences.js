@@ -132,7 +132,10 @@ function renderCalendar(confs, anchor) {
         for (const c of visible) {
             const card = document.createElement("button");
             card.type = "button";
-            card.className = c.vendorDriven ? "conf-card conf-card-vendor" : "conf-card";
+            const cardClasses = ["conf-card"];
+            if (c.vendorDriven) cardClasses.push("conf-card-vendor");
+            if (c.attending) cardClasses.push("conf-card-attending");
+            card.className = cardClasses.join(" ");
             card.dataset.id = c.id;
             const editionLabel = c.edition && c.edition !== c.name ? `${c.name} — ${c.edition}` : c.name;
             card.title = editionLabel;
@@ -173,7 +176,10 @@ function renderList(conferences) {
     }
     for (const c of conferences) {
         const li = document.createElement("li");
-        li.className = c.vendorDriven ? "conf-list-item conf-list-item-vendor" : "conf-list-item";
+        const liClasses = ["conf-list-item"];
+        if (c.vendorDriven) liClasses.push("conf-list-item-vendor");
+        if (c.attending) liClasses.push("conf-list-item-attending");
+        li.className = liClasses.join(" ");
         li.dataset.id = c.id;
 
         const logo = document.createElement("div");
@@ -341,6 +347,13 @@ function openConferenceModal(c) {
     h.id = "conf-modal-title";
     h.textContent = c.edition && c.edition !== c.name ? `${c.name} — ${c.edition}` : c.name;
     el.appendChild(h);
+
+    if (c.attending) {
+        const badge = document.createElement("div");
+        badge.className = "conf-modal-attending";
+        badge.textContent = "✓ Attending";
+        el.appendChild(badge);
+    }
 
     const meta = document.createElement("div");
     meta.className = "conf-modal-meta";

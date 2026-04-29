@@ -515,7 +515,8 @@
         ],
         "lastReviewed": "2026-04-21"
       },
-      "source": "agent"
+      "source": "agent",
+      "attending": true
     },
     {
       "id": "code-with-claude-sf-2026",
