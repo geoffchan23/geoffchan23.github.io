@@ -20,3 +20,5 @@ vendor/
 !_comic_drafts/**/*.jpg
 !_comic_drafts/**/*.webp
 !conferences/logos/**/*.png
+!paris-study-game/**/*.png
+!levi-word-game/**/*.png

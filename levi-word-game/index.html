@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#1a1a2e">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <title>Levi's Hamilton Arcade</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Start Screen -->
+  <div id="screen-start" class="screen active">
+    <h1>Levi's Hamilton Arcade</h1>
+    <p class="subtitle">Pick a game</p>
+    <div class="menu-buttons">
+      <button id="btn-mode-scramble">Sentence Scramble</button>
+      <button id="btn-mode-wheel">Wheel of Fortune</button>
+    </div>
+  </div>
+
+  <!-- Sentence Scramble sub-menu (old start) -->
+  <div id="screen-scramble-menu" class="screen">
+    <h1>Sentence Scramble</h1>
+    <div class="menu-buttons">
+      <button id="btn-solo">Solo</button>
+      <button id="btn-two-player">Two Player</button>
+    </div>
+    <button id="btn-scramble-back" class="back-btn">Back</button>
+  </div>
+
+  <!-- Game Options Screen -->
+  <div id="screen-options" class="screen">
+    <h1>Game Options</h1>
+    <p class="options-label">Song:</p>
+    <div class="option-toggle">
+      <button id="btn-pick-song" class="option-btn active">Pick a Song</button>
+      <button id="btn-random-song" class="option-btn">Random Song</button>
+    </div>
+    <p class="options-label">Lyrics:</p>
+    <div class="option-toggle">
+      <button id="btn-lyrics-order" class="option-btn active">In Order</button>
+      <button id="btn-lyrics-random" class="option-btn">Shuffled</button>
+    </div>
+    <button id="btn-options-go" class="primary-btn">Go!</button>
+    <button id="btn-back-start" class="back-btn">Back</button>
+  </div>
+
+  <!-- Song Select Screen -->
+  <div id="screen-song-select" class="screen">
+    <h1>Pick a Song</h1>
+    <div id="song-list" class="song-list"></div>
+    <button id="btn-back-options" class="back-btn">Back</button>
+  </div>
+
+  <!-- Round Screen -->
+  <div id="screen-round" class="screen">
+    <div class="round-header">
+      <span id="round-song-title" class="song-title"></span>
+      <span id="timer" class="timer">0:30</span>
+      <span id="round-counter" class="round-counter"></span>
+    </div>
+    <div id="drop-zone" class="drop-zone">
+      <p class="drop-hint">Drag words here</p>
+    </div>
+    <div id="word-bank" class="word-bank"></div>
+    <div id="hint-container" class="hint-container"></div>
+    <div class="round-actions">
+      <button id="btn-hint" class="hint-btn">🎵 Hint</button>
+      <button id="btn-done" class="done-btn">Done</button>
+    </div>
+  </div>
+
+  <!-- Score Screen -->
+  <div id="screen-score" class="screen">
+    <h1>Results</h1>
+    <p class="score-label">Your answer:</p>
+    <div id="score-lyric" class="score-lyric"></div>
+    <p class="score-label">Correct answer:</p>
+    <div id="score-correct" class="score-lyric"></div>
+    <div id="score-points" class="score-points"></div>
+    <button id="btn-next-round" class="primary-btn">Next Lyric</button>
+  </div>
+
+  <!-- End Screen -->
+  <div id="screen-end" class="screen">
+    <h1 id="end-title">Game Over</h1>
+    <div id="end-scores" class="end-scores"></div>
+    <button id="btn-play-again" class="primary-btn">Play Again</button>
+  </div>
+
+  <!-- Two Player Turn Screen -->
+  <div id="screen-turn" class="screen">
+    <h1 id="turn-title">Player 2's Turn</h1>
+    <p>Pass the phone!</p>
+    <button id="btn-start-turn" class="primary-btn">Ready</button>
+  </div>
+
+  <!-- WoF Options Screen -->
+  <div id="screen-wof-options" class="screen">
+    <h1>Wheel of Fortune</h1>
+    <p class="options-label">Rounds:</p>
+    <div class="option-toggle">
+      <button data-rounds="1" class="option-btn wof-rounds">1</button>
+      <button data-rounds="3" class="option-btn wof-rounds active">3</button>
+      <button data-rounds="5" class="option-btn wof-rounds">5</button>
+    </div>
+    <p class="options-label">Players:</p>
+    <div class="option-toggle">
+      <button data-players="1" class="option-btn wof-players active">Solo</button>
+      <button data-players="2" class="option-btn wof-players">2 Player</button>
+    </div>
+    <div id="wof-name-inputs">
+      <input type="text" id="wof-name-1" placeholder="Player 1 name" value="Poop67 💩">
+    </div>
+    <button id="btn-wof-start" class="primary-btn">Start</button>
+    <button id="btn-wof-back-start" class="back-btn">Back</button>
+  </div>
+
+  <!-- WoF Play Screen -->
+  <div id="screen-wof-play" class="screen">
+    <button id="btn-wof-mute" class="wof-mute" aria-label="Toggle sound">🔊</button>
+    <div id="wof-scores" class="wof-scores"></div>
+    <div id="wof-category" class="wof-category">PHRASE</div>
+    <div id="wof-board" class="wof-board"></div>
+    <div class="wheel-wrap">
+      <canvas id="wof-wheel"></canvas>
+      <div class="wof-pointer"></div>
+    </div>
+    <div id="wof-status" class="wof-status"></div>
+    <button id="btn-wof-spin" class="primary-btn">SPIN</button>
+    <div id="wof-letters" class="wof-letters"></div>
+    <div id="wof-actions" class="wof-actions">
+      <button id="btn-wof-vowel" class="wof-action">Buy Vowel (250)</button>
+      <button id="btn-wof-solve" class="wof-action">Solve</button>
+    </div>
+    <div id="wof-solve-input" class="wof-solve-input">
+      <input type="text" id="wof-solve-text" placeholder="Type the phrase">
+      <button id="btn-wof-solve-submit">Submit</button>
+      <button id="btn-wof-solve-cancel">Cancel</button>
+    </div>
+  </div>
+
+  <!-- WoF Round End Screen -->
+  <div id="screen-wof-round-end" class="screen">
+    <h1 id="wof-round-end-title">Round Over</h1>
+    <div id="wof-round-end-phrase" class="wof-board"></div>
+    <div id="wof-round-end-scores" class="wof-scores"></div>
+    <button id="btn-wof-next-round" class="primary-btn">Next Round</button>
+  </div>
+
+  <!-- WoF Game Over Screen -->
+  <div id="screen-wof-game-over" class="screen">
+    <h1>Game Over</h1>
+    <div id="wof-final-scores" class="wof-scores"></div>
+    <button id="btn-wof-play-again" class="primary-btn">Play Again</button>
+    <button id="btn-wof-home" class="back-btn">Home</button>
+  </div>
+
+  <script src="drag.js"></script>
+  <script src="game.js"></script>
+  <script src="wheel-math.js"></script>
+  <script src="wheel-state.js"></script>
+  <script src="wheel-canvas.js"></script>
+  <script src="audio.js"></script>
+  <script src="wheel.js"></script>
+  <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("sw.js");
+    }
+  </script>
+</body>
+</html>
