@@ -19,8 +19,8 @@
   artist: "Matthew Inman"
   homepage: "https://theoatmeal.com"
   feed: "https://theoatmeal.com/feed/rss"
-  image_strategy: feed
-  image_selector: ""
+  image_strategy: scrape
+  image_selector: "#comic img"
   support:
     label: "Books"
     url: "https://theoatmeal.com/books"
