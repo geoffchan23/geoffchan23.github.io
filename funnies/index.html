@@ -1,0 +1,64 @@
+---
+layout: default
+title: "Funnies — daily comic digest"
+description: A daily digest of comics from artists Geoff Chan subscribes to. New issues land mornings ET, only on days something was posted.
+---
+<header>
+    <div>
+        <a href="/funnies/"><h1>funnies</h1></a>
+        <span>daily comic digest</span>
+    </div>
+    <nav>
+        <a href="/">Home</a>
+    </nav>
+</header>
+<main>
+    <section class="funnies-intro">
+        <h2>Funnies</h2>
+        <p>A daily digest of comics from artists I subscribe to. New issues land mornings ET, only on days something was posted.</p>
+        <p><a href="/funnies/feed.xml">Subscribe via RSS ↗</a></p>
+    </section>
+
+    {% assign all_issues = site.funnies | sort: 'date' | reverse %}
+    {% if all_issues.size == 0 %}
+    <p>No issues yet — the digest publishes on days when at least one of the subscribed comics ships a strip.</p>
+    {% else %}
+    <ul class="funnies-issues-list">
+        {% for issue in all_issues %}
+        <li>
+            <a href="{{ issue.url }}">{{ issue.date | date: "%B %-d, %Y" }}</a>
+            <span class="funnies-issue-comics">
+                {% assign names = "" | split: "," %}
+                {% for strip in issue.strips %}
+                    {% unless names contains strip.comic_name %}
+                        {% assign names = names | push: strip.comic_name %}
+                    {% endunless %}
+                {% endfor %}
+                {{ names | join: " · " }}
+            </span>
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    <section class="funnies-subscribed">
+        <h3>Subscribed comics</h3>
+        <ul class="funnies-subscribed-list">
+            {% for comic in site.data.funnies_subscriptions %}
+                {% if comic.active %}
+                <li>
+                    <span class="funnies-subscribed-name">
+                        <a href="{{ comic.homepage }}" target="_blank" rel="noopener">{{ comic.name }}</a>
+                        — {{ comic.artist }}
+                    </span>
+                    {% if comic.support %}
+                    <a class="funnies-subscribed-support" href="{{ comic.support.url }}" target="_blank" rel="noopener">
+                        {{ comic.support.label }} ↗
+                    </a>
+                    {% endif %}
+                </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </section>
+</main>
