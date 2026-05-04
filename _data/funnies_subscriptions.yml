@@ -22,15 +22,15 @@
   image_strategy: feed
   image_selector: ""
   support:
-    label: "Shop"
-    url: "https://theoatmeal.com/store"
+    label: "Books"
+    url: "https://theoatmeal.com/books"
   active: true
 
 - id: monkeyuser
   name: "MonkeyUser"
   artist: "MonkeyUser"
   homepage: "https://www.monkeyuser.com"
-  feed: "https://www.monkeyuser.com/rss.xml"
+  feed: "https://www.monkeyuser.com/index.xml"
   image_strategy: og
   image_selector: ""
   support:
