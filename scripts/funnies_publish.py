@@ -7,7 +7,7 @@ had at least one new strip published (by ET date).
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
 from datetime import date, datetime, timedelta, timezone
 from zoneinfo import ZoneInfo
 
@@ -17,6 +17,8 @@ import feedparser
 from bs4 import BeautifulSoup
 
 ET = ZoneInfo("America/New_York")
+
+Fetcher = Callable[[str], str]
 
 
 def load_subscriptions(path: Path) -> list[dict[str, Any]]:
@@ -87,3 +89,58 @@ def extract_image_feed(raw_description: str) -> str | None:
     soup = BeautifulSoup(raw_description, "html.parser")
     img = soup.find("img", src=True)
     return img["src"] if img else None
+
+
+def extract_image_og(html: str) -> str | None:
+    """Return the og:image URL from <meta property='og:image'>, or None."""
+    soup = BeautifulSoup(html, "html.parser")
+    meta = soup.find("meta", attrs={"property": "og:image"})
+    if meta and meta.get("content"):
+        return meta["content"].strip() or None
+    return None
+
+
+def extract_image_scrape(html: str, selector: str) -> str | None:
+    """Return the first matching element's src, or None."""
+    if not selector:
+        return None
+    soup = BeautifulSoup(html, "html.parser")
+    el = soup.select_one(selector)
+    if el and el.get("src"):
+        return el["src"].strip() or None
+    return None
+
+
+def extract_image(
+    comic: dict[str, Any],
+    entry: dict[str, Any],
+    fetcher: Fetcher,
+) -> str | None:
+    """Run the comic's configured strategy, falling forward to `og` if empty.
+
+    Returns the image URL or None. The script logs failure at the call site.
+    """
+    strategy = comic.get("image_strategy", "feed")
+
+    # First try the configured strategy.
+    if strategy == "feed":
+        url = extract_image_feed(entry.get("raw_description", ""))
+        if url:
+            return url
+    elif strategy == "og":
+        html = fetcher(entry["link"])
+        url = extract_image_og(html)
+        if url:
+            return url
+    elif strategy == "scrape":
+        html = fetcher(entry["link"])
+        url = extract_image_scrape(html, comic.get("image_selector", ""))
+        if url:
+            return url
+
+    # Fall forward to og (only if we haven't already tried it).
+    if strategy != "og" and entry.get("link"):
+        html = fetcher(entry["link"])
+        return extract_image_og(html)
+
+    return None

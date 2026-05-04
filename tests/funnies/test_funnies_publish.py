@@ -93,3 +93,63 @@ def test_extract_image_feed_returns_none_when_no_img() -> None:
     assert fp.extract_image_feed("") is None
     assert fp.extract_image_feed("<p>just text</p>") is None
     assert fp.extract_image_feed("<img>") is None  # no src attr
+
+
+def test_extract_image_og_reads_meta_property() -> None:
+    html = (FIXTURES / "monkeyuser_button_page.html").read_text()
+    assert fp.extract_image_og(html) == "https://www.monkeyuser.com/2025/button/justabutton.png"
+
+
+def test_extract_image_og_returns_none_when_missing() -> None:
+    assert fp.extract_image_og("<html><head></head><body></body></html>") is None
+
+
+def test_extract_image_scrape_uses_selector() -> None:
+    html = (FIXTURES / "monkeyuser_button_page.html").read_text()
+    url = fp.extract_image_scrape(html, "article img.comic-strip")
+    assert url == "https://www.monkeyuser.com/2025/button/justabutton.png"
+
+
+def test_extract_image_scrape_returns_none_when_selector_misses() -> None:
+    html = (FIXTURES / "monkeyuser_button_page.html").read_text()
+    assert fp.extract_image_scrape(html, "img.no-such-class") is None
+
+
+def test_extract_image_uses_feed_strategy_when_configured() -> None:
+    comic = {"image_strategy": "feed", "image_selector": ""}
+    entry = {
+        "raw_description": '<img src="https://cdn.example.com/x.png" />',
+        "link": "https://example.com/post/x",
+    }
+    # Fetcher should NOT be called for feed strategy.
+    def boom(_url: str) -> str:
+        raise AssertionError("fetcher should not be called")
+    assert fp.extract_image(comic, entry, fetcher=boom) == "https://cdn.example.com/x.png"
+
+
+def test_extract_image_uses_og_strategy_via_fetcher() -> None:
+    comic = {"image_strategy": "og", "image_selector": ""}
+    entry = {"raw_description": "", "link": "https://example.com/post/x"}
+    html = (FIXTURES / "monkeyuser_button_page.html").read_text()
+    fetched: list[str] = []
+    def fetcher(url: str) -> str:
+        fetched.append(url)
+        return html
+    url = fp.extract_image(comic, entry, fetcher=fetcher)
+    assert url == "https://www.monkeyuser.com/2025/button/justabutton.png"
+    assert fetched == ["https://example.com/post/x"]
+
+
+def test_extract_image_falls_forward_to_og_when_feed_empty() -> None:
+    comic = {"image_strategy": "feed", "image_selector": ""}
+    entry = {"raw_description": "<p>no image here</p>", "link": "https://example.com/post/x"}
+    html = (FIXTURES / "monkeyuser_button_page.html").read_text()
+    assert fp.extract_image(comic, entry, fetcher=lambda _u: html) == \
+        "https://www.monkeyuser.com/2025/button/justabutton.png"
+
+
+def test_extract_image_returns_none_when_all_strategies_miss() -> None:
+    comic = {"image_strategy": "feed", "image_selector": ""}
+    entry = {"raw_description": "", "link": "https://example.com/post/x"}
+    bare_html = "<html><head></head><body></body></html>"
+    assert fp.extract_image(comic, entry, fetcher=lambda _u: bare_html) is None
