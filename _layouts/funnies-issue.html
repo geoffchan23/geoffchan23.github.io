@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% assign issue_date = page.date | date: "%A, %B %-d, %Y" %}
+    {% assign first_image = page.strips[0].image_url %}
+    {% assign issue_title = "Funnies — " | append: issue_date %}
+    <title>{{ issue_title }}</title>
+    <meta name="description" content="Daily comic digest from artists Geoff Chan subscribes to. Issue for {{ issue_date }}.">
+    <link rel="canonical" href="{{ site.url }}{{ page.url }}">
+    <meta property="og:title" content="{{ issue_title }}">
+    <meta property="og:description" content="Daily comic digest from artists Geoff Chan subscribes to.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="{{ site.url }}{{ page.url }}">
+    {% if first_image %}
+    <meta property="og:image" content="{{ first_image }}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="{{ first_image }}">
+    {% endif %}
+    <meta name="twitter:title" content="{{ issue_title }}">
+    <link rel="alternate" type="application/atom+xml" title="Funnies" href="/funnies/feed.xml">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/reset.css">
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/funnies.css">
+    <script data-goatcounter="https://geoffchan23.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+</head>
+<body>
+    <div class="container funnies-container">
+        <header>
+            <div>
+                <a href="/funnies/"><h1>funnies</h1></a>
+                <span>daily comic digest</span>
+            </div>
+            <nav>
+                <a href="/">Home</a>
+                <a href="/funnies/">Index</a>
+            </nav>
+        </header>
+
+        <main>
+            {% assign all_issues = site.funnies | sort: 'date' %}
+            {% assign current_index = 0 %}
+            {% for iss in all_issues %}
+                {% if iss.url == page.url %}
+                    {% assign current_index = forloop.index0 %}
+                    {% break %}
+                {% endif %}
+            {% endfor %}
+            {% assign prev_issue = nil %}
+            {% assign next_issue = nil %}
+            {% if current_index > 0 %}
+                {% assign prev_issue = all_issues[current_index | minus: 1] %}
+            {% endif %}
+            {% assign next_index = current_index | plus: 1 %}
+            {% if next_index < all_issues.size %}
+                {% assign next_issue = all_issues[next_index] %}
+            {% endif %}
+
+            <section class="funnies-issue-header">
+                <h2 class="funnies-issue-title">Funnies — {{ issue_date }}</h2>
+                <nav class="funnies-issue-nav">
+                    {% if prev_issue %}
+                        <a href="{{ prev_issue.url }}">← {{ prev_issue.date | date: "%b %-d" }}</a>
+                    {% else %}
+                        <span class="funnies-issue-nav-disabled">← previous</span>
+                    {% endif %}
+                    {% if next_issue %}
+                        <a href="{{ next_issue.url }}">{{ next_issue.date | date: "%b %-d" }} →</a>
+                    {% else %}
+                        <span class="funnies-issue-nav-disabled">next →</span>
+                    {% endif %}
+                </nav>
+            </section>
+
+            <section class="funnies-strips">
+                {% for strip in page.strips %}
+                <article class="funnies-strip">
+                    <a href="{{ strip.source_url }}" class="funnies-strip-image-link"
+                       target="_blank" rel="noopener">
+                        <img src="{{ strip.image_url }}" alt="{{ strip.title | escape }}" loading="lazy">
+                    </a>
+                    <div class="funnies-strip-meta">
+                        <h3 class="funnies-strip-title">{{ strip.title }}</h3>
+                        <p class="funnies-strip-attribution">
+                            {{ strip.artist }} ·
+                            <a href="{{ strip.homepage }}" target="_blank" rel="noopener">{{ strip.comic_name }}</a>
+                        </p>
+                        <p class="funnies-strip-actions">
+                            <a class="funnies-strip-action" href="{{ strip.source_url }}"
+                               target="_blank" rel="noopener">Read on {{ strip.comic_name }} ↗</a>
+                            {% if strip.support %}
+                            <a class="funnies-strip-action funnies-strip-action-support"
+                               href="{{ strip.support.url }}" target="_blank" rel="noopener">
+                                Support {{ strip.artist }}: {{ strip.support.label }} ↗
+                            </a>
+                            {% endif %}
+                        </p>
+                    </div>
+                </article>
+                {% endfor %}
+            </section>
+        </main>
+    </div>
+</body>
+</html>
