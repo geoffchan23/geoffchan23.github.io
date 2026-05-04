@@ -28,6 +28,7 @@ exclude:
   - Gemfile.lock
   - _comic_drafts/
   - scripts/
+  - tests/
 
 defaults:
   - scope:
