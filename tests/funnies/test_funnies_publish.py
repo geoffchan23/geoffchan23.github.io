@@ -79,3 +79,17 @@ def test_entries_published_on_filters_to_target_date() -> None:
 
     none_for_date = fp.entries_published_on(entries, date(2026, 4, 29))
     assert none_for_date == []
+
+
+def test_extract_image_feed_pulls_first_img_src() -> None:
+    description = (
+        '<a href="http://example.com/x"><img src="https://cdn.example.com/x.png" /></a>'
+        '<img src="https://cdn.example.com/y.png" />'
+    )
+    assert fp.extract_image_feed(description) == "https://cdn.example.com/x.png"
+
+
+def test_extract_image_feed_returns_none_when_no_img() -> None:
+    assert fp.extract_image_feed("") is None
+    assert fp.extract_image_feed("<p>just text</p>") is None
+    assert fp.extract_image_feed("<img>") is None  # no src attr

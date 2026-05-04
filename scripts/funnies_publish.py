@@ -14,6 +14,7 @@ from zoneinfo import ZoneInfo
 import yaml
 from dateutil import parser as dateutil_parser
 import feedparser
+from bs4 import BeautifulSoup
 
 ET = ZoneInfo("America/New_York")
 
@@ -77,3 +78,12 @@ def parse_feed(xml_text: str) -> list[dict[str, Any]]:
 def entries_published_on(entries: list[dict[str, Any]], target: date) -> list[dict[str, Any]]:
     """Return entries whose pub_date_et equals target."""
     return [e for e in entries if e["pub_date_et"] == target]
+
+
+def extract_image_feed(raw_description: str) -> str | None:
+    """Return the first <img src=...> URL inside the description, or None."""
+    if not raw_description:
+        return None
+    soup = BeautifulSoup(raw_description, "html.parser")
+    img = soup.find("img", src=True)
+    return img["src"] if img else None
