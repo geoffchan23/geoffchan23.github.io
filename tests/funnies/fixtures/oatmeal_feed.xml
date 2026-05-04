@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns="http://purl.org/rss/1.0/"
+         xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel rdf:about="http://theoatmeal.com/feed/rss">
+    <title>The Oatmeal - Comics, Quizzes, &amp; Stories</title>
+    <link>http://theoatmeal.com/</link>
+    <description>The oatmeal tastes better than stale skittles found under the couch cushions</description>
+  </channel>
+  <item rdf:about="http://theoatmeal.com/comics/finish_drawing?no_popup=1">
+    <dc:format>text/html</dc:format>
+    <dc:date>2026-04-28T17:58:01+02:00</dc:date>
+    <dc:creator>Matthew Inman</dc:creator>
+    <title>Finish the drawing. It is NOT a plane!</title>
+    <link>http://theoatmeal.com/comics/finish_drawing?no_popup=1</link>
+    <description>&lt;a href="http://theoatmeal.com/comics/finish_drawing"&gt;&lt;img src="https://s3.amazonaws.com/theoatmeal-img/thumbnails/finish_drawing_big.png" /&gt;&lt;/a&gt;</description>
+  </item>
+  <item rdf:about="http://theoatmeal.com/comics/naked_mole_rats?no_popup=1">
+    <dc:format>text/html</dc:format>
+    <dc:date>2026-02-26T12:00:00+01:00</dc:date>
+    <dc:creator>Matthew Inman</dc:creator>
+    <title>We need to talk about naked mole rats</title>
+    <link>http://theoatmeal.com/comics/naked_mole_rats?no_popup=1</link>
+    <description>&lt;a href="http://theoatmeal.com/comics/naked_mole_rats"&gt;&lt;img src="https://s3.amazonaws.com/theoatmeal-img/thumbnails/naked_mole_rats_big.png" /&gt;&lt;/a&gt;</description>
+  </item>
+</rdf:RDF>

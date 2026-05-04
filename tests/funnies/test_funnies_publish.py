@@ -52,3 +52,30 @@ def test_parse_pub_date_et_returns_none_on_garbage() -> None:
     assert fp.parse_pub_date_et("not a date") is None
     assert fp.parse_pub_date_et("") is None
     assert fp.parse_pub_date_et(None) is None
+
+
+FIXTURES = Path(__file__).parent / "fixtures"
+
+
+def test_parse_feed_returns_entries_with_expected_fields() -> None:
+    xml = (FIXTURES / "oatmeal_feed.xml").read_text()
+    entries = fp.parse_feed(xml)
+
+    assert len(entries) == 2
+    first = entries[0]
+    assert first["title"] == "Finish the drawing. It is NOT a plane!"
+    assert first["link"] == "http://theoatmeal.com/comics/finish_drawing?no_popup=1"
+    assert first["pub_date_et"] == date(2026, 4, 28)
+    assert "finish_drawing_big.png" in first["raw_description"]
+
+
+def test_entries_published_on_filters_to_target_date() -> None:
+    xml = (FIXTURES / "oatmeal_feed.xml").read_text()
+    entries = fp.parse_feed(xml)
+
+    matching = fp.entries_published_on(entries, date(2026, 4, 28))
+    assert len(matching) == 1
+    assert matching[0]["title"].startswith("Finish the drawing")
+
+    none_for_date = fp.entries_published_on(entries, date(2026, 4, 29))
+    assert none_for_date == []
