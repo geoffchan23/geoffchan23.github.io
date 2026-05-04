@@ -153,3 +153,84 @@ def test_extract_image_returns_none_when_all_strategies_miss() -> None:
     entry = {"raw_description": "", "link": "https://example.com/post/x"}
     bare_html = "<html><head></head><body></body></html>"
     assert fp.extract_image(comic, entry, fetcher=lambda _u: bare_html) is None
+
+
+def test_build_strip_assembles_expected_fields() -> None:
+    comic = {
+        "id": "oatmeal",
+        "name": "The Oatmeal",
+        "artist": "Matthew Inman",
+        "homepage": "https://theoatmeal.com",
+        "support": {"label": "Shop", "url": "https://theoatmeal.com/store"},
+    }
+    entry = {
+        "title": "Finish the drawing",
+        "link": "http://theoatmeal.com/comics/finish_drawing",
+    }
+    strip = fp.build_strip(comic, entry, "https://cdn.example.com/x.png")
+
+    assert strip == {
+        "comic_id": "oatmeal",
+        "comic_name": "The Oatmeal",
+        "artist": "Matthew Inman",
+        "homepage": "https://theoatmeal.com",
+        "title": "Finish the drawing",
+        "image_url": "https://cdn.example.com/x.png",
+        "source_url": "http://theoatmeal.com/comics/finish_drawing",
+        "support": {"label": "Shop", "url": "https://theoatmeal.com/store"},
+    }
+
+
+def test_build_strip_omits_support_when_missing() -> None:
+    comic = {
+        "id": "x",
+        "name": "X",
+        "artist": "Anon",
+        "homepage": "https://x.example",
+    }
+    entry = {"title": "T", "link": "https://x.example/t"}
+    strip = fp.build_strip(comic, entry, "https://x.example/t.png")
+
+    assert "support" not in strip
+
+
+def test_write_issue_creates_file_with_yaml_front_matter(tmp_path: Path) -> None:
+    funnies_dir = tmp_path / "_funnies"
+    strips = [
+        {
+            "comic_id": "oatmeal",
+            "comic_name": "The Oatmeal",
+            "artist": "Matthew Inman",
+            "homepage": "https://theoatmeal.com",
+            "title": "Finish the drawing",
+            "image_url": "https://cdn.example.com/x.png",
+            "source_url": "http://theoatmeal.com/comics/finish_drawing",
+            "support": {"label": "Shop", "url": "https://theoatmeal.com/store"},
+        }
+    ]
+    out_path = fp.write_issue(date(2026, 4, 28), strips, funnies_dir)
+
+    assert out_path == funnies_dir / "2026-04-28.md"
+    contents = out_path.read_text()
+    assert contents.startswith("---\n")
+    assert "layout: funnies-issue\n" in contents
+    assert "date: 2026-04-28\n" in contents
+    assert "comic_id: oatmeal" in contents
+    assert "image_url: https://cdn.example.com/x.png" in contents
+    assert contents.rstrip().endswith("---")
+
+
+def test_write_issue_overwrites_existing(tmp_path: Path) -> None:
+    funnies_dir = tmp_path / "_funnies"
+    funnies_dir.mkdir()
+    (funnies_dir / "2026-04-28.md").write_text("stale")
+
+    fp.write_issue(date(2026, 4, 28), [
+        {
+            "comic_id": "x", "comic_name": "X", "artist": "A",
+            "homepage": "https://x", "title": "T",
+            "image_url": "https://x/t.png", "source_url": "https://x/t",
+        }
+    ], funnies_dir)
+
+    assert "stale" not in (funnies_dir / "2026-04-28.md").read_text()

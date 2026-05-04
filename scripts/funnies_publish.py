@@ -144,3 +144,45 @@ def extract_image(
         return extract_image_og(html)
 
     return None
+
+
+def build_strip(
+    comic: dict[str, Any],
+    entry: dict[str, Any],
+    image_url: str,
+) -> dict[str, Any]:
+    """Build the per-strip dict that goes into the issue's front matter."""
+    strip: dict[str, Any] = {
+        "comic_id": comic["id"],
+        "comic_name": comic["name"],
+        "artist": comic["artist"],
+        "homepage": comic["homepage"],
+        "title": entry["title"],
+        "image_url": image_url,
+        "source_url": entry["link"],
+    }
+    if comic.get("support"):
+        strip["support"] = comic["support"]
+    return strip
+
+
+def write_issue(target: date, strips: list[dict[str, Any]], funnies_dir: Path) -> Path:
+    """Write _funnies/YYYY-MM-DD.md with the strip list in front matter."""
+    funnies_dir.mkdir(parents=True, exist_ok=True)
+    out_path = funnies_dir / f"{target.isoformat()}.md"
+
+    # We hand-construct the front matter (rather than yaml.dump on the whole thing)
+    # so the date stays unquoted and key order is stable.
+    body_data = {
+        "layout": "funnies-issue",
+        "date": target,
+        "strips": strips,
+    }
+    front_matter = yaml.safe_dump(
+        body_data,
+        sort_keys=False,
+        allow_unicode=True,
+        default_flow_style=False,
+    )
+    out_path.write_text(f"---\n{front_matter}---\n")
+    return out_path
