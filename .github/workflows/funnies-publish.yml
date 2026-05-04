@@ -46,6 +46,13 @@ jobs:
           fi
           git config user.name "Geoff Chan"
           git config user.email "geoffchan23@gmail.com"
+          # Derive the issue date from the file the script just wrote, not from
+          # `ls -1t` (whose mtime ordering is fragile across runners).
+          new_issue=$(git status --porcelain _funnies/ | awk '/^\?\?|^[ M]?A|^A/ {print $NF}' | head -n1)
+          issue_date=$(basename "$new_issue" .md)
           git add _funnies/
-          git commit -m "funnies: publish $(ls -1t _funnies/ | head -n1 | sed 's/\.md$//')"
+          git commit -m "funnies: publish ${issue_date}"
+          # Pull-rebase before push to avoid colliding with the hourly
+          # usage-stats publisher (same repo, same branch, separate cron).
+          git pull --rebase --autostash origin main
           git push

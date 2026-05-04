@@ -325,8 +325,8 @@ Initial `_data/funnies_subscriptions.yml`:
 
 | id | name | artist | feed | strategy | support |
 |---|---|---|---|---|---|
-| `oatmeal` | The Oatmeal | Matthew Inman | `https://theoatmeal.com/feed/rss` | `feed` | Shop → `https://theoatmeal.com/store` |
-| `monkeyuser` | MonkeyUser | MonkeyUser | `https://www.monkeyuser.com/rss.xml` | `og` | Patreon → `https://www.patreon.com/monkeyuser` |
+| `oatmeal` | The Oatmeal | Matthew Inman | `https://theoatmeal.com/feed/rss` | `feed` | Books → `https://theoatmeal.com/books` |
+| `monkeyuser` | MonkeyUser | MonkeyUser | `https://www.monkeyuser.com/index.xml` | `og` | Patreon → `https://www.patreon.com/monkeyuser` |
 | `kohney` | The Other End Comics | Neil Kohney | `https://www.kohney.com/feed` | `feed` | Patreon → `https://www.patreon.com/TheOtherEnd` |
 | `davecontra` | Davecontra | Dave | `https://davecontra.com/comics?format=rss` | `feed` | Patreon → `https://www.patreon.com/davecontra/membership` |
 
