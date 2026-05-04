@@ -6,17 +6,23 @@ had at least one new strip published (by ET date).
 """
 from __future__ import annotations
 
+import argparse
+import logging
+import sys
 from pathlib import Path
 from typing import Any, Callable
 from datetime import date, datetime, timedelta, timezone
 from zoneinfo import ZoneInfo
 
-import yaml
-from dateutil import parser as dateutil_parser
 import feedparser
+import requests
+import yaml
 from bs4 import BeautifulSoup
+from dateutil import parser as dateutil_parser
 
 ET = ZoneInfo("America/New_York")
+
+logger = logging.getLogger("funnies_publish")
 
 Fetcher = Callable[[str], str]
 
@@ -186,3 +192,94 @@ def write_issue(target: date, strips: list[dict[str, Any]], funnies_dir: Path) -
     )
     out_path.write_text(f"---\n{front_matter}---\n")
     return out_path
+
+
+def http_fetcher(url: str) -> str:
+    """Fetch a URL and return its decoded body. Raises on non-2xx."""
+    resp = requests.get(url, timeout=20, headers={
+        "User-Agent": "funnies-publish/1.0 (+https://geoffreychan.com/funnies/)",
+    })
+    resp.raise_for_status()
+    return resp.text
+
+
+def run(
+    target_date: date,
+    subscriptions_path: Path,
+    funnies_dir: Path,
+    fetcher: Fetcher,
+) -> Path | None:
+    """Execute one publishing run for `target_date`. Returns the written path or None."""
+    subs = load_subscriptions(subscriptions_path)
+    strips: list[dict[str, Any]] = []
+
+    for comic in subs:
+        cid = comic.get("id", "?")
+        try:
+            xml = fetcher(comic["feed"])
+        except Exception as exc:
+            logger.warning("feed fetch failed for %s: %s", cid, exc)
+            continue
+
+        entries = parse_feed(xml)
+        matching = entries_published_on(entries, target_date)
+        if not matching:
+            continue
+
+        for entry in matching:
+            try:
+                image_url = extract_image(comic, entry, fetcher)
+            except Exception as exc:
+                logger.warning("image extract failed for %s entry %r: %s",
+                               cid, entry.get("title"), exc)
+                continue
+            if not image_url:
+                logger.warning("no image found for %s entry %r", cid, entry.get("title"))
+                continue
+            strips.append(build_strip(comic, entry, image_url))
+
+    if not strips:
+        logger.info("no strips on %s; nothing to write", target_date.isoformat())
+        return None
+
+    out = write_issue(target_date, strips, funnies_dir)
+    logger.info("wrote %s with %d strip(s)", out, len(strips))
+    return out
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description="Publish a daily /funnies issue.")
+    parser.add_argument("--date", help="Target ET date YYYY-MM-DD (default: yesterday in ET).")
+    parser.add_argument(
+        "--subscriptions",
+        default="_data/funnies_subscriptions.yml",
+        help="Path to subscriptions YAML.",
+    )
+    parser.add_argument(
+        "--funnies-dir",
+        default="_funnies",
+        help="Output directory for issue files.",
+    )
+    args = parser.parse_args(argv)
+
+    logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
+
+    if args.date:
+        try:
+            target = date.fromisoformat(args.date)
+        except ValueError:
+            parser.error(f"invalid --date {args.date!r}, expected YYYY-MM-DD")
+    else:
+        target = target_date_et()
+
+    run(
+        target_date=target,
+        subscriptions_path=Path(args.subscriptions),
+        funnies_dir=Path(args.funnies_dir),
+        fetcher=http_fetcher,
+    )
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

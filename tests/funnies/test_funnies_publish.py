@@ -1,7 +1,9 @@
 """Tests for scripts/funnies_publish.py."""
 from pathlib import Path
 import textwrap
+import textwrap as _tw
 from datetime import date, datetime, timezone
+from typing import Any
 
 import funnies_publish as fp
 
@@ -234,3 +236,131 @@ def test_write_issue_overwrites_existing(tmp_path: Path) -> None:
     ], funnies_dir)
 
     assert "stale" not in (funnies_dir / "2026-04-28.md").read_text()
+
+
+def test_run_writes_issue_with_strips_from_matching_entries(tmp_path: Path) -> None:
+    subs = tmp_path / "subs.yml"
+    subs.write_text(_tw.dedent("""\
+        - id: oatmeal
+          name: "The Oatmeal"
+          artist: "Matthew Inman"
+          homepage: "https://theoatmeal.com"
+          feed: "https://theoatmeal.com/feed/rss"
+          image_strategy: feed
+          image_selector: ""
+          support:
+            label: "Shop"
+            url: "https://theoatmeal.com/store"
+          active: true
+    """))
+    funnies_dir = tmp_path / "_funnies"
+
+    feed_xml = (FIXTURES / "oatmeal_feed.xml").read_text()
+    def fetcher(url: str) -> str:
+        assert url == "https://theoatmeal.com/feed/rss"
+        return feed_xml
+
+    written = fp.run(
+        target_date=date(2026, 4, 28),
+        subscriptions_path=subs,
+        funnies_dir=funnies_dir,
+        fetcher=fetcher,
+    )
+
+    assert written == funnies_dir / "2026-04-28.md"
+    text = written.read_text()
+    assert "Finish the drawing" in text
+    assert "finish_drawing_big.png" in text
+
+
+def test_run_writes_nothing_when_no_strips_match(tmp_path: Path) -> None:
+    subs = tmp_path / "subs.yml"
+    subs.write_text(_tw.dedent("""\
+        - id: oatmeal
+          name: "The Oatmeal"
+          artist: "Matthew Inman"
+          homepage: "https://theoatmeal.com"
+          feed: "https://theoatmeal.com/feed/rss"
+          image_strategy: feed
+          image_selector: ""
+          support:
+            label: "Shop"
+            url: "https://theoatmeal.com/store"
+          active: true
+    """))
+    funnies_dir = tmp_path / "_funnies"
+    feed_xml = (FIXTURES / "oatmeal_feed.xml").read_text()
+
+    written = fp.run(
+        target_date=date(2099, 1, 1),
+        subscriptions_path=subs,
+        funnies_dir=funnies_dir,
+        fetcher=lambda _u: feed_xml,
+    )
+
+    assert written is None
+    assert not funnies_dir.exists() or list(funnies_dir.iterdir()) == []
+
+
+def test_run_skips_comic_when_feed_fetch_fails(tmp_path: Path) -> None:
+    subs = tmp_path / "subs.yml"
+    subs.write_text(_tw.dedent("""\
+        - id: oatmeal
+          name: "The Oatmeal"
+          artist: "Matthew Inman"
+          homepage: "https://theoatmeal.com"
+          feed: "https://theoatmeal.com/feed/rss"
+          image_strategy: feed
+          image_selector: ""
+          active: true
+        - id: working
+          name: "Working"
+          artist: "X"
+          homepage: "https://x.example"
+          feed: "https://x.example/feed"
+          image_strategy: feed
+          image_selector: ""
+          active: true
+    """))
+    funnies_dir = tmp_path / "_funnies"
+    feed_xml = (FIXTURES / "oatmeal_feed.xml").read_text()
+
+    def fetcher(url: str) -> str:
+        if "theoatmeal" in url:
+            raise RuntimeError("simulated 500")
+        return feed_xml.replace("Matthew Inman", "X").replace("The Oatmeal", "Working")
+
+    # Should not raise — failed comic is skipped, working comic still produces an issue.
+    written = fp.run(
+        target_date=date(2026, 4, 28),
+        subscriptions_path=subs,
+        funnies_dir=funnies_dir,
+        fetcher=fetcher,
+    )
+
+    assert written is not None
+    text = written.read_text()
+    assert "comic_id: working" in text
+    assert "comic_id: oatmeal" not in text
+
+
+def test_main_parses_date_argument(tmp_path: Path, monkeypatch) -> None:
+    """End-to-end smoke for the CLI: --date drives target_date."""
+    subs = tmp_path / "subs.yml"
+    subs.write_text("[]")
+    funnies_dir = tmp_path / "_funnies"
+
+    captured: dict[str, Any] = {}
+    def fake_run(target_date, subscriptions_path, funnies_dir, fetcher):
+        captured["target_date"] = target_date
+        return None
+
+    monkeypatch.setattr(fp, "run", fake_run)
+    rc = fp.main([
+        "--date", "2026-04-28",
+        "--subscriptions", str(subs),
+        "--funnies-dir", str(funnies_dir),
+    ])
+
+    assert rc == 0
+    assert captured["target_date"] == date(2026, 4, 28)
