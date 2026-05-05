@@ -16,9 +16,6 @@ collections:
   comics:
     output: true
     permalink: /comics/:title/
-  funnies:
-    output: true
-    permalink: /funnies/:path/
 
 exclude:
   - docs/
@@ -31,7 +28,6 @@ exclude:
   - Gemfile.lock
   - _comic_drafts/
   - scripts/
-  - tests/
 
 defaults:
   - scope:
@@ -44,8 +40,3 @@ defaults:
       type: comics
     values:
       layout: comic
-  - scope:
-      path: ""
-      type: funnies
-    values:
-      layout: funnies-issue
