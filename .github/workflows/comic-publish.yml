@@ -1,12 +1,6 @@
 name: Comic Factory — Publish
 
 on:
-  schedule:
-    # 09:15 America/New_York (13:15 UTC during EDT, 14:15 UTC during EST).
-    # GitHub cron runs in UTC with no DST adjustment, so this targets roughly
-    # 9:15am ET year-round with ±1hr drift at DST transitions. Close enough
-    # for a comic page.
-    - cron: '15 13 * * *'
   workflow_dispatch:
 
 permissions:
