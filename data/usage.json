@@ -1,23 +1,15 @@
 {
-  "generatedAt": "2026-05-14T19:44:38Z",
+  "generatedAt": "2026-05-14T20:45:22Z",
   "last24h": {
-    "totalTokens": 542172151,
-    "costUsd": 410.86005015000006,
+    "totalTokens": 470782539,
+    "costUsd": 346.26860495,
     "byModel": {
-      "claude-opus-4-7": 538511803,
+      "claude-opus-4-7": 459898812,
       "<synthetic>": 0,
-      "claude-haiku-4-5-20251001": 3660348
+      "claude-haiku-4-5-20251001": 10883727
     }
   },
   "hourly": [
-    {
-      "t": "2026-05-07T19:00:00Z",
-      "tokens": 4312104,
-      "costUsd": 8.74186025,
-      "byModel": {
-        "claude-opus-4-7": 4312104
-      }
-    },
     {
       "t": "2026-05-07T22:00:00Z",
       "tokens": 1507579,
@@ -157,10 +149,10 @@
     },
     {
       "t": "2026-05-13T15:00:00Z",
-      "tokens": 2015681,
-      "costUsd": 2.440745750000001,
+      "tokens": 2281427,
+      "costUsd": 2.782337750000001,
       "byModel": {
-        "claude-opus-4-7": 2015681
+        "claude-opus-4-7": 2281427
       }
     },
     {
@@ -299,6 +291,15 @@
       "byModel": {
         "claude-opus-4-7": 2039902,
         "claude-haiku-4-5-20251001": 3660348
+      }
+    },
+    {
+      "t": "2026-05-14T20:00:00Z",
+      "tokens": 12426595,
+      "costUsd": 8.2144818,
+      "byModel": {
+        "claude-opus-4-7": 5203216,
+        "claude-haiku-4-5-20251001": 7223379
       }
     }
   ],
@@ -1374,21 +1375,21 @@
     },
     {
       "t": "2026-05-13",
-      "tokens": 198447269,
-      "costUsd": 180.8517472499996,
+      "tokens": 198713015,
+      "costUsd": 181.1933392499996,
       "byModel": {
-        "claude-opus-4-7": 198447269,
+        "claude-opus-4-7": 198713015,
         "<synthetic>": 0
       }
     },
     {
       "t": "2026-05-14",
-      "tokens": 361812753,
-      "costUsd": 260.1509716499994,
+      "tokens": 374239348,
+      "costUsd": 268.3654534499995,
       "byModel": {
-        "claude-opus-4-7": 358152405,
+        "claude-opus-4-7": 363355621,
         "<synthetic>": 0,
-        "claude-haiku-4-5-20251001": 3660348
+        "claude-haiku-4-5-20251001": 10883727
       }
     }
   ]
