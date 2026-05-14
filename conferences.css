@@ -239,13 +239,18 @@
     background: transparent;
     opacity: .35;
 }
-.conf-cal-cell-today {
-    border-color: rgb(217, 119, 87);
-    box-shadow: 0 0 0 1px rgb(217, 119, 87);
-}
 .conf-cal-daynum {
     font-size: .75em;
     opacity: .6;
+}
+.conf-cal-cell-today .conf-cal-daynum {
+    opacity: 1;
+    align-self: flex-start;
+    background: rgb(217, 119, 87);
+    color: #fff;
+    border-radius: 999px;
+    padding: 2px 7px;
+    font-weight: 700;
 }
 .conf-cal-items {
     display: flex;
