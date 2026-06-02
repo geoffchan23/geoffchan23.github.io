@@ -1,22 +1,14 @@
 {
-  "generatedAt": "2026-06-02T14:41:14Z",
+  "generatedAt": "2026-06-02T15:41:14Z",
   "last24h": {
-    "totalTokens": 73549140,
-    "costUsd": 70.93559299999998,
+    "totalTokens": 85872500,
+    "costUsd": 76.0303655,
     "byModel": {
-      "claude-opus-4-8": 11317515,
-      "claude-opus-4-7": 62231625
+      "claude-opus-4-8": 5581417,
+      "claude-opus-4-7": 80291083
     }
   },
   "hourly": [
-    {
-      "t": "2026-05-26T15:00:00Z",
-      "tokens": 505023,
-      "costUsd": 1.6532937499999993,
-      "byModel": {
-        "claude-opus-4-7": 505023
-      }
-    },
     {
       "t": "2026-05-26T19:00:00Z",
       "tokens": 7115435,
@@ -314,6 +306,15 @@
       "costUsd": 34.606478749999994,
       "byModel": {
         "claude-opus-4-7": 47812726
+      }
+    },
+    {
+      "t": "2026-06-02T15:00:00Z",
+      "tokens": 20179881,
+      "costUsd": 12.907206000000011,
+      "byModel": {
+        "claude-opus-4-7": 18059458,
+        "claude-opus-4-8": 2120423
       }
     }
   ],
@@ -1556,10 +1557,11 @@
     },
     {
       "t": "2026-06-02",
-      "tokens": 53125465,
-      "costUsd": 42.86669049999998,
+      "tokens": 73305346,
+      "costUsd": 55.77389650000003,
       "byModel": {
-        "claude-opus-4-7": 53125465
+        "claude-opus-4-7": 71184923,
+        "claude-opus-4-8": 2120423
       }
     }
   ]
