@@ -12,7 +12,6 @@
 - [Tokens](https://geoffreychan.com/tokens/): Live Claude Code token usage from my smart-home agent, updated hourly.
 - [Conferences](https://geoffreychan.com/conferences/): Agent-curated, high-signal software engineering conference calendar with an AI engineering bias. Filterable by region and topic.
 - [Art](https://geoffreychan.com/art/): Sketchbook and personal art.
-- [Comic Factory](https://geoffreychan.com/comics/): AI-generated gag comics from my scripts.
 
 ## External
 

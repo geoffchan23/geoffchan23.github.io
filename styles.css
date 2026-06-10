@@ -99,7 +99,8 @@ p + p {
 section {
     margin-bottom: 2.5em; /* Increased section margin */
 }
-section:not(.about) p {
+section:not(.about) p,
+section:not(.about) ul {
     opacity: .6;
 }
 section a {
