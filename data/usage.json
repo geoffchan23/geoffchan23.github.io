@@ -1,23 +1,16 @@
 {
-  "generatedAt": "2026-06-12T12:56:24Z",
+  "generatedAt": "2026-06-12T14:00:32Z",
   "last24h": {
-    "totalTokens": 331014357,
-    "costUsd": 194.99200949999994,
+    "totalTokens": 265607258,
+    "costUsd": 140.97051765,
     "byModel": {
-      "claude-opus-4-8": 267869482,
+      "claude-opus-4-8": 188577280,
       "<synthetic>": 0,
-      "claude-fable-5": 63144875
+      "claude-fable-5": 73380856,
+      "claude-haiku-4-5-20251001": 3649122
     }
   },
   "hourly": [
-    {
-      "t": "2026-06-05T13:00:00Z",
-      "tokens": 5347909,
-      "costUsd": 7.52466575,
-      "byModel": {
-        "claude-opus-4-8": 5347909
-      }
-    },
     {
       "t": "2026-06-05T14:00:00Z",
       "tokens": 18622169,
@@ -313,11 +306,22 @@
     },
     {
       "t": "2026-06-11T19:00:00Z",
-      "tokens": 75244113,
-      "costUsd": 11.336748000000002,
+      "tokens": 75625539,
+      "costUsd": 11.693769750000001,
       "byModel": {
-        "claude-opus-4-8": 12099238,
+        "claude-opus-4-8": 12480664,
         "claude-fable-5": 63144875
+      }
+    },
+    {
+      "t": "2026-06-12T13:00:00Z",
+      "tokens": 24716072,
+      "costUsd": 10.440649400000005,
+      "byModel": {
+        "claude-fable-5": 10235981,
+        "claude-opus-4-8": 10830969,
+        "claude-haiku-4-5-20251001": 3649122,
+        "<synthetic>": 0
       }
     }
   ],
@@ -1640,19 +1644,24 @@
     },
     {
       "t": "2026-06-11",
-      "tokens": 331014357,
-      "costUsd": 194.99200949999997,
+      "tokens": 331395783,
+      "costUsd": 195.34903124999997,
       "byModel": {
-        "claude-opus-4-8": 267869482,
+        "claude-opus-4-8": 268250908,
         "claude-fable-5": 63144875,
         "<synthetic>": 0
       }
     },
     {
       "t": "2026-06-12",
-      "tokens": 0,
-      "costUsd": 0,
-      "byModel": {}
+      "tokens": 24716072,
+      "costUsd": 10.440649400000005,
+      "byModel": {
+        "claude-fable-5": 10235981,
+        "claude-opus-4-8": 10830969,
+        "claude-haiku-4-5-20251001": 3649122,
+        "<synthetic>": 0
+      }
     }
   ]
 }
