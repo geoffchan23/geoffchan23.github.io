@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-12T23:05:33Z",
+  "generatedAt": "2026-06-13T00:05:34Z",
   "last24h": {
     "totalTokens": 78037946,
     "costUsd": 15.387350900000001,
@@ -1645,6 +1645,12 @@
         "claude-haiku-4-5-20251001": 3649122,
         "<synthetic>": 0
       }
+    },
+    {
+      "t": "2026-06-13",
+      "tokens": 0,
+      "costUsd": 0,
+      "byModel": {}
     }
   ]
 }
