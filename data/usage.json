@@ -1,33 +1,22 @@
 {
-  "generatedAt": "2026-06-19T13:51:09Z",
+  "generatedAt": "2026-06-19T14:54:02Z",
   "last24h": {
-    "totalTokens": 149876077,
-    "costUsd": 133.64880214999997,
+    "totalTokens": 183856171,
+    "costUsd": 158.16941864999998,
     "byModel": {
-      "claude-opus-4-8": 129018300,
+      "claude-opus-4-8": 158150855,
       "<synthetic>": 0,
-      "claude-sonnet-4-6": 14139494,
+      "claude-sonnet-4-6": 18987033,
       "claude-haiku-4-5-20251001": 6718283
     }
   },
   "hourly": [
     {
-      "t": "2026-06-12T13:00:00Z",
-      "tokens": 2062373,
-      "costUsd": 0.7270079999999999,
-      "byModel": {
-        "claude-opus-4-8": 966642,
-        "claude-fable-5": 1095731,
-        "<synthetic>": 0
-      }
-    },
-    {
       "t": "2026-06-12T14:00:00Z",
-      "tokens": 16687506,
-      "costUsd": 4.492520999999999,
+      "tokens": 185348,
+      "costUsd": 0.098967,
       "byModel": {
-        "claude-opus-4-8": 6620135,
-        "claude-fable-5": 10067371
+        "claude-opus-4-8": 185348
       }
     },
     {
@@ -379,12 +368,21 @@
     },
     {
       "t": "2026-06-19T13:00:00Z",
-      "tokens": 47929184,
-      "costUsd": 28.70328229999999,
+      "tokens": 53890944,
+      "costUsd": 32.3298958,
       "byModel": {
         "claude-haiku-4-5-20251001": 5192719,
         "claude-sonnet-4-6": 12616310,
-        "claude-opus-4-8": 30120155
+        "claude-opus-4-8": 36081915
+      }
+    },
+    {
+      "t": "2026-06-19T14:00:00Z",
+      "tokens": 28699246,
+      "costUsd": 23.047134000000003,
+      "byModel": {
+        "claude-opus-4-8": 23851707,
+        "claude-sonnet-4-6": 4847539
       }
     }
   ],
@@ -1779,12 +1777,12 @@
     },
     {
       "t": "2026-06-19",
-      "tokens": 70832416,
-      "costUsd": 61.60537890000001,
+      "tokens": 105493422,
+      "costUsd": 88.27912640000012,
       "byModel": {
         "claude-haiku-4-5-20251001": 6718283,
-        "claude-opus-4-8": 49974639,
-        "claude-sonnet-4-6": 14139494
+        "claude-opus-4-8": 79788106,
+        "claude-sonnet-4-6": 18987033
       }
     }
   ]
