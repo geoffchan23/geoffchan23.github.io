@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-06-19T16:40:59Z",
+  "generatedAt": "2026-06-19T17:41:04Z",
   "last24h": {
-    "totalTokens": 215642706,
-    "costUsd": 184.1714189,
+    "totalTokens": 220930328,
+    "costUsd": 183.25443024999996,
     "byModel": {
-      "claude-opus-4-8": 183402882,
+      "claude-opus-4-8": 183874060,
       "<synthetic>": 0,
-      "claude-sonnet-4-6": 24923104,
-      "claude-haiku-4-5-20251001": 7316720
+      "claude-sonnet-4-6": 27334436,
+      "claude-haiku-4-5-20251001": 9721832
     }
   },
   "hourly": [
@@ -354,10 +354,10 @@
     },
     {
       "t": "2026-06-19T14:00:00Z",
-      "tokens": 37906284,
-      "costUsd": 30.662795950000003,
+      "tokens": 38374218,
+      "costUsd": 31.185895450000004,
       "byModel": {
-        "claude-opus-4-8": 31133517,
+        "claude-opus-4-8": 31601451,
         "claude-haiku-4-5-20251001": 598437,
         "claude-sonnet-4-6": 6174330
       }
@@ -373,11 +373,21 @@
     },
     {
       "t": "2026-06-19T16:00:00Z",
-      "tokens": 2432297,
-      "costUsd": 6.30172795,
+      "tokens": 25425148,
+      "costUsd": 20.692849799999987,
       "byModel": {
-        "claude-sonnet-4-6": 379247,
-        "claude-opus-4-8": 2053050
+        "claude-sonnet-4-6": 2790579,
+        "claude-haiku-4-5-20251001": 2405112,
+        "claude-opus-4-8": 20229457
+      }
+    },
+    {
+      "t": "2026-06-19T17:00:00Z",
+      "tokens": 10544630,
+      "costUsd": 12.5035655,
+      "byModel": {
+        "claude-opus-4-8": 10544630,
+        "<synthetic>": 0
       }
     }
   ],
@@ -1772,12 +1782,13 @@
     },
     {
       "t": "2026-06-19",
-      "tokens": 137279957,
-      "costUsd": 114.28112665000018,
+      "tokens": 171285372,
+      "costUsd": 141.69891350000017,
       "byModel": {
-        "claude-opus-4-8": 105040133,
-        "claude-haiku-4-5-20251001": 7316720,
-        "claude-sonnet-4-6": 24923104
+        "claude-opus-4-8": 134229104,
+        "claude-haiku-4-5-20251001": 9721832,
+        "claude-sonnet-4-6": 27334436,
+        "<synthetic>": 0
       }
     }
   ]
