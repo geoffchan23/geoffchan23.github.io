@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-19T23:57:38Z",
+  "generatedAt": "2026-06-20T00:58:16Z",
   "last24h": {
     "totalTokens": 246787706,
     "costUsd": 216.91592939999992,
@@ -1815,6 +1815,12 @@
         "claude-sonnet-4-6": 54617586,
         "<synthetic>": 0
       }
+    },
+    {
+      "t": "2026-06-20",
+      "tokens": 0,
+      "costUsd": 0,
+      "byModel": {}
     }
   ]
 }
