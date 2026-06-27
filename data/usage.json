@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-27T05:35:53Z",
+  "generatedAt": "2026-06-27T06:35:53Z",
   "last24h": {
     "totalTokens": 140422135,
     "costUsd": 131.2402045,
@@ -8,14 +8,6 @@
     }
   },
   "hourly": [
-    {
-      "t": "2026-06-20T05:00:00Z",
-      "tokens": 0,
-      "costUsd": 0,
-      "byModel": {
-        "<synthetic>": 0
-      }
-    },
     {
       "t": "2026-06-20T14:00:00Z",
       "tokens": 0,
