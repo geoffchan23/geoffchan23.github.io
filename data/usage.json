@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-09-03T03:10:09Z",
+  "generatedAt": "2026-09-03T04:10:42Z",
   "last24h": {
-    "totalTokens": 140906199,
-    "costUsd": 193.10710900000004,
+    "totalTokens": 100790531,
+    "costUsd": 143.06599950000003,
     "byModel": {
-      "claude-fable-5": 140906199
+      "claude-fable-5": 100790531
     }
   },
   "hourly": [
