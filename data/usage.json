@@ -1,25 +1,17 @@
 {
-  "generatedAt": "2026-09-08T16:28:11Z",
+  "generatedAt": "2026-09-08T17:28:11Z",
   "last24h": {
-    "totalTokens": 73403966,
-    "costUsd": 95.13916924999995,
+    "totalTokens": 146672583,
+    "costUsd": 163.0319226,
     "byModel": {
-      "claude-fable-5": 12048977,
-      "claude-fable-5-1": 30181299,
-      "claude-haiku-4-5-20251001": 2354889,
-      "claude-sonnet-5": 28140695,
-      "claude-opus-5": 678106
+      "claude-fable-5": 17499119,
+      "claude-fable-5-1": 52154495,
+      "claude-haiku-4-5-20251001": 2562117,
+      "claude-sonnet-5": 73055131,
+      "claude-opus-5": 1401721
     }
   },
   "hourly": [
-    {
-      "t": "2026-09-01T16:00:00Z",
-      "tokens": 760332,
-      "costUsd": 9.72074,
-      "byModel": {
-        "claude-fable-5": 760332
-      }
-    },
     {
       "t": "2026-09-01T22:00:00Z",
       "tokens": 1126267,
@@ -368,12 +360,24 @@
     },
     {
       "t": "2026-09-08T16:00:00Z",
-      "tokens": 21772149,
-      "costUsd": 16.599449049999983,
+      "tokens": 58135040,
+      "costUsd": 48.92665740000002,
       "byModel": {
-        "claude-sonnet-5": 13807020,
-        "claude-opus-5": 678106,
-        "claude-fable-5-1": 7287023
+        "claude-fable-5": 3628462,
+        "claude-sonnet-5": 40748385,
+        "claude-opus-5": 1401721,
+        "claude-fable-5-1": 12356472
+      }
+    },
+    {
+      "t": "2026-09-08T17:00:00Z",
+      "tokens": 36905726,
+      "costUsd": 35.56554500000001,
+      "byModel": {
+        "claude-fable-5": 1821680,
+        "claude-haiku-4-5-20251001": 207228,
+        "claude-sonnet-5": 17973071,
+        "claude-fable-5-1": 16903747
       }
     }
   ],
@@ -2369,14 +2373,14 @@
     },
     {
       "t": "2026-09-08",
-      "tokens": 73403966,
-      "costUsd": 95.13916925,
+      "tokens": 146672583,
+      "costUsd": 163.03192259999955,
       "byModel": {
-        "claude-fable-5-1": 30181299,
-        "claude-fable-5": 12048977,
-        "claude-haiku-4-5-20251001": 2354889,
-        "claude-sonnet-5": 28140695,
-        "claude-opus-5": 678106
+        "claude-fable-5-1": 52154495,
+        "claude-fable-5": 17499119,
+        "claude-haiku-4-5-20251001": 2562117,
+        "claude-sonnet-5": 73055131,
+        "claude-opus-5": 1401721
       }
     }
   ]
