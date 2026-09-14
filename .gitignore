@@ -22,3 +22,4 @@ vendor/
 !conferences/logos/**/*.png
 !paris-study-game/**/*.png
 !levi-word-game/**/*.png
+!unicorns/**/*.png
