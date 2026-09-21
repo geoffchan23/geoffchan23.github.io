@@ -30,8 +30,10 @@ When the user asks to add a new art post, follow the format documented in `_art/
 
 ## /tokens Page (Auto-Generated Data)
 
-- `data/usage.json` is auto-generated and committed hourly by the smart-home agent. Do not edit manually.
-- The agent commits appear in git history as `data: update usage stats` with author `Geoff Chan <geoffchan23@gmail.com>` (the publisher uses a path-scoped commit so only `data/usage.json` is included).
+- `data/usage.json` is auto-generated and committed hourly by `claude-token-publisher`. Do not edit manually.
+- That project lives at `~/.local/share/claude-token-publisher` (symlinked into `~/Desktop/Work/Personal`) and runs from the launchd agent `com.geoffchan.token-publisher`. It pushes from its own clone of this repo, so these commits land on `origin/main` without touching your working copy — `git pull` to pick them up.
+- It replaced the publisher inside the old MacBook's `smart-home` agent, which is now disabled. Only one machine may publish: `usage.json` is rebuilt all-time from whichever machine's local Claude Code JSONL, so two publishers would overwrite each other.
+- The commits appear in git history as `data: update usage stats` with author `Geoff Chan <geoffchan23@gmail.com>` (the publisher uses a path-scoped commit so only `data/usage.json` is included).
 - Page lives at `tokens.html` (serves at `/tokens`). Styles in `tokens.css`. Renderer in `tokens.js` (uses Chart.js v4 + chartjs-plugin-zoom via CDN).
 - If the agent is down, `data/usage.json` becomes stale but the page still renders the most recent snapshot.
 
