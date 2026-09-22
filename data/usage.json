@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-09-22T09:26:13Z",
+  "generatedAt": "2026-09-22T10:26:20Z",
   "last24h": {
-    "totalTokens": 1144772591,
-    "costUsd": 724.5886367499999,
+    "totalTokens": 1134782209,
+    "costUsd": 710.6188529999997,
     "byModel": {
-      "claude-opus-5": 1143928718,
+      "claude-opus-5": 1133938336,
       "claude-fable-5-1": 839862,
       "claude-haiku-4-5-20251001": 4011,
       "<synthetic>": 0
