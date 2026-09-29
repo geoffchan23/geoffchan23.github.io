@@ -1,45 +1,14 @@
 {
-  "generatedAt": "2026-09-29T00:10:58Z",
+  "generatedAt": "2026-09-29T08:41:13Z",
   "last24h": {
-    "totalTokens": 419872508,
-    "costUsd": 304.74400125000005,
+    "totalTokens": 436049552,
+    "costUsd": 313.2666877500001,
     "byModel": {
-      "claude-opus-5-5": 419872508
+      "claude-opus-5-5": 436049552,
+      "<synthetic>": 0
     }
   },
   "hourly": [
-    {
-      "t": "2026-09-22T01:00:00Z",
-      "tokens": 612369,
-      "costUsd": 1.10133575,
-      "byModel": {
-        "claude-opus-5": 612369
-      }
-    },
-    {
-      "t": "2026-09-22T02:00:00Z",
-      "tokens": 23579002,
-      "costUsd": 21.110131000000013,
-      "byModel": {
-        "claude-opus-5": 23579002
-      }
-    },
-    {
-      "t": "2026-09-22T03:00:00Z",
-      "tokens": 23491817,
-      "costUsd": 12.454315750000003,
-      "byModel": {
-        "claude-opus-5": 23491817
-      }
-    },
-    {
-      "t": "2026-09-22T04:00:00Z",
-      "tokens": 46073505,
-      "costUsd": 25.05033525000001,
-      "byModel": {
-        "claude-opus-5": 46073505
-      }
-    },
     {
       "t": "2026-09-22T12:00:00Z",
       "tokens": 86168885,
@@ -734,6 +703,31 @@
       "costUsd": 1.8025760000000002,
       "byModel": {
         "claude-opus-5-5": 2392676
+      }
+    },
+    {
+      "t": "2026-09-29T00:00:00Z",
+      "tokens": 20599676,
+      "costUsd": 15.311121499999999,
+      "byModel": {
+        "claude-opus-5-5": 20599676
+      }
+    },
+    {
+      "t": "2026-09-29T01:00:00Z",
+      "tokens": 106212,
+      "costUsd": 0.06704,
+      "byModel": {
+        "claude-opus-5-5": 106212
+      }
+    },
+    {
+      "t": "2026-09-29T02:00:00Z",
+      "tokens": 219495,
+      "costUsd": 0.117227,
+      "byModel": {
+        "claude-opus-5-5": 219495,
+        "<synthetic>": 0
       }
     }
   ],
@@ -2920,9 +2914,12 @@
     },
     {
       "t": "2026-09-29",
-      "tokens": 0,
-      "costUsd": 0,
-      "byModel": {}
+      "tokens": 20925383,
+      "costUsd": 15.495388499999997,
+      "byModel": {
+        "claude-opus-5-5": 20925383,
+        "<synthetic>": 0
+      }
     }
   ]
 }
