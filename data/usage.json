@@ -1,23 +1,14 @@
 {
-  "generatedAt": "2026-10-01T13:18:43Z",
+  "generatedAt": "2026-10-01T14:18:49Z",
   "last24h": {
-    "totalTokens": 313263265,
-    "costUsd": 216.79851524999987,
+    "totalTokens": 311698768,
+    "costUsd": 214.64247799999987,
     "byModel": {
-      "claude-opus-5-5": 313263265,
+      "claude-opus-5-5": 311698768,
       "<synthetic>": 0
     }
   },
   "hourly": [
-    {
-      "t": "2026-09-24T13:00:00Z",
-      "tokens": 81848282,
-      "costUsd": 57.82285374999997,
-      "byModel": {
-        "claude-opus-5-5": 73041611,
-        "claude-fable-5-1": 8806671
-      }
-    },
     {
       "t": "2026-09-24T14:00:00Z",
       "tokens": 1661992,
