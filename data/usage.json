@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-10-06T11:32:49Z",
+  "generatedAt": "2026-10-06T12:32:57Z",
   "last24h": {
-    "totalTokens": 237934019,
-    "costUsd": 201.33955159999994,
+    "totalTokens": 198846834,
+    "costUsd": 167.77756084999996,
     "byModel": {
-      "claude-opus-5-5": 209368659,
+      "claude-opus-5-5": 170281474,
       "claude-sonnet-5-5": 28565360
     }
   },
@@ -386,6 +386,14 @@
       "costUsd": 21.1344965,
       "byModel": {
         "claude-opus-5-5": 30120481
+      }
+    },
+    {
+      "t": "2026-10-06T12:00:00Z",
+      "tokens": 2372402,
+      "costUsd": 5.72673425,
+      "byModel": {
+        "claude-opus-5-5": 2372402
       }
     }
   ],
@@ -2629,10 +2637,10 @@
     },
     {
       "t": "2026-10-06",
-      "tokens": 60799770,
-      "costUsd": 50.175379999999954,
+      "tokens": 63172172,
+      "costUsd": 55.90211424999995,
       "byModel": {
-        "claude-opus-5-5": 60799770
+        "claude-opus-5-5": 63172172
       }
     }
   ]
