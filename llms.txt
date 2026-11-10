@@ -1,21 +1,25 @@
 # Geoff Chan
 
-> AI product engineer and ex-founder. Head of Product & AI at Raven, building agentic systems end to end including the harness, the knowledge layer agents reason over, and the decision and action layers on top. Previously founded Stack Five (a boutique product agency, bootstrapped to ~$1M in revenue) and led a 16-person engineering team at Code4rena.
+> AI product engineer and ex-founder. Head of Product & Engineering at Jain, building AI that helps building service contractors bid and price their work. Previously Head of Product & AI at Raven, building agentic systems end to end for manufacturers. Founded Stack Five (a boutique product agency, bootstrapped to ~$1M in revenue) and led a 16-person engineering team at Code4rena.
 
 ## About
 
-- [Homepage](https://geoffreychan.com/): Short bio, current work at Raven, professional history, links.
+- [Homepage](https://geoffreychan.com/): Short bio, current work at Jain, professional history, links.
 - [Resume](https://geoffreychan.com/resume/): Detailed career timeline.
 
 ## Experiments and projects on this site
 
+- [Grant Connect for Claude](https://api.grantconnect.ca/mcp/docs): MCP connector for Canadian fundraisers to research funders in Claude, built for Imagine Canada.
+- [Magnet World](https://github.com/geoffchan23/magnet-world): Godot magnetic-tile building game made with my son.
+- [Unstable Unicorns](https://geoffreychan.com/unicorns/): Unofficial online version of the card game.
 - [Tokens](https://geoffreychan.com/tokens/): Live Claude Code token usage from my smart-home agent, updated hourly.
 - [Conferences](https://geoffreychan.com/conferences/): Agent-curated, high-signal software engineering conference calendar with an AI engineering bias. Filterable by region and topic.
 - [Art](https://geoffreychan.com/art/): Sketchbook and personal art.
 
 ## External
 
-- [Raven](https://raven.ai): Where I currently work as Head of Product & AI.
+- [Jain](https://getjain.com): Where I currently work as Head of Product & Engineering.
+- [Raven](https://raven.ai): Where I was Head of Product & AI.
 - [Stack Five](https://stackfive.io): Product agency I founded; clients included adidas, Reebok, Salesforce, Heroku, and Code4rena.
 - [React Libraries](https://reactlibraries.com): Community-curated React libraries directory I maintain.
 - [LinkedIn](https://www.linkedin.com/in/geoffchan23/)
