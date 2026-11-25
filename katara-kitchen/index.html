@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#ffd6e4">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Mochi Kitchen">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="description" content="Mochi's Mini Kitchen: a cozy cooking study game for Katara's ecosystems science test.">
+  <title>Mochi's Mini Kitchen</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="icon" href="icon-192.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app"></div>
+  <div id="iris" aria-hidden="true"><div class="iris-face"></div></div>
+  <script type="module" src="js/main.js"></script>
+  <script>
+    if ('serviceWorker' in navigator && location.hostname !== 'localhost') {
+      addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
+    }
+  </script>
+</body>
+</html>

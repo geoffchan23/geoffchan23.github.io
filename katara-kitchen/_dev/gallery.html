@@ -1,0 +1,9 @@
+<!doctype html><html><head><style>body{background:#fff6ec;display:flex;flex-wrap:wrap;gap:8px;font-family:sans-serif}div{width:150px;text-align:center;font-size:11px}svg{width:150px;height:140px}</style></head><body><script type="module">
+import * as A from '../js/art.js';
+const add=(n,s)=>{const d=document.createElement('div');d.innerHTML=s+n;document.body.appendChild(d)};
+for (const m of ['normal','happy','wow','sad','love','wink','sleep','yum','star']) add(m, A.mochi({mood:m}));
+for (const k of Object.keys(A.CHEFS)) { add(k, A.chefHead(k)); add(k+' happy', A.chefHead(k,'happy')); }
+add('coin',A.coin());add('star',A.star());add('heart',A.heart());add('fire',A.fireIcon());add('token',A.boxToken());add('box',A.blindBox());add('box mint',A.blindBox('','mint'));add('foil',A.foilBag());add('ext',A.extinguisher());add('lock',A.lockIcon());
+if (A.FOODS) for (const k of Object.keys(A.FOODS)) add(k, A.food(k));
+if (A.ICONS) for (const k of Object.keys(A.ICONS)) add(k, A.icon(k));
+</script></body></html>

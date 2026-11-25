@@ -1,0 +1,9 @@
+<!doctype html><html><head><style>body{background:#fff6ec;display:flex;flex-wrap:wrap;gap:8px;font-family:sans-serif;margin:0}.r{width:490px}.r svg{width:490px;height:368px}.p{width:120px;font-size:10px;text-align:center}.p svg{width:120px;height:90px;background:#fff;border-radius:8px}</style></head><body><script type="module">
+import {room, KITCHEN, itemPreview} from '../js/kitchen-art.js';
+const add=(c,s)=>{const d=document.createElement('div');d.className=c;d.innerHTML=s;document.body.appendChild(d)};
+add('r', room({}, ['cupcake','donut','boba']));
+add('r', room({wall:'strawberry',floor:'checker',window:'arch',sign:'neon',shelf:'glass',lamp:'lights',fridge:'pink',stove:'pink',counter:'display',plant:'monstera',rug:'cat',bed:'cake'}, ['cupcake','donut','boba','teacup','ramen']));
+add('r', room({wall:'stars',floor:'terrazzo',window:'night',sign:'clock',shelf:'cubby',lamp:'cloud',fridge:'double',stove:'lilac',counter:'cakestand',plant:'cactus',rug:'rainbow',bed:'basket'}, ['tart','waffle','sushi','pie']));
+add('r', room({wall:'gingham',floor:'mint',window:'round',sign:'menu',shelf:'wood',lamp:'pendant',fridge:'mint',stove:'pizza',counter:'mixer',plant:'herbs',rug:'berry',bed:'cushion'}, ['icecream','pizza','cookie']));
+if (location.hash==='#p') { document.body.innerHTML=''; for (const s in KITCHEN) for (const id in KITCHEN[s].items) add('p', itemPreview(s,id)+s+':'+id); }
+</script></body></html>
