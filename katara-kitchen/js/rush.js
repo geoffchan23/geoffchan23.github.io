@@ -155,6 +155,7 @@ register('rush', (root, { shift: si = 0 }) => {
 
   function activate(t) {
     G.active = t;
+    if (!G.fire) tipB.classList.remove('show');
     G.tickets.forEach(x => x.el.classList.toggle('active', x === t));
     renderOrder();
   }
@@ -304,6 +305,7 @@ register('rush', (root, { shift: si = 0 }) => {
     }
   }
   $('.fire-cover', R).addEventListener('pointerdown', tapFire);
+  tipB.addEventListener('pointerdown', () => { if (!G.fire) tipB.classList.remove('show'); });
 
   /* ---------- cooking + serving ---------- */
   function flyBlob(fromEl, color) {

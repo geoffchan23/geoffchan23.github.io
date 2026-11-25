@@ -150,6 +150,7 @@ register('bakeoff', (root, { group = 'all' } = {}) => {
         }
         const nextBtn = document.createElement('button'); nextBtn.className = 'small-btn next-btn'; nextBtn.textContent = 'Next ›';
         res.appendChild(nextBtn);
+        requestAnimationFrame(() => res.scrollIntoView({ behavior: 'smooth', block: 'nearest' }));
         let moved = false;
         const move = () => { if (moved) return; moved = true; sfx('tap'); resolve(); };
         nextBtn.onclick = move;

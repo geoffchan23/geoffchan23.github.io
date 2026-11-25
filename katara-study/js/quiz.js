@@ -94,7 +94,9 @@ export function renderItem(el, item, { mode = 'drill', onChange = () => { }, onD
       ${drill ? `<div class="sa-actions"><button class="big-btn check">Check</button></div>` : ''}
       ${item.type === 'sa-explain' ? `<p class="sa-tip">Tip: use the vocabulary words in your answer, just like on the test.</p>` : ''}`;
     const ta = $('textarea', body);
-    ta.oninput = () => { item.resp = ta.value; onChange(); };
+    const grow = () => { ta.style.height = 'auto'; ta.style.height = ta.scrollHeight + 6 + 'px'; };
+    ta.oninput = () => { item.resp = ta.value; grow(); onChange(); };
+    requestAnimationFrame(grow);
     if (drill) {
       $('.check', body).onclick = () => {
         if (locked || !ta.value.trim()) return;
@@ -142,7 +144,7 @@ export function renderItem(el, item, { mode = 'drill', onChange = () => { }, onD
       const ck = $('.check', body);
       if (ck) ck.onclick = () => {
         if (locked) return;
-        locked = true;
+        locked = true; el.querySelector('.q-card').classList.add('checked');
         let pts = 0;
         $$('.m-row', body).forEach((r, i) => {
           const ok = item.resp[i] === item.pairs[i].termId; if (ok) pts++;

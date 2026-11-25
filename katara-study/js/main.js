@@ -25,7 +25,7 @@ register('home', (root) => {
   const weak = weakTerms();
   const tests = state.tests.slice(-6);
   const best = state.tests.reduce((a, t) => Math.max(a, t.pct), 0);
-  const el = document.createElement('div'); el.className = 'home';
+  const el = document.createElement('div'); el.className = 'scr-home';
   el.innerHTML = `
     <section class="hero">
       <div class="hero-m">${mochi({ mood: r >= 80 ? 'star' : 'happy', glasses: true, hat: false })}</div>
@@ -49,8 +49,8 @@ register('home', (root) => {
     </div>
 
     <div class="extras">
-      <button class="extra-card weak" data-drill="weak"><div class="ec-ico">${heart(true)}</div><div><b>My Weak Words</b><small>${weak.length ? `${weak.length} word${weak.length === 1 ? '' : 's'} to practice` : 'None yet! Take a test to find them.'}</small></div></button>
-      <button class="extra-card cards" data-go="cards"><div class="ec-ico">${icon('ladybug')}</div><div><b>Flashcards</b><small>All ${TERMS.length} words with memory tricks</small></div></button>
+      <button class="extra-card ec-weak" data-drill="weak"><div class="ec-ico">${heart(true)}</div><div><b>My Weak Words</b><small>${weak.length ? `${weak.length} word${weak.length === 1 ? '' : 's'} to practice` : 'None yet! Take a test to find them.'}</small></div></button>
+      <button class="extra-card ec-cards" data-go="cards"><div class="ec-ico">${icon('ladybug')}</div><div><b>Flashcards</b><small>All ${TERMS.length} words with memory tricks</small></div></button>
     </div>
 
     ${tests.length ? `<h3 class="h-sec">My practice tests</h3>
@@ -81,7 +81,7 @@ register('test', (root) => {
   const bar = tb('Practice Test'); root.appendChild(bar);
   const items = makeTest();
   let page = 0; // 0..items.length (last = review)
-  const el = document.createElement('div'); el.className = 'test'; root.appendChild(el);
+  const el = document.createElement('div'); el.className = 'scr-test'; root.appendChild(el);
   // point slots for the progress strip
   const slots = items.flatMap((it, i) => it.type === 'match' ? it.pairs.map((_, k) => ({ i, k })) : [{ i }]);
   const secOf = (it) => SECTIONS.find(s => s.key === it.section);
@@ -172,17 +172,17 @@ register('test', (root) => {
           ${m.fix ? `<p class="fix">${esc(m.fix)}</p>` : ''}
           ${m.termId ? `<p class="mi-tip"><b>${T[m.termId].term}:</b> ${esc(T[m.termId].tip)}</p>` : ''}</div>`).join('')}</div>` : '<p class="perfect">Perfect score! Every single answer was right!</p>'}
         <div class="test-nav col">
-          ${missed.length ? `<button class="big-btn alt fixit">Practice my mistakes</button>` : ''}
-          <button class="big-btn again">Take another practice test</button>
-          <button class="small-btn ghost home">Back to Test Prep</button>
+          ${missed.length ? `<button class="big-btn alt b-fix">Practice my mistakes</button>` : ''}
+          <button class="big-btn b-again">Take another practice test</button>
+          <button class="small-btn ghost b-home">Back to Test Prep</button>
         </div>
       </div>`;
     sfx(pct >= 70 ? 'fanfare' : 'ding');
     if (pct >= 70) confetti(pct >= 90 ? 180 : 90);
     if (pct >= 95) rain(100);
-    const fx = $('.fixit', el); if (fx) fx.onclick = () => { sfx('pop'); go('drill', { kind: 'mixed', ids: [...new Set(missed.map(m => m.termId).filter(Boolean))] }); };
-    $('.again', el).onclick = () => { sfx('pop'); go('test'); };
-    $('.home', el).onclick = () => { sfx('tap'); go('home'); };
+    const fx = $('.b-fix', el); if (fx) fx.onclick = () => { sfx('pop'); go('drill', { kind: 'mixed', ids: [...new Set(missed.map(m => m.termId).filter(Boolean))] }); };
+    $('.b-again', el).onclick = () => { sfx('pop'); go('test'); };
+    $('.b-home', el).onclick = () => { sfx('tap'); go('home'); };
   }
   show();
   return () => bar._off && bar._off();
@@ -200,7 +200,7 @@ function yourText(it) {
 const DRILL_NAME = { mc: 'Multiple Choice', sa: 'Short Answer', match: 'Matching', tf: 'True or False', weak: 'Weak Words', mixed: 'Fix My Mistakes' };
 register('drill', (root, { kind = 'mc', ids = null } = {}) => {
   const bar = tb(DRILL_NAME[kind]); root.appendChild(bar);
-  const el = document.createElement('div'); el.className = 'drill'; root.appendChild(el);
+  const el = document.createElement('div'); el.className = 'scr-drill'; root.appendChild(el);
   const pool = kind === 'weak' ? weakTerms() : ids;
   let queue = [];
   const N = 8;
@@ -236,11 +236,11 @@ register('drill', (root, { kind = 'mc', ids = null } = {}) => {
       <h2>${pct >= 90 ? 'Fantastic!' : pct >= 70 ? 'Great job!' : pct >= 50 ? 'Good practice!' : 'Keep going, you\'re learning!'}</h2>
       <div class="rs-score"><b>${pts}<span>/${max}</span></b><div class="rs-pct">${pct}%</div></div>
       <div class="rs-reward">${coin()}<span><b>+${coins} coins</b> for Mochi's kitchen</span></div>
-      <div class="test-nav col"><button class="big-btn again">Practice again</button><button class="big-btn alt test">Take a practice test</button><button class="small-btn ghost home">Back to Test Prep</button></div></div>`;
+      <div class="test-nav col"><button class="big-btn b-again">Practice again</button><button class="big-btn alt b-test">Take a practice test</button><button class="small-btn ghost b-home">Back to Test Prep</button></div></div>`;
     sfx(pct >= 70 ? 'fanfare' : 'ding'); if (pct >= 80) confetti(100);
-    $('.again', el).onclick = () => { sfx('pop'); go('drill', { kind, ids }); };
-    $('.test', el).onclick = () => { sfx('pop'); go('test'); };
-    $('.home', el).onclick = () => { sfx('tap'); go('home'); };
+    $('.b-again', el).onclick = () => { sfx('pop'); go('drill', { kind, ids }); };
+    $('.b-test', el).onclick = () => { sfx('pop'); go('test'); };
+    $('.b-home', el).onclick = () => { sfx('tap'); go('home'); };
   }
   show();
   return () => bar._off && bar._off();
@@ -251,17 +251,17 @@ register('drill', (root, { kind = 'mc', ids = null } = {}) => {
 /* ------------------------------------------------------------------ */
 register('cards', (root, { group = 'all', reverse = false } = {}) => {
   const bar = tb('Flashcards'); root.appendChild(bar);
-  const el = document.createElement('div'); el.className = 'cards'; root.appendChild(el);
+  const el = document.createElement('div'); el.className = 'scr-cards'; root.appendChild(el);
   let deck = shuffle(TERMS.filter(t => group === 'all' || t.group === group)), known = 0;
   const total = deck.length;
   function show() {
     if (!deck.length) {
       el.innerHTML = `<div class="d-done"><div class="rs-m">${mochi({ mood: 'love', glasses: true, hat: false })}</div><h2>You went through all ${total} cards!</h2>
-        <div class="test-nav col"><button class="big-btn again">Shuffle again</button><button class="big-btn alt quiz">Quiz me on these</button><button class="small-btn ghost home">Back</button></div></div>`;
+        <div class="test-nav col"><button class="big-btn b-again">Shuffle again</button><button class="big-btn alt b-quiz">Quiz me on these</button><button class="small-btn ghost b-home">Back</button></div></div>`;
       sfx('fanfare'); confetti(80);
-      $('.again', el).onclick = () => go('cards', { group, reverse });
-      $('.quiz', el).onclick = () => go('drill', { kind: 'mixed', ids: TERMS.filter(t => group === 'all' || t.group === group).map(t => t.id) });
-      $('.home', el).onclick = () => go('home');
+      $('.b-again', el).onclick = () => go('cards', { group, reverse });
+      $('.b-quiz', el).onclick = () => go('drill', { kind: 'mixed', ids: TERMS.filter(t => group === 'all' || t.group === group).map(t => t.id) });
+      $('.b-home', el).onclick = () => go('home');
       return;
     }
     const t = deck[0];
