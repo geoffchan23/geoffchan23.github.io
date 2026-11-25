@@ -1,0 +1,67 @@
+@font-face { font-family: "Bagel Fat One"; src: url("../fonts/BagelFatOne.woff2") format("woff2"); font-display: swap; }
+@font-face { font-family: "Nunito"; src: url("../fonts/Nunito.woff2") format("woff2"); font-weight: 200 1000; font-display: swap; }
+
+:root {
+  --bg: #e9ddff;
+  --bg-dot: #d8c6ff;
+  --ink: #2b1640;
+  --ink-soft: #6a5490;
+  --card: #fffdf8;
+  --slime: #7be04a;
+  --slime-dark: #2f7d14;
+  --pink: #ff8fc7;
+  --pink-deep: #e8458f;
+  --yellow: #ffd84d;
+  --orange: #ff9f43;
+  --sky: #5fd3ff;
+  --lilac: #c7b3ff;
+  --red: #ff5a5f;
+  --good-bg: #e4fbd5;
+  --bad-bg: #ffe1e6;
+  --display: "Bagel Fat One", "Arial Rounded MT Bold", "Trebuchet MS", sans-serif;
+  --body: "Nunito", "Arial Rounded MT Bold", "Segoe UI", system-ui, sans-serif;
+  --r: 22px;
+  --shadow: 0 6px 0 var(--ink);
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  color-scheme: light;
+}
+[hidden] { display: none !important; }
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body { margin: 0; height: 100%; }
+body {
+  background: radial-gradient(var(--bg-dot) 2.2px, transparent 2.8px) 0 0 / 24px 24px, var(--bg);
+  color: var(--ink);
+  font-family: var(--body);
+  font-weight: 700;
+  -webkit-user-select: none; user-select: none;
+  overscroll-behavior: none;
+  touch-action: manipulation;
+}
+h1, h2, h3, .display { font-family: var(--display); font-weight: 400; margin: 0; line-height: 1.1; }
+button { font: inherit; color: inherit; cursor: pointer; }
+
+/* Chunky button used everywhere */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 48px; padding: 10px 18px;
+  background: var(--yellow); color: var(--ink);
+  border: 4px solid var(--ink); border-radius: 18px;
+  box-shadow: 0 5px 0 var(--ink);
+  font-family: var(--display); font-size: 18px; letter-spacing: .3px;
+  transition: transform .08s, box-shadow .08s;
+}
+.btn:active { transform: translateY(4px); box-shadow: 0 1px 0 var(--ink); }
+.btn[disabled] { opacity: .45; pointer-events: none; }
+.btn.pink { background: var(--pink); }
+.btn.green { background: var(--slime); }
+.btn.sky { background: var(--sky); }
+.btn.lilac { background: var(--lilac); }
+.btn.white { background: #fff; }
+.btn.small { min-height: 38px; padding: 6px 12px; font-size: 15px; border-width: 3px; box-shadow: 0 4px 0 var(--ink); border-radius: 14px; }
+
+.card {
+  background: var(--card); border: 4px solid var(--ink); border-radius: var(--r);
+  box-shadow: var(--shadow);
+}
+.coin-ico { display: inline-block; width: 1.05em; height: 1.05em; vertical-align: -0.15em; }

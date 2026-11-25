@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<title>Wheek World</title>
+<meta name="description" content="A weird and wonderful guinea pig world. Raise guineas, play games, make slime.">
+<meta name="theme-color" content="#c7b3ff">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Wheek World">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="preload" href="fonts/BagelFatOne.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+<header id="top"></header>
+<main id="view"></main>
+<nav id="nav" aria-label="Main"></nav>
+<div id="modals"></div>
+<canvas id="fx" aria-hidden="true"></canvas>
+<script src="js/core.js"></script>
+<script src="js/art-legacy.js"></script>
+<script src="js/data.js"></script>
+<script src="js/guinea.js"></script>
+<script src="js/systems.js"></script>
+<script>window.WW = { games: {}, registerGame(def) { this.games[def.id] = def; } };</script>
+<script src="games/lettuce-catch.js"></script>
+<script src="games/popcorn-hop.js"></script>
+<script src="games/fart-rocket.js"></script>
+<script src="games/whack-a-wheek.js"></script>
+<script src="games/squishy-claw.js"></script>
+<script src="games/squishy-match.js"></script>
+<script src="games/slime-slots.js"></script>
+<script src="games/guinea-races.js"></script>
+<script src="games/scratch-snack.js"></script>
+<script src="games/slime-plinko.js"></script>
+<script src="games/hay-or-nay.js"></script>
+<script src="games/cup-shuffle.js"></script>
+<script src="games/swamp-dig.js"></script>
+<script src="js/ui-main.js"></script>
+<script src="js/ui-world.js"></script>
+<script src="js/ui-pets.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
