@@ -67,7 +67,7 @@ function mochiMouth(mood) {
   }
 }
 
-export function mochi({ mood = 'normal', hat = true, cls = '' } = {}) {
+export function mochi({ mood = 'normal', hat = true, glasses = false, cls = '' } = {}) {
   const clip = uid('mc');
   const body = 'M40,150 C34,104 58,64 110,64 C162,64 186,104 180,150 C178,172 150,181 110,181 C70,181 42,172 40,150Z';
   return svg('0 0 220 200', `
@@ -103,6 +103,8 @@ export function mochi({ mood = 'normal', hat = true, cls = '' } = {}) {
     <ellipse cx="134" cy="178" rx="15" ry="8.5" fill="${FUR2}" ${st(3)}/>
     <path d="M82,175 v5 M90,175 v5 M130,175 v5 M138,175 v5" ${st(2)}/>
   </g>
+  ${glasses ? `<g class="m-glasses"><circle cx="84" cy="112" r="17" fill="#fff" fill-opacity=".25" ${st(3.4)}/><circle cx="136" cy="112" r="17" fill="#fff" fill-opacity=".25" ${st(3.4)}/>
+    <path d="M101,110 q9,-6 18,0 M67,108 l-12,-4 M153,108 l12,-4" fill="none" ${st(3.4)}/><path d="M74,102 q5,-4 10,-3 M126,102 q5,-4 10,-3" stroke="#fff" stroke-width="2.6" fill="none" stroke-linecap="round"/></g>` : ''}
   ${hat ? `<g class="m-hat" transform="rotate(-9 110 60)">
     <path d="M80,58 C62,56 62,28 84,30 C86,8 134,8 136,30 C158,28 158,56 140,58 Z" fill="#fff" ${st(3.6)}/>
     <path d="M94,36 q6,-8 12,-2" fill="none" stroke="#e8e2ee" stroke-width="3" stroke-linecap="round"/>

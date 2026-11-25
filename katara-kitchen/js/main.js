@@ -59,6 +59,10 @@ register('hub', (root) => {
       </div>
     </div>
     <div class="hub-menu">
+      <button class="menu-card mc-study" data-go="study">
+        <div class="mc-art">${mochi({ mood: 'happy', glasses: true, hat: false })}</div>
+        <div class="mc-text"><b>Test Prep</b><small>Practice tests just like the real one. Earn coins for your kitchen!</small></div>
+      </button>
       <button class="menu-card mc-rush" data-go="rushmap">
         <div class="mc-art">${food('ramen')}${food('cupcake')}</div>
         <div class="mc-text"><b>Order Rush</b><small>Cook orders by answering questions. Don't let the kitchen catch fire!</small></div>
@@ -107,6 +111,7 @@ register('hub', (root) => {
   $$('.menu-card', wrap).forEach(b => b.onclick = () => {
     sfx('pop');
     if (b.dataset.go === 'settings') return openProgress();
+    if (b.dataset.go === 'study') { location.href = '/katara-study/'; return; }
     go(b.dataset.go);
   });
   $('.deco-btn', wrap).onclick = () => { sfx('pop'); go('shop'); };
