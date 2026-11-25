@@ -1,0 +1,15 @@
+{
+  "name": "Mochi's Mini Kitchen",
+  "short_name": "Mochi Kitchen",
+  "description": "A cozy cooking study game for Katara's science test.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#fff3e8",
+  "theme_color": "#ffd6e4",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
