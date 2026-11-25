@@ -565,3 +565,69 @@ body.flash::after { content: ""; position: fixed; inset: 0; background: #fff; z-
 .pk-r { flex: none; font-weight: 900; display: flex; align-items: center; gap: 2px; }
 .shop-grid, .bag-grid, .adopt-grid, .game-grid, .trophies, .mem-grid { grid-template-columns: repeat(auto-fill, minmax(min(140px, calc(50% - 6px)), 1fr)); }
 .ticker { position: relative; top: 0; }
+
+/* ================= v3: living guinea ================= */
+.v-home .pet-main { transform: translateX(calc(-50% + var(--wx, 0px))); transition: transform var(--wt, .5s) ease-in-out; touch-action: none; }
+.props { position: absolute; inset: 0; pointer-events: none; z-index: 7; }
+.prop { position: absolute; left: 0; top: 0; line-height: 1; will-change: transform; filter: drop-shadow(0 3px 0 rgba(43,22,64,.18)); transition: transform .12s ease-out, opacity .3s; }
+.prop .ii { width: var(--ps); height: var(--ps); font-size: var(--ps); }
+.prop .ii.art svg { width: 100%; height: 100%; }
+.prop.hand { z-index: 2; filter: drop-shadow(0 4px 0 rgba(43,22,64,.25)); transition: none; }
+.pball { display: block; width: 1em; height: 1em; border-radius: 50%; border: 3px solid var(--ink); background: radial-gradient(circle at 35% 30%, #fff 0 18%, var(--bc, #f2f2f2) 19%); }
+.stick { display: block; width: 1.5em; height: .38em; border-radius: 8px; border: 3px solid var(--ink); background: repeating-linear-gradient(90deg, #c98a55 0 8px, #b5763f 8px 11px); }
+.suds { display: block; width: 1em; height: 1em; border-radius: 50%; border: 2px solid rgba(43,22,64,.3); background: radial-gradient(circle at 32% 30%, #fff 0 22%, #eefaff 40%, #cdeeff 100%); }
+.aura { display: block; width: 1em; height: 1em; border-radius: 50%; border: 4px solid #7be04a; box-shadow: 0 0 18px #fff3a8, inset 0 0 10px #fff3a8; }
+.gp .tongue { display: none; }
+.gp .ear, .gp .nose, .gp .whisk, .gp .foot, .gp .cheek, .gp .mouth-open, .gp .tongue { transform-box: fill-box; transform-origin: center; }
+.gp .ear-l { transform-origin: 85% 85%; } .gp .ear-r { transform-origin: 15% 85%; }
+.gp .eyes-n, .gp .eyes-sad { transition: transform .25s; }
+.gp.blink .eyes-n, .gp.blink .eyes-h, .gp.blink .eyes-sad, .gp.blink .eyes-o { display: none !important; }
+.gp.blink .eyes-s { display: inline !important; }
+.gp.look-l .eyes-n, .gp.look-l .eyes-sad { transform: translateX(-6px); }
+.gp.look-r .eyes-n, .gp.look-r .eyes-sad { transform: translateX(6px); }
+.gp.happy-eyes .eyes-n, .gp.petting .eyes-n, .gp.happy-eyes .eyes-sad, .gp.petting .eyes-sad { display: none; }
+.gp.happy-eyes .eyes-h, .gp.petting .eyes-h { display: inline; }
+.gp.napping .eyes-n, .gp.napping .eyes-h, .gp.napping .eyes-sad { display: none; }
+.gp.napping .eyes-s { display: inline; }
+.gp.napping .body { animation: nap 2.4s ease-in-out infinite !important; }
+@keyframes nap { 50% { transform: scale(1.04, .95) translateY(3px); } }
+.gp.earwiggle .ear-l { animation: earL .18s 4 alternate; } .gp.earwiggle .ear-r { animation: earR .18s 4 alternate .09s; }
+@keyframes earL { to { transform: rotate(-16deg); } } @keyframes earR { to { transform: rotate(16deg); } }
+.gp.petting .ear-l { transform: rotate(14deg); } .gp.petting .ear-r { transform: rotate(-14deg); }
+.gp.sniff .nose { animation: sniffN .11s 8 alternate; } .gp.sniff .whisk { animation: whisk .11s 8 alternate; }
+@keyframes sniffN { to { transform: scale(1.2, .85) translateY(-1px); } } @keyframes whisk { to { transform: rotate(3deg) translateY(-1px); } }
+.gp.walking .body { animation: walkbob .24s ease-in-out infinite alternate !important; }
+.gp.walking .foot-l { animation: step .24s infinite alternate; } .gp.walking .foot-r { animation: step .24s infinite alternate-reverse; }
+@keyframes walkbob { from { transform: translateY(0) rotate(-2deg); } to { transform: translateY(-6px) rotate(2deg); } }
+@keyframes step { to { transform: translateY(-5px); } }
+.gp.popcorn .body { animation: popcorn .65s cubic-bezier(.3,1.2,.5,1) !important; }
+@keyframes popcorn { 0% { transform: scale(1.12, .85); } 35% { transform: translateY(-58px) rotate(18deg) scale(.95, 1.08); } 55% { transform: translateY(-62px) rotate(-12deg); } 85% { transform: translateY(0) scale(1.15, .82); } 100% { transform: none; } }
+.gp.yawn .eyes-n, .gp.yawn .eyes-h, .gp.yawn .mouth { display: none; }
+.gp.yawn .eyes-s { display: inline; }
+.gp.yawn .mouth-open { display: inline; animation: yawnM 1.2s ease-in-out; }
+@keyframes yawnM { 0% { transform: scale(.4); } 40%, 70% { transform: scale(1.5, 2.2) translateY(2px); } 100% { transform: scale(.4); } }
+.gp.yawn .body { animation: yawnB 1.2s ease-in-out !important; }
+@keyframes yawnB { 40%, 70% { transform: scale(.97, 1.05); } }
+.gp.chew .cheek { animation: cheekPuff .2s infinite alternate; }
+@keyframes cheekPuff { to { transform: scale(1.35); } }
+.gp.stuffed .cheek { animation: none; transform: scale(1.9); opacity: .9; }
+.gp.stuffed .body { animation: stuffed .7s ease-in-out !important; }
+@keyframes stuffed { 30% { transform: scale(1.12, .94); } 60% { transform: scale(1.08, .97); } }
+.gp.chomp .body { animation: chompNod .18s !important; }
+@keyframes chompNod { 50% { transform: translateY(4px) scale(1.03, .96); } }
+.gp.lick .tongue { display: inline; animation: lick .55s ease-in-out; }
+@keyframes lick { 0% { transform: scaleY(.2); } 40% { transform: scaleY(1.2) translateX(-3px); } 70% { transform: scaleY(1) translateX(3px); } 100% { transform: scaleY(.2); } }
+.gp.petting .body { animation: none !important; transform: rotate(var(--tilt, 0deg)) scale(1.03, .97); transition: transform .15s; }
+.gp.melt .body { animation: none !important; transform: rotate(var(--tilt, 0deg)) scale(1.14, .84) translateY(6px); }
+.gp.shakedry .body { animation: shakedry .09s 9 alternate !important; }
+@keyframes shakedry { from { transform: rotate(-13deg); } to { transform: rotate(13deg); } }
+.gp.giggle .body { animation: giggleB .11s infinite alternate !important; }
+@keyframes giggleB { from { transform: translateX(-3px) rotate(-3deg); } to { transform: translateX(3px) rotate(3deg) scale(1.02, .98); } }
+.gp.gulp .body { animation: gulpB .45s !important; }
+@keyframes gulpB { 40% { transform: scale(.94, 1.08); } 70% { transform: scale(1.06, .95); } }
+.gp.groom .body { animation: groomB .9s ease-in-out !important; }
+.gp.groom .eyes-n { display: none; } .gp.groom .eyes-s { display: inline; }
+@keyframes groomB { 20% { transform: rotate(-9deg) translateX(-4px); } 45% { transform: rotate(9deg) translateX(4px); } 70% { transform: rotate(-6deg); } }
+.tap-tip { font-size: 13px; }
+.slime-cv { touch-action: pan-y; }
+.v-home .pet-main, .v-home .pet-main .gp { max-width: 62vw; }

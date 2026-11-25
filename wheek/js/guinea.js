@@ -150,17 +150,15 @@ function guineaSVG(g, opts = {}) {
   <ellipse cx="100" cy="164" rx="${70 * sc}" ry="8" fill="#2b1640" opacity=".15"/>
   <g${flip}><g transform="translate(100 164) scale(${sc}) translate(-100 -164)"><g class="body"${preg}>
     ${glow}
-    <ellipse cx="52" cy="56" rx="21" ry="15" transform="rotate(-32 52 56)" fill="${ear}" stroke="#2b1640" stroke-width="5"/>
-    <ellipse cx="148" cy="56" rx="21" ry="15" transform="rotate(32 148 56)" fill="${ear}" stroke="#2b1640" stroke-width="5"/>
-    <ellipse cx="54" cy="58" rx="10" ry="6" transform="rotate(-32 54 58)" fill="#ffb3c7"/>
-    <ellipse cx="146" cy="58" rx="10" ry="6" transform="rotate(32 146 58)" fill="#ffb3c7"/>
+    <g class="ear ear-l"><ellipse cx="52" cy="56" rx="21" ry="15" transform="rotate(-32 52 56)" fill="${ear}" stroke="#2b1640" stroke-width="5"/><ellipse cx="54" cy="58" rx="10" ry="6" transform="rotate(-32 54 58)" fill="#ffb3c7"/></g>
+    <g class="ear ear-r"><ellipse cx="148" cy="56" rx="21" ry="15" transform="rotate(32 148 56)" fill="${ear}" stroke="#2b1640" stroke-width="5"/><ellipse cx="146" cy="58" rx="10" ry="6" transform="rotate(32 146 58)" fill="#ffb3c7"/></g>
     <path d="${body}" fill="${bodyFill}"/>
     <g clip-path="url(#${id}c)">${pat}${blaze}</g>
     ${gn.m === "ghost" ? "" : `<path d="${body}" fill="none" stroke="#2b1640" stroke-width="5"/>`}
     ${gn.m === "ghost" ? `<path d="${body}" fill="none" stroke="#8f80c8" stroke-width="4" stroke-dasharray="2 0"/>` : ""}
     ${wrinkles}${peruFringe}
-    <ellipse cx="70" cy="160" rx="12" ry="6" fill="#ffc9b0" stroke="#2b1640" stroke-width="4"/>
-    <ellipse cx="130" cy="160" rx="12" ry="6" fill="#ffc9b0" stroke="#2b1640" stroke-width="4"/>
+    <ellipse class="foot foot-l" cx="70" cy="160" rx="12" ry="6" fill="#ffc9b0" stroke="#2b1640" stroke-width="4"/>
+    <ellipse class="foot foot-r" cx="130" cy="160" rx="12" ry="6" fill="#ffc9b0" stroke="#2b1640" stroke-width="4"/>
     <g class="eyes-n"><circle cx="74" cy="92" r="${er}" fill="${eyeC}"/><circle cx="126" cy="92" r="${er}" fill="${eyeC}"/>${gn.e !== "dark" ? `<circle cx="74" cy="92" r="${er * .45}" fill="#2b1640"/><circle cx="126" cy="92" r="${er * .45}" fill="#2b1640"/>` : ""}<circle cx="77.5" cy="88.5" r="${er / 3}" fill="#fff"/><circle cx="129.5" cy="88.5" r="${er / 3}" fill="#fff"/><circle cx="71" cy="96" r="1.4" fill="#fff"/><circle cx="123" cy="96" r="1.4" fill="#fff"/></g>
     <g class="eyes-h" fill="none" stroke="#2b1640" stroke-width="5.5" stroke-linecap="round"><path d="M64 96q10 -13 20 0"/><path d="M116 96q10 -13 20 0"/></g>
     <g class="eyes-o" fill="none" stroke="#2b1640" stroke-width="5.5" stroke-linecap="round"><path d="M66 86l14 8l-14 8"/><path d="M134 86l-14 8l14 8"/></g>
@@ -169,10 +167,11 @@ function guineaSVG(g, opts = {}) {
     ${elder ? `<path d="M60 74q14 -10 26 -2M114 72q12 -8 26 2" stroke="#fff" stroke-width="6" fill="none" stroke-linecap="round"/><path d="M60 74q14 -10 26 -2M114 72q12 -8 26 2" stroke="#2b1640" stroke-width="1.5" fill="none" stroke-linecap="round" opacity=".4"/>` : ""}
     <ellipse class="cheek" cx="58" cy="112" rx="11" ry="7" fill="${sick ? "#9bdc52" : "#ff8fb1"}" opacity=".75"/>
     <ellipse class="cheek" cx="142" cy="112" rx="11" ry="7" fill="${sick ? "#9bdc52" : "#ff8fb1"}" opacity=".75"/>
-    <path d="M92 104Q100 98 108 104Q100 113 92 104Z" fill="#ff7aa8" stroke="#2b1640" stroke-width="3.5" stroke-linejoin="round"/>
+    <path class="nose" d="M92 104Q100 98 108 104Q100 113 92 104Z" fill="#ff7aa8" stroke="#2b1640" stroke-width="3.5" stroke-linejoin="round"/>
     <path class="mouth" d="M89 117q5.5 7 11 0q5.5 7 11 0" stroke="#2b1640" stroke-width="4" fill="none" stroke-linecap="round"/>
     <ellipse class="mouth-open" cx="100" cy="121" rx="8" ry="6" fill="#8a2448" stroke="#2b1640" stroke-width="3"/>
-    <path d="M84 108l-26 -4M84 113l-26 4M116 108l26 -4M116 113l26 4" stroke="#2b1640" stroke-width="2" stroke-linecap="round" opacity=".6"/>
+    <path class="tongue" d="M95 121q5 12 10 0z" fill="#ff7aa8" stroke="#2b1640" stroke-width="2.5" stroke-linejoin="round"/>
+    <g class="whisk"><path class="wh-l" d="M84 108l-26 -4M84 113l-26 4" stroke="#2b1640" stroke-width="2" stroke-linecap="round" opacity=".6"/><path class="wh-r" d="M116 108l26 -4M116 113l26 4" stroke="#2b1640" stroke-width="2" stroke-linecap="round" opacity=".6"/></g>
     ${sick ? `<g transform="translate(140 66) rotate(30)"><rect x="-14" y="-6" width="28" height="12" rx="5" fill="#ffd9b0" stroke="#2b1640" stroke-width="2.5"/><path d="M-3 -3v6M3 -3v6" stroke="#d9a070" stroke-width="2"/></g>` : ""}
     ${outfit}
     <circle class="nose-hit" cx="100" cy="106" r="15" fill="transparent"/>

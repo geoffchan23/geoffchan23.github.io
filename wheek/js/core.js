@@ -86,6 +86,15 @@ const sfx = {
   levelup() { [523, 659, 784, 1047, 784, 1047, 1319].forEach((f, i) => tone(f, i * .1, .35, "triangle", .13)); },
   sad() { [440, 415, 392, 370].forEach((f, i) => tone(f, i * .35, .5, "sine", .08)); },
   burp() { tone(95, 0, .45, "sawtooth", .12, 65); },
+  squeak() { const f = 900 + Math.random() * 500; tone(f, 0, .16, "square", .06, f * 1.6); tone(f * 1.3, .1, .12, "sine", .08, f); },
+  gulp() { tone(260, 0, .18, "sine", .2, 120); noise(.08, "lowpass", 700, 200, .25, .08); },
+  splash() { noise(.45, "bandpass", 1800, 500, .35); [0, .08, .16].forEach(s => tone(600 + Math.random() * 600, s, .08, "sine", .05, 1600)); },
+  scrub() { [0, .12, .24, .36].forEach(s => noise(.09, "highpass", 4000, 2500, .18, s)); },
+  sniff() { [0, .1, .2].forEach(s => noise(.05, "bandpass", 2600, 1800, .12, s)); },
+  yawn() { tone(520, 0, .8, "sine", .08, 260); },
+  zoom() { tone(300, 0, .5, "square", .04, 1400); },
+  chomp() { const f = 2400 + Math.random() * 1600; noise(.05, "highpass", f, f * .6, .3); },
+  munch() { noise(.07, "lowpass", 800 + Math.random() * 500, 250, .35); },
   fart() {
     if (muted()) return; const a = getAC(); if (!a) return;
     const t = a.currentTime, d = .35 + Math.random() * .65, base = 55 + Math.random() * 70;
@@ -134,6 +143,16 @@ function coinRain(x, y, n = 14) {
   for (let i = 0; i < Math.min(n, 30); i++) FX.bits.push({ k: "coin", x: x + (Math.random() - .5) * 30, y: y + (Math.random() - .5) * 30, vx: (Math.random() - .5) * 9, vy: -4 - Math.random() * 5, g: .25, life: 999, t: 0, delay: 18 + i * 2, tx, ty, s: 9, rot: 0, vr: 0 });
   runFx();
 }
+/* small physical bits: crumbs, water drops, fur fluff, wood chips, sparkles */
+function bits(kind, x, y, n, opts = {}) {
+  if (reduceMotion) n = Math.min(n, 4);
+  const cols = [].concat(opts.c || "#fff");
+  for (let i = 0; i < n; i++) {
+    const a = opts.dir != null ? opts.dir + (Math.random() - .5) * (opts.spread || 1.4) : Math.random() * Math.PI * 2, v = (opts.v || 3) * (.5 + Math.random());
+    FX.bits.push({ k: opts.sq ? "sq" : "dot", ring: opts.ring, x: x + (Math.random() - .5) * (opts.w || 10), y, vx: Math.cos(a) * v, vy: Math.sin(a) * v - (opts.up || 2), g: opts.g ?? .25, life: opts.life || 40 + Math.random() * 20, c: pick(cols), s: (opts.s || 3) * (.6 + Math.random() * .8), rot: Math.random() * 3, vr: (Math.random() - .5) * .3 });
+  }
+  runFx();
+}
 function starPath(c, r) { c.beginPath(); for (let i = 0; i < 10; i++) { const rr = i % 2 ? r * .45 : r, a = i * Math.PI / 5 - Math.PI / 2; c.lineTo(Math.cos(a) * rr, Math.sin(a) * rr); } c.closePath(); }
 function heartPath(c, s) { c.beginPath(); c.moveTo(0, s * .35); c.bezierCurveTo(-s, -s * .3, -s * .5, -s, 0, -s * .45); c.bezierCurveTo(s * .5, -s, s, -s * .3, 0, s * .35); c.closePath(); }
 function stepFx() {
@@ -156,6 +175,10 @@ function stepFx() {
       b.s += b.grow; c.globalAlpha = Math.min(.55, b.life / 90);
       c.fillStyle = "#9bdc52"; c.beginPath(); c.arc(0, 0, b.s, 0, 6.29); c.fill();
       c.fillStyle = "#c8f08e"; c.beginPath(); c.arc(-b.s * .3, -b.s * .3, b.s * .45, 0, 6.29); c.fill();
+    } else if (b.k === "dot" || b.k === "sq") {
+      c.globalAlpha = Math.min(1, b.life / 25); c.fillStyle = b.c; c.strokeStyle = "rgba(43,22,64,.55)"; c.lineWidth = 1.2;
+      if (b.k === "dot") { c.beginPath(); c.arc(0, 0, b.s, 0, 6.29); c.fill(); if (b.ring) c.stroke(); }
+      else { c.fillRect(-b.s / 2, -b.s / 2, b.s, b.s); c.strokeRect(-b.s / 2, -b.s / 2, b.s, b.s); }
     } else if (b.k === "heart") {
       c.globalAlpha = Math.min(1, b.life / 30); c.fillStyle = b.c; c.strokeStyle = "#2b1640"; c.lineWidth = 2; heartPath(c, b.s); c.fill(); c.stroke();
     } else {

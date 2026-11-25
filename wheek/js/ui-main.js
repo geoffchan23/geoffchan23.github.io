@@ -101,7 +101,7 @@ VIEWS.home = (el) => {
       <div class="pet-name"><span>${esc(g.name)}</span> ${sexIco(g)} ${tierChip(g)}</div>
       <div class="bubble" id="bubble">${esc(needLine(g))}</div>
       <button class="pet-main" id="pet" aria-label="Boop ${esc(g.name)}">${guineaSVG(g, { size: 210, mood: mood(g), cls: "idle" })}</button>
-      ${G.stats.boops < 15 ? `<div class="tap-tip">👆 Tap ${esc(g.name)}!</div>` : ""}
+      ${G.stats.boops < 15 || (G.stats.pets || 0) < 10 ? `<div class="tap-tip">👆 Tap to boop · 🤚 swipe to pet</div>` : ""}
       ${courier ? `<button class="courier" id="courier" aria-label="Open package"><span class="c-ico">${courier.ico}</span><span class="c-box">📦</span><span class="c-tip">Tap to open!</span></button>` : ""}
       ${G.settings.sitter > now() ? `<div class="sitter">👵 Granny sitting: ${dur(G.settings.sitter - now())}</div>` : ""}
     </section>
@@ -118,21 +118,22 @@ VIEWS.home = (el) => {
     </section>
     <div class="sheet" id="tray" hidden></div>`;
   const petBtn = $("#pet", el);
-  petBtn.addEventListener("pointerdown", e => boop(g, petBtn, e));
   $$("[data-pal]", el).forEach(b => b.onclick = () => { G.active = b.dataset.pal; play("wheek"); saveSoon(); render(); });
   $$("[data-tray]", el).forEach(b => b.onclick = () => { play("click"); openTray(b.dataset.tray, g); });
   $$("[data-go]", el).forEach(b => b.onclick = () => { play("click"); go(b.dataset.go); });
   $("#dress", el).onclick = () => { play("click"); openWardrobe(g); };
   const cr = $("#courier", el); if (cr) cr.onclick = () => openPackage(G.packages[0]);
   renderSuggest();
+  paInit(g);
   const iv = setInterval(() => { const b = $("#bubble"); if (b && Math.random() < .5) { b.textContent = needLine(g); b.classList.remove("pop"); void b.offsetWidth; b.classList.add("pop"); } if (g.pers === "gassy" && Math.random() < .15) toot(g, petBtn); }, 9000);
   const statIv = setInterval(() => { tick(); refreshStatBars(g); renderSuggest(); }, 30000);
-  return () => { clearInterval(iv); clearInterval(statIv); };
+  return () => { clearInterval(iv); clearInterval(statIv); paStop(); };
 };
 
 /* ---------- "what should I do next?" helper ---------- */
 const TUT = [
   { id: "boop", t: g => `Tap ${g.name} to give a boop!`, ico: "👆", act: () => { const p = $("#pet"); if (p) { p.classList.remove("nudge"); void p.offsetWidth; p.classList.add("nudge"); } } },
+  { id: "pet", t: g => `Pet ${g.name}: swipe your finger across them`, ico: "🤚", act: () => TUT[0].act() },
   { id: "feed", t: g => `Feed ${g.name} a snack`, ico: "🥕", act: g => openTray("food", g) },
   { id: "package", t: () => "Open your package!", ico: "📦", act: () => openPackage(G.packages[0]), skip: () => !G.packages.length },
   { id: "map", t: () => "Go out and explore the World", ico: "🗺️", go: "map" },
@@ -152,7 +153,7 @@ function tutMark(id) {
     saveSoon(); renderSuggest();
   }, 600);
 }
-const QUEST_GO = { play: "place/arcade", luck: "place/carnival", boop: "home", feed: "home:food", bath: "home:care", toy: "home:toy", earn: "place/arcade", package: "place/post", slime: "place/lab", box: "shop/boxes", poop: "place/farm", harvest: "place/farm" };
+const QUEST_GO = { pet: "home", play: "place/arcade", luck: "place/carnival", boop: "home", feed: "home:food", bath: "home:care", toy: "home:toy", earn: "place/arcade", package: "place/post", slime: "place/lab", box: "shop/boxes", poop: "place/farm", harvest: "place/farm" };
 function goQuest(k) {
   const r = QUEST_GO[k] || "map";
   if (r.startsWith("home")) { const t = r.split(":")[1]; if (ROUTE.name !== "home") go("home"); if (t) setTimeout(() => openTray(t, activeG()), ROUTE.name === "home" ? 50 : 350); else setTimeout(() => TUT[0].act(), 400); }
@@ -206,7 +207,7 @@ function boop(g, btn, e) {
   if (g.joy > 60 && Math.random() < coinChance) { addCoins(rint(1, 5), [x, y]); }
   if (g.pers === "gassy" && Math.random() < .04) setTimeout(() => toot(g, btn), 300);
   refreshStatBars(g); saveSoon(); checkAchievements(); tutMark("boop");
-  const tip = $(".tap-tip"); if (tip && G.stats.boops >= 15) tip.remove();
+  const tip = $(".tap-tip"); if (tip && G.stats.boops >= 15 && (G.stats.pets || 0) >= 10) tip.remove();
 }
 function refreshStatBars(g) {
   const s = $(".stats"); if (!s) return;
@@ -228,12 +229,12 @@ function openTray(cat, g) {
   $$("[data-use]", tray).forEach(b => b.onclick = () => useItem(g, b.dataset.use, b));
   const br = $("[data-brush]", tray); if (br) br.onclick = () => {
     const last = g.brushed || 0; if (now() - last < 15 * MIN) { say("I'm already sooo fluffy. Try again later!"); play("buzz"); return; }
-    g.brushed = now(); g.clean = clamp(g.clean + 15, 0, 100); g.joy = clamp(g.joy + 5, 0, 100); play("squish"); petAnim($("#pet"), "happy", 900);
-    const [x, y] = centerOf($("#pet")); hearts(x, y, 5); say(pick(["Ooh brushy brushy!", "I'm so FLUFFY!", "Do my butt next."])); refreshStatBars(g); saveSoon();
+    g.brushed = now(); g.clean = clamp(g.clean + 15, 0, 100); g.joy = clamp(g.joy + 5, 0, 100);
+    tray.hidden = true; animCare("brush"); refreshStatBars(g); saveSoon();
   };
   const tk = $("[data-tickle]", tray); if (tk) tk.onclick = () => {
     const last = g.tickled || 0; if (now() - last < 10 * MIN) { say("Hehe... I'm all tickled out. Later!"); play("buzz"); return; }
-    g.tickled = now(); g.joy = clamp(g.joy + 8, 0, 100); play("giggle"); petAnim($("#pet"), "spin", 700); say("HEHEHEHE! STOP! NO DON'T STOP!"); refreshStatBars(g); saveSoon();
+    g.tickled = now(); g.joy = clamp(g.joy + 8, 0, 100); tray.hidden = true; say("HEHEHEHE! STOP! NO DON'T STOP!"); animPlay("tickle"); refreshStatBars(g); saveSoon();
   };
 }
 function useItem(g, id, btn) {
@@ -244,21 +245,22 @@ function useItem(g, id, btn) {
   if (res.full) { say(pick(["I'm SO full. My tummy is a balloon.", "No more! I'll pop!", "*burp* ...no thank you."])); play("burp"); return; }
   if (res.pointless) { say("I feel great! I don't need medicine."); play("buzz"); return; }
   if (res.maxed) { say("I've had all the vitamins I can have!"); play("buzz"); return; }
+  const fromVP = btn && btn.getBoundingClientRect ? centerOf(btn) : null;
+  const tr = $("#tray"); if (tr) tr.hidden = true;
   if (it.cat === "food") {
-    play(["carrot", "celery", "cucumber", "pepper", "lettuce"].includes(id) ? "crunch" : "nom"); petAnim(pet, "munch", 1200);
-    say(res.fav ? `${it.name.toUpperCase()}!!! MY FAVOURITE!!!` : pick(["Nom nom nom!", "*crunch crunch*", "Mmm! More please!", `${it.name}? Yes please!`]));
-    if (res.fav) { hearts(x, y, 10); play("wheek"); }
-    if (id === "goldlettuce" || id === "rainbowcarrot") confetti(x, y, 60);
+    say(res.fav ? `${it.name.toUpperCase()}!!! MY FAVOURITE!!!` : pick(["Nom nom nom!", "*crunch crunch*", "Mmm! More please!", `${it.name}? Yes please!`, "SNACK TIME!", "Gimme gimme gimme!"]));
+    animEat(id, fromVP);
+    if (id === "goldlettuce" || id === "rainbowcarrot") setTimeout(() => confetti(x, y, 60), 1500);
     const toots = Math.floor(res.toot) + (Math.random() < res.toot % 1 ? 1 : 0);
-    for (let i = 0; i < toots; i++) setTimeout(() => toot(g, pet), 1300 + i * 900);
+    for (let i = 0; i < toots; i++) setTimeout(() => toot(g, $("#pet") || pet), 3200 + i * 900);
   } else if (it.cat === "care") {
-    if (id === "soap") { play("squelch"); petAnim(pet, "happy", 1000); say("Splish splash! I'm SPARKLY!"); confetti(x, y, 25, false); }
-    else { play("sparkle"); petAnim(pet, "hop", 800); say(res.text || "I feel SO much better!"); hearts(x, y, 6); }
-  } else if (it.cat === "toy") { play("wheek"); petAnim(pet, "hop", 800); say(pick(["WHEEEE!", "This is the BEST toy EVER!", "Again! Again!"])); hearts(x, y, 6); }
+    say(id === "soap" ? pick(["Splish splash! Bath time!", "Bubbles! I LOVE bubbles!", "Scrub behind my ears!"]) : (res.text || "I feel SO much better!"));
+    animCare(id);
+  } else if (it.cat === "toy") { say(pick(["WHEEEE!", "This is the BEST toy EVER!", "Again! Again!", "Play with me! PLAY WITH ME!"])); animPlay(id); }
   if (res.care) { addCoins(res.care, [x, y]); }
   if (res.text && it.cat !== "care") toast(res.text);
   refreshStatBars(g);
-  const tray = $("#tray"); if (tray && !tray.hidden) { const c = tray.dataset.cat; tray.hidden = true; openTray(c, g); }
+  
   if (it.cat === "food") tutMark("feed"); if (id === "soap") tutMark("bath");
   renderSuggest();
   checkAchievements();

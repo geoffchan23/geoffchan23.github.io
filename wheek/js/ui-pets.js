@@ -271,6 +271,8 @@ function initLab(cv) {
     lab.cx = lab.hx; lab.cy = lab.hy; lab.pts.forEach(p => { p.r = lab.R; p.v = 0; });
   };
   lab.size(); addEventListener("resize", lab.size);
+  // only grab the finger when it lands ON the slime; anywhere else the page scrolls as normal
+  cv.addEventListener("touchstart", e => { if (!lab) return; const t = e.touches[0]; const p = labPolar(t); if (p.d < rAt(p.a) * 1.15) e.preventDefault(); }, { passive: false });
   cv.addEventListener("pointerdown", labDown); cv.addEventListener("pointermove", labMove);
   cv.addEventListener("pointerup", labUp); cv.addEventListener("pointercancel", labUp);
   lab.raf = requestAnimationFrame(labStep);

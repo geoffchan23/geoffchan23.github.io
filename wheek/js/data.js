@@ -204,7 +204,7 @@ const NEWS = [
 /* ---------- daily quests ---------- */
 const QUESTS = [
   { k: "play", n: 3, t: "Play 3 mini-games", r: 60 }, { k: "play", n: 6, t: "Play 6 mini-games", r: 120 },
-  { k: "boop", n: 25, t: "Boop guineas 25 times", r: 40 }, { k: "feed", n: 5, t: "Feed your guineas 5 times", r: 50 },
+  { k: "boop", n: 25, t: "Boop guineas 25 times", r: 40 }, { k: "pet", n: 20, t: "Pet your guineas 20 times (swipe!)", r: 40 }, { k: "feed", n: 5, t: "Feed your guineas 5 times", r: 50 },
   { k: "earn", n: 300, t: "Earn 300 coins", r: 80 }, { k: "earn", n: 800, t: "Earn 800 coins", r: 160 },
   { k: "package", n: 1, t: "Open a package", r: 40 }, { k: "slime", n: 1, t: "Make a slime", r: 50 },
   { k: "bath", n: 2, t: "Give 2 bubble baths", r: 40 }, { k: "box", n: 1, t: "Open a blind box", r: 50 },
