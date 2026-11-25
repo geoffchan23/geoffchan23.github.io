@@ -239,7 +239,7 @@
   .g-claw .panel{background:var(--card);border:4px solid var(--ink);border-radius:26px;box-shadow:0 8px 0 var(--ink);padding:18px 18px 20px;max-width:360px;width:100%;text-align:center;animation:gcl-pop .45s cubic-bezier(.2,1.6,.4,1)}
   .g-claw .panel h2{font-size:34px;color:var(--pink-deep);text-shadow:0 3px 0 var(--ink);-webkit-text-stroke:1.5px var(--ink);margin-bottom:6px}
   .g-claw .panel p{margin:6px 0 12px;font-size:16px;line-height:1.3}
-  .g-claw .legend{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin:6px 0 14px}
+  .g-claw .legend{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;margin:6px 0 14px}.g-claw .legend canvas{max-width:100%;height:auto!important}.g-claw .legend span{font-size:12px;white-space:nowrap}
   .g-claw .legend div{display:flex;flex-direction:column;align-items:center;font-family:var(--display);font-size:14px;line-height:1}
   .g-claw .legend .r1{color:#c78a00}.g-claw .legend .r2{color:#6b45c9}.g-claw .legend .r3{color:var(--pink-deep)}
   .g-claw .win h2{font-size:30px}

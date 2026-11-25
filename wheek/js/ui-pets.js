@@ -121,24 +121,24 @@ VIEWS.bag = (el) => {
   let body = "";
   if (bagTab === "outfit") {
     const owned = OUTFITS.filter(o => G.owned[o.id]);
-    body = owned.length ? `<div class="bag-grid">${owned.map(o => `<div class="bag-it"><div class="si-art">${itemIcon(o.id)}</div><b>${esc(o.name)}</b></div>`).join("")}</div><button class="btn pink" data-ward>Open Wardrobe</button>` : `<p class="muted center">No outfits yet. Visit Fluff Boutique!</p>`;
+    body = owned.length ? `<button class="btn pink big" data-ward>👒 Dress up ${esc(activeG().name)}</button><div class="bag-grid" style="margin-top:14px">${owned.map(o => `<button class="bag-it" data-ward><div class="si-art">${itemIcon(o.id)}</div><b>${esc(o.name)}</b></button>`).join("")}</div>` : emptyBag("No outfits yet!", "Buy hats and glasses at Fluff Boutique.", "shop/boutique", "🎀 Go to Fluff Boutique");
   } else if (bagTab === "decor") {
     const dec = DECOR.filter(d => G.owned[d.id]);
     const walls = WALLS.filter(w => G.owned[w.id]), floors = FLOORS.filter(w => G.owned[w.id]);
     body = `<h3 class="sub">Hutch slots</h3><div class="slots">${G.home.decor.map((d, i) => `<button class="slot" data-slot="${i}">${d ? ITEM[d].ico : "➕"}<small>${["Back left", "Back right", "Front left", "Front right"][i]}</small></button>`).join("")}</div>
       <h3 class="sub">Wallpaper</h3><div class="chips">${walls.map(w => `<button class="chip ${G.home.wall === w.id ? "on" : ""}" data-wall="${w.id}"><span class="sw" style="background:${w.css}"></span>${esc(w.name)}</button>`).join("")}</div>
       <h3 class="sub">Floor</h3><div class="chips">${floors.map(w => `<button class="chip ${G.home.floor === w.id ? "on" : ""}" data-floor="${w.id}"><span class="sw" style="background:${w.css}"></span>${esc(w.name)}</button>`).join("")}</div>
-      <h3 class="sub">Your furniture</h3>${dec.length ? `<div class="bag-grid">${dec.map(d => `<div class="bag-it"><span class="ii big">${d.ico}</span><b>${esc(d.name)}</b>${G.owned[d.id] > 1 ? `<small>x${G.owned[d.id]}</small>` : ""}</div>`).join("")}</div>` : `<p class="muted">No furniture yet. Fluff Boutique sells lots!</p>`}`;
+      <h3 class="sub">Your furniture</h3>${dec.length ? `<p class="muted">Tap a spot above to put furniture in your hutch.</p><div class="bag-grid">${dec.map(d => `<div class="bag-it"><span class="ii big">${d.ico}</span><b>${esc(d.name)}</b>${G.owned[d.id] > 1 ? `<small>x${G.owned[d.id]}</small>` : ""}</div>`).join("")}</div>` : emptyBag("No furniture yet!", "Fluff Boutique sells couches, disco balls and even a golden toilet.", "shop/boutique", "🎀 Go to Fluff Boutique")}`;
   } else {
     const ids = Object.keys(G.inv).filter(id => ITEM[id] && G.inv[id] > 0 && (ITEM[id].cat === bagTab || (bagTab === "farm" && (ITEM[id].cat === "seed" || ITEM[id].cat === "slime"))));
-    body = ids.length ? `<div class="bag-grid">${ids.map(id => { const it = ITEM[id]; return `<div class="bag-it">${it.cat === "box" ? `<span class="ii big">${it.ico}</span>` : `<div class="si-art">${itemIcon(id)}</div>`}<b>${esc(it.name)}</b><small>x${G.inv[id]}</small>${it.cat === "box" ? `<button class="btn small pink" data-openbox="${id}">Open!</button>` : `<small class="bd">${esc(it.desc || "")}</small>`}</div>`; }).join("")}</div>` : `<p class="muted center">Nothing here yet!</p>`;
-    if (bagTab === "food" || bagTab === "care" || bagTab === "toy") body += `<p class="muted center">Use these on your guinea from the Home screen.</p>`;
-    if (bagTab === "junk") body += `<p class="muted center">Sell treasures at Squeakmart (Sell tab).</p>`;
+    const where = { box: ["shop/boxes", "🎁 Go to Blind Box Bonanza"], junk: ["place/swamp", "🎣 Go fishing in the Swamp"] }[bagTab] || ["shop/squeakmart", "🛒 Go to Squeakmart"];
+    body = ids.length ? `<p class="muted center">Tap something to use it!</p><div class="bag-grid">${ids.map(id => { const it = ITEM[id]; return `<button class="bag-it" data-item="${id}">${it.cat === "box" ? `<span class="ii big">${it.ico}</span>` : `<div class="si-art">${itemIcon(id)}</div>`}<b>${esc(it.name)}</b><small>x${G.inv[id]}</small><span class="btn small ${it.cat === "box" ? "pink" : "green"}">${bagVerb(it)}</span></button>`; }).join("")}</div>` : emptyBag("Nothing here yet!", "", where[0], where[1]);
   }
   el.innerHTML = `<div class="pad"><h1 class="page-t">🎒 My Bag</h1><div class="tabs scroll">${tabs.map(([k, n]) => `<button class="tab ${k === bagTab ? "on" : ""}" data-btab="${k}">${n}</button>`).join("")}</div>${body}</div>`;
   $$("[data-btab]", el).forEach(b => b.onclick = () => { bagTab = b.dataset.btab; play("click"); render(); });
-  const wd = $("[data-ward]", el); if (wd) wd.onclick = () => openWardrobe(activeG());
-  $$("[data-openbox]", el).forEach(b => b.onclick = () => { const id = b.dataset.openbox; if (!has(id)) return; addItem(id, -1); G.stats.boxes++; questProgress("box"); const rewards = openBoxRewards(id); rewards.forEach(grant); saveSoon(); revealSequence({ title: ITEM[id].name, ico: "🎁", line: "What could it be?!", box: ITEM[id].ico, rewards }, () => { checkAchievements(); render(); }); });
+  $$("[data-ward]", el).forEach(b => b.onclick = () => openWardrobe(activeG()));
+  $$("[data-item]", el).forEach(b => b.onclick = () => { play("click"); itemSheet(b.dataset.item); });
+  $$("[data-go]", el).forEach(b => b.onclick = () => { play("click"); go(b.dataset.go); });
   $$("[data-wall]", el).forEach(b => b.onclick = () => { G.home.wall = b.dataset.wall; play("pop"); saveSoon(); render(); });
   $$("[data-floor]", el).forEach(b => b.onclick = () => { G.home.floor = b.dataset.floor; play("pop"); saveSoon(); render(); });
   $$("[data-slot]", el).forEach(b => b.onclick = () => {
@@ -149,6 +149,33 @@ VIEWS.bag = (el) => {
     $("[data-clear]", m.el).onclick = () => { G.home.decor[i] = null; saveSoon(); m.close(); render(); };
   });
 };
+
+function emptyBag(title, text, route, label) { return `<div class="empty card"><b>${esc(title)}</b>${text ? `<p>${esc(text)}</p>` : ""}<button class="btn green" data-go="${route}">${label}</button></div>`; }
+function bagVerb(it) {
+  if (it.cat === "food") return "Feed";
+  if (it.cat === "care" || it.cat === "toy") return "Use";
+  if (it.cat === "box") return "Open!";
+  if (it.cat === "seed" || it.id === "fertilizer") return "Plant";
+  if (it.id === "haybale") return "Fill rack";
+  if (it.cat === "slime") return "Make slime";
+  if (it.cat === "love") return "Use on a date";
+  if (it.sell) return "Sell";
+  return "Look";
+}
+function openBoxFromBag(id) { if (!has(id)) return; addItem(id, -1); G.stats.boxes++; questProgress("box"); const rewards = openBoxRewards(id); rewards.forEach(grant); saveSoon(); revealSequence({ title: ITEM[id].name, ico: "🎁", line: "What could it be?!", box: ITEM[id].ico, rewards }, () => { checkAchievements(); render(); }); }
+function itemSheet(id) {
+  const it = ITEM[id], g = activeG();
+  if (it.cat === "box") return openBoxFromBag(id);
+  let btn = "", go2 = null, run = null;
+  if (["food", "care", "toy"].includes(it.cat)) { btn = `${it.cat === "food" ? "🥕 Feed" : "✨ Use on"} ${esc(g.name)}`; run = () => { go("home"); setTimeout(() => useItem(activeG(), id), 450); }; }
+  else if (it.cat === "seed" || it.id === "fertilizer" || it.id === "haybale") { btn = G.farm.level ? "🌾 Go to the Farm" : "🌾 Buy the Farm first"; go2 = "place/farm"; }
+  else if (it.cat === "slime") { btn = "🧪 Go to the Slime Lab"; go2 = "place/lab"; }
+  else if (it.cat === "love") { btn = "💕 Go to Guinea Date"; go2 = "date"; }
+  else if (it.sell) { btn = `🛒 Sell at Squeakmart (${it.sell} coins)`; run = () => { shopTab.squeakmart = "sell"; go("shop/squeakmart"); }; }
+  const m = openModal(`<div class="center"><div class="sheet-art">${itemIcon(id)}</div><h2>${esc(it.name)}</h2><p class="mtext">${esc(it.desc || "")}</p><p class="muted">You have ${G.inv[id]}</p><div class="mrow">${btn ? `<button class="btn green" data-a>${btn}</button>` : ""}<button class="btn white" data-ok>Close</button></div></div>`);
+  $("[data-ok]", m.el).onclick = () => m.close();
+  const a = $("[data-a]", m.el); if (a) a.onclick = () => { play("click"); m.close(); setTimeout(() => { if (run) run(); else go(go2); }, 200); };
+}
 
 /* ---------- BOOK ---------- */
 let bookTab = "squishies";
@@ -171,6 +198,7 @@ VIEWS.book = (el) => {
   } else {
     body = `<div class="settings">
       <button class="btn white" data-mute>${G.settings.muted ? "🔇 Sound is OFF" : "🔊 Sound is ON"}</button>
+      ${cloudSettingsHTML()}
       ${window.__installPrompt ? `<button class="btn green" data-install>📲 Install Wheek World app</button>` : `<p class="muted">To install: open this page in Chrome, tap ⋮ then "Add to Home screen" or "Install app".</p>`}
       <div class="card note"><b>Backup your save</b><p>Your game is saved on this phone. Copy a backup code to keep it safe, or to move to another phone.</p><div class="row-btns"><button class="btn small sky" data-export>Copy backup code</button><button class="btn small white" data-import>Restore from code</button></div></div>
       <button class="btn white small" data-help>❓ How to play</button>
@@ -181,6 +209,7 @@ VIEWS.book = (el) => {
   $$("[data-ktab]", el).forEach(b => b.onclick = () => { bookTab = b.dataset.ktab; play("click"); render(); });
   $$("[data-sq]", el).forEach(b => b.onclick = () => { const s = SQUISHIES.find(x => x.id === b.dataset.sq); if (!G.squishies[s.id]) { play("buzz"); return; } play("squish"); const svg = $("svg", b); svg.classList.remove("squash"); void svg.getBoundingClientRect(); svg.classList.add("squash"); });
   const mu = $("[data-mute]", el); if (mu) mu.onclick = () => { G.settings.muted = !G.settings.muted; saveSoon(); render(); play("click"); };
+  wireCloudSettings(el);
   const ins = $("[data-install]", el); if (ins) ins.onclick = async () => { const p = window.__installPrompt; window.__installPrompt = null; p.prompt(); try { await p.userChoice; } catch {} render(); };
   const ex = $("[data-export]", el); if (ex) ex.onclick = async () => { const code = btoa(unescape(encodeURIComponent(JSON.stringify(G)))); try { await navigator.clipboard.writeText(code); toast("Backup code copied! Paste it somewhere safe.", "💾"); } catch { const m = openModal(`<h2>Backup code</h2><p class="muted">Copy all of this:</p><textarea class="text-in code" readonly>${code}</textarea>`); $("textarea", m.el).select(); } };
   const im = $("[data-import]", el); if (im) im.onclick = () => { const m = openModal(`<h2>Restore save</h2><p class="muted">Paste a backup code. This replaces your current game!</p><textarea class="text-in code" id="imp"></textarea><div class="mrow"><button class="btn green" data-do>Restore</button></div>`); $("[data-do]", m.el).onclick = () => { try { const s = JSON.parse(decodeURIComponent(escape(atob($("#imp", m.el).value.trim())))); if (!s.guineas) throw 0; G = migrate(s); save(); m.close(); toast("Save restored!", "💾"); go("home"); } catch { toast("That code didn't work.", "❌"); } }; };
@@ -338,7 +367,7 @@ PLACE_VIEWS.lab = (el) => {
     addItem("slimekit", -1);
     const name = (LAB.name || "").trim() || slimeName();
     G.slimes.push({ color: LAB.color, adds: { ...LAB.adds }, name, h: hourIdx() });
-    G.stats.slimes++; questProgress("slime"); addXP(8);
+    G.stats.slimes++; questProgress("slime"); addXP(8); tutMark("slime");
     play("thwop"); setTimeout(() => play("win"), 200); confetti(innerWidth / 2, innerHeight / 2, 80);
     toast(`${name} is in a jar!`, "🧪"); LAB.name = slimeName(); saveSoon(); checkAchievements(); render();
   };

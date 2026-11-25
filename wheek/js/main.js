@@ -20,6 +20,7 @@
   document.addEventListener("visibilitychange", () => { if (!document.hidden) { tick(); if (!ROUTE.inGame && !modalStack.length) render(); } });
   addEventListener("pointerdown", () => getAC(), { once: true });
 
+  startCloud();
   // PWA
   addEventListener("beforeinstallprompt", e => { e.preventDefault(); window.__installPrompt = e; });
   if ("serviceWorker" in navigator && location.protocol !== "file:") {

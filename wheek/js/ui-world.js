@@ -96,6 +96,7 @@ function placeBadge(id) {
   return "";
 }
 VIEWS.map = (el) => {
+  tutMark("map");
   const ev = currentEvent();
   const g = activeG();
   const pos = PLACES[G.flags.mapAt] || PLACES.home;
@@ -214,7 +215,7 @@ function sellList() {
 function buy(id, p, btn, shop) {
   const it = ITEM[id];
   if (!spendCoins(p)) { btn.classList.add("nope"); setTimeout(() => btn.classList.remove("nope"), 400); return; }
-  play("coin"); haptic(10);
+  play("coin"); haptic(10); tutMark("shop");
   const [x, y] = centerOf(btn); confetti(x, y, 14, false);
   if (it.cat === "box") { G.stats.boxes++; questProgress("box"); const rewards = openBoxRewards(id); rewards.forEach(grant); saveSoon(); revealSequence({ title: it.name, ico: "🦝", line: pick(NPCS.gus.lines), box: it.ico, rewards }, () => { checkAchievements(); render(); }); return; }
   if (it.cat === "outfit" || it.cat === "wall" || it.cat === "floor" || it.cat === "decor") { own(id); toast(`${it.name} is yours!`, it.ico || "🎀"); }
@@ -285,9 +286,9 @@ PLACE_VIEWS.farm = (el) => {
   const herd = farmList();
   el.innerHTML = placeHeader("farm", `<span class="sale-tag">${esc(L.n)}</span>`) + `<div class="pad">
     ${npcBox("hayley")}
-    <div class="farm-field" id="field">
-      ${herd.map((g, i) => `<button class="fg" data-pet="${g.id}" style="left:${8 + (i * 37) % 80}%;top:${12 + ((i * 53) % 60)}%;animation-delay:${(i % 5) * .7}s">${guineaSVG(g, { size: 64, mood: mood(g) })}</button>`).join("")}
-      ${herd.flatMap(g => Array.from({ length: g.poop || 0 }, (_, k) => `<button class="poop" data-poop="${g.id}" style="left:${(hashStr(g.id + k) % 86) + 4}%;top:${(hashStr(k + g.id) % 76) + 12}%">💩</button>`)).join("")}
+    <div class="farm-field" id="field" style="height:${Math.max(1, Math.ceil(herd.length / 4)) * 70 + 140}px">
+      ${herd.map((g, i) => `<button class="fg" data-pet="${g.id}" style="left:${3 + (i % 4) * 24 + (Math.floor(i / 4) % 2) * 6}%;top:${8 + Math.floor(i / 4) * 70}px;animation-delay:${(i % 5) * .7}s">${guineaSVG(g, { size: 64, mood: mood(g) })}</button>`).join("")}
+      ${(() => { const poops = herd.flatMap(g => Array.from({ length: g.poop || 0 }, () => g.id)); const rows = Math.max(1, Math.ceil(herd.length / 4)) * 70 + 14; return poops.slice(0, 24).map((id, k) => `<button class="poop" data-poop="${id}" style="left:${2 + (k % 8) * 12 + (hashStr(id + k) % 4)}%;top:${rows + Math.floor(k / 8) * 40 + (hashStr(k + id) % 8)}px">💩</button>`).join("") + (poops.length > 24 ? `<span class="poop-more">+${poops.length - 24} more</span>` : ""); })()}
       ${!herd.length ? `<p class="field-empty">No guineas live here yet! Move some from the Guineas page or adopt new ones.</p>` : ""}
     </div>
     <p class="muted center">Herd: ${herd.length}/${L.cap} · Tap poops to scoop them (+1 coin, and every 10 makes fertilizer)</p>
@@ -508,7 +509,7 @@ VIEWS.play = (el, id) => {
   el.innerHTML = `<div class="stage" id="stage"></div>`;
   const stage = $("#stage", el);
   const counted = { v: false };
-  const count = () => { if (counted.v) return; counted.v = true; G.stats.games++; questProgress("play"); if (def.kind === "luck") questProgress("luck"); addXP(8); checkAchievements(); };
+  const count = () => { if (counted.v) return; counted.v = true; tutMark("game"); G.stats.games++; questProgress("play"); if (def.kind === "luck") questProgress("luck"); addXP(8); checkAchievements(); };
   const ev = currentEvent();
   const mult = ev.id === "golden" || (ev.id === "fartstorm" && def.place === "swamp") ? 2 : 1;
   let inst = null, ended = false;
@@ -534,7 +535,7 @@ VIEWS.play = (el, id) => {
     },
     exit() { back(); },
   };
-  function mount() { stage.innerHTML = ""; ended = false; counted.v = false; try { inst = def.mount(stage, api); } catch (e) { console.error(e); stage.innerHTML = `<div class="pad center"><h2>This game broke!</h2><p class="muted">${esc(e.message)}</p><button class="btn" onclick="history.back()">Back</button></div>`; } }
+  function mount() { stage.innerHTML = `<div class="game-root"></div>`; ended = false; counted.v = false; try { inst = def.mount($(".game-root", stage), api); } catch (e) { console.error(e); stage.innerHTML = `<div class="pad center"><h2>This game broke!</h2><p class="muted">${esc(e.message)}</p><button class="btn" onclick="history.back()">Back</button></div>`; } }
   function remount() { try { inst && inst.destroy && inst.destroy(); } catch (e) { console.error(e); } mount(); }
   mount();
   return () => { try { inst && inst.destroy && inst.destroy(); } catch (e) { console.error(e); } document.body.classList.remove("in-game"); checkAchievements(); };
