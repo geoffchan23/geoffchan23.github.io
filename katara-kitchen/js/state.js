@@ -7,7 +7,7 @@ const fresh = () => ({
   minis: {}, stars: {}, best: {}, mastery: {}, pity: 0,
   settings: { sound: true, music: true, calm: false },
   stats: { orders: 0, bakeoffs: 0, wins: 0, boxes: 0, correct: 0, answered: 0 },
-  onboarded: false, lastDaily: '',
+  onboarded: false, lastDaily: '', tests: [],
 });
 
 let S;

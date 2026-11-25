@@ -141,6 +141,8 @@ b { font-weight: 700; }
 .mc-quiz { background: linear-gradient(160deg, #e6dcff, #d1c2ff); grid-column: span 2; flex-direction: row; align-items: center; min-height: 110px; gap: 22px; }
 .mc-quiz .mc-art { height: 64px; flex: none; } .mc-quiz .mc-art.heads svg { height: 64px; }
 .mc-quiz b { font-size: 1.5rem; }
+.mc-study { background: linear-gradient(160deg, #e3f8ef, #bdeedd); grid-column: span 2; flex-direction: row; align-items: center; min-height: 96px; gap: 14px; }
+.mc-study .mc-art, .mc-study .mc-art svg { height: 70px; }
 .mc-box { background: linear-gradient(160deg, #ffe3ef, #ffc9de); }
 .mc-book { background: linear-gradient(160deg, #e3f8ef, #c7efdf); }
 .mc-shop { background: linear-gradient(160deg, #fff6d2, #ffe9a3); }
@@ -437,7 +439,7 @@ b { font-weight: 700; }
 .flip { position: relative; width: 100%; min-height: 420px; transform-style: preserve-3d; transition: transform .6s cubic-bezier(.3, 1.3, .5, 1); cursor: pointer; }
 .flip.flipped { transform: rotateY(180deg); }
 .face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; background: #fff; border: 4px solid var(--cocoa); border-radius: 28px; box-shadow: 0 8px 0 var(--cocoa); padding: 22px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-.face.front { background-image: radial-gradient(circle at 50% 38%, var(--gc) 0 36%, #fff 36.5%); }
+.face.front { text-align: center; background-image: radial-gradient(circle at 50% 38%, var(--gc) 0 36%, #fff 36.5%); }
 .fc-icon { width: 170px; height: 170px; animation: bob 2s ease-in-out infinite; }
 .face.front h2 { font-size: 2.2rem; margin: 14px 0 4px; } .face.front small { color: var(--cocoa2); }
 .face.back { transform: rotateY(180deg); text-align: left; justify-content: flex-start; align-items: stretch; gap: 10px; overflow-y: auto; }

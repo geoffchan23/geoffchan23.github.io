@@ -1,0 +1,15 @@
+{
+  "name": "Katara's Test Prep",
+  "short_name": "Test Prep",
+  "description": "Practice tests, drills and flashcards for Katara's ecosystems science test.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f3fbf7",
+  "theme_color": "#d8f3ea",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
