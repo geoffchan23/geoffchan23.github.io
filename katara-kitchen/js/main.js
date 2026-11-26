@@ -148,7 +148,7 @@ function openProgress() {
       <div><b>${state.stats.orders}</b><small>orders served</small></div>
       <div><b>${Object.keys(state.minis).length}</b><small>minis found</small></div>
     </div>
-    <p class="prog-hint">3 hearts = answered right 4 times in a row. Mochi gives you more practice on words without hearts!</p>
+    <p class="prog-hint">Each heart = one of your last 3 answers for that word was right. Mochi gives you more practice on words without hearts!</p>
     <div class="prog-list">${rows}</div>
     <div class="settings">
       <label><input type="checkbox" data-k="sound" ${state.settings.sound ? 'checked' : ''}> Sound effects</label>

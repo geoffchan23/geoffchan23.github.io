@@ -1,4 +1,4 @@
-import { TERMS, T, SCENARIOS, CUSTOM, TRUEFALSE, SORT_ITEMS, CHAINS } from './content.js';
+import { TERMS, T, qd, SCENARIOS, CUSTOM, TRUEFALSE, SORT_ITEMS, CHAINS } from './content.js';
 import { state } from './state.js';
 
 export const shuffle = (a) => { a = [...a]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
@@ -18,9 +18,9 @@ function weightedPick(items, keyFn) {
 }
 
 // Distractor terms: prefer same group, never the "same as" twin
-function distractors(id, n) {
+export function distractors(id, n, avoid = []) {
   const t = T[id];
-  const bad = new Set([id, t.same].filter(Boolean));
+  const bad = new Set([id, t.same, ...avoid, ...avoid.map(a => T[a] && T[a].same)].filter(Boolean));
   const same = shuffle(TERMS.filter(x => x.group === t.group && !bad.has(x.id)));
   const other = shuffle(TERMS.filter(x => x.group !== t.group && !bad.has(x.id)));
   return [...same.slice(0, Math.ceil(n * .67)), ...other].slice(0, n);
@@ -32,16 +32,16 @@ const mc = (prompt, correctLabel, wrongLabels, termId, extra = {}) => ({
   ...extra,
 });
 
-export function defToTerm(id, nOpts = 4) {
+export function defToTerm(id, nOpts = 4, avoid = []) {
   const t = T[id];
-  return mc(t.def, t.term, distractors(id, nOpts - 1).map(x => x.term), id, { style: 'def' });
+  return mc(qd(id), t.term, distractors(id, nOpts - 1, avoid).map(x => x.term), id, { style: 'def' });
 }
-export function termToDef(id, nOpts = 3) {
+export function termToDef(id, nOpts = 3, avoid = []) {
   const t = T[id];
-  return mc(`What does "${t.term}" mean?`, t.def, distractors(id, nOpts - 1).map(x => x.def), id, { style: 'longopts' });
+  return mc(`What does "${t.term}" mean?`, qd(id), distractors(id, nOpts - 1, avoid).map(x => qd(x.id)), id, { style: 'longopts' });
 }
-export function scenario(s, nOpts = 4) {
-  const opts = s.opts ? s.opts.filter(o => o !== s.a) : distractors(s.a, nOpts - 1).map(x => x.id);
+export function scenario(s, nOpts = 4, avoid = []) {
+  const opts = s.opts ? s.opts.filter(o => o !== s.a) : distractors(s.a, nOpts - 1, avoid).map(x => x.id);
   return mc(s.q, T[s.a].term, opts.map(o => T[o].term), s.a, { style: 'scenario' });
 }
 export function custom(c) { return mc(c.q, c.a, c.w, c.t, { style: 'custom' }); }

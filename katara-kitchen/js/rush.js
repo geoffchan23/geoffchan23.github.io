@@ -4,7 +4,7 @@ import { mochi, food, icon, coin, star, fireIcon, lockIcon, clockIcon, extinguis
 import { state, save, addCoins, record } from './state.js';
 import { sfx, music, setTempo } from './audio.js';
 import { confetti, sparkle, floatText, centerOf, flyCoins, wait } from './fx.js';
-import { TERMS, T, GROUPS, CHAIN_ROLES } from './content.js';
+import { TERMS, T, qd, GROUPS, CHAIN_ROLES } from './content.js';
 import { makeQuestion, sortRound, stackRound, shuffle, pick } from './questions.js';
 import { $, $$, go, register, topbar, modal, toast, esc } from './ui.js';
 
@@ -135,7 +135,7 @@ register('rush', (root, { shift: si = 0 }) => {
     let q;
     if (specialTurn) q = pick(S.specials) === 'sort' ? sortRound(5) : stackRound();
     else q = makeQuestion(termIds, { nOpts: 4, recent: G.recent });
-    if (q.termId && q.kind === 'mc') { G.recent.push(q.termId); if (G.recent.length > Math.min(5, termIds.length - 2)) G.recent.shift(); }
+    if (q.termId && q.kind === 'mc') { G.recent.push(q.termId); while (G.recent.length > Math.min(6, termIds.length - 2)) G.recent.shift(); }
     let dish = pick(DISHES); while (dish === G.lastDish) dish = pick(DISHES); G.lastDish = dish;
     if (q.kind === 'sort') dish = 'onigiri'; if (q.kind === 'stack') dish = 'layercake';
     const max = q.kind === 'mc' ? (q.tf ? 32 : 45) : 70;
@@ -219,7 +219,10 @@ register('rush', (root, { shift: si = 0 }) => {
       if (t.wrong.size === 1) { record(t.q.termId, false); G.missedTerms.add(t.q.termId); }
       t.errors++;
       const named = TERMS.find(x => x.term === o.label);
-      tip(named ? `Oops! <b>${named.term}</b> means: ${named.def.charAt(0).toLowerCase() + named.def.slice(1)}.` : 'Not quite! Try another jar.');
+      // don't explain a word that another waiting order is asking for
+      const waiting = named && G.tickets.some(x => x !== t && x.q.termId && (x.q.termId === named.id || x.q.termId === named.same));
+      if (named && !waiting) { G.recent.push(named.id); if (named.same) G.recent.push(named.same); }
+      tip(named && !waiting ? `Oops! <b>${named.term}</b> means: ${qd(named.id).charAt(0).toLowerCase() + qd(named.id).slice(1)}.` : 'Not quite! Try another jar.');
       wrongAnswer(t);
     }
   }
@@ -227,11 +230,13 @@ register('rush', (root, { shift: si = 0 }) => {
   function pickSort(t, saidBio, btn) {
     if (G.busy || G.fire || G.over) return;
     const it = t.q.items[t.step];
+    t.tried = t.tried || {};
+    if (!t.tried[t.step]) { t.tried[t.step] = true; record(it.biotic ? 'biotic' : 'abiotic', it.biotic === saidBio); }
     if (it.biotic === saidBio) {
       sfx('pop'); btn.classList.add('gulp'); setTimeout(() => btn.classList.remove('gulp'), 300);
       const c = centerOf(btn); sparkle(c.x, c.y, 8);
       t.step++;
-      if (t.step >= t.q.items.length) { G.busy = true; record('biotic', t.errors === 0); record('abiotic', t.errors === 0); flyBlob($('.sort-item', ans), '#c8f1c0').then(() => serve(t)); }
+      if (t.step >= t.q.items.length) { G.busy = true; flyBlob($('.sort-item', ans), '#c8f1c0').then(() => serve(t)); }
       else renderOrder();
     } else {
       t.errors++; btn.classList.add('shake'); setTimeout(() => btn.classList.remove('shake'), 500);
@@ -243,10 +248,12 @@ register('rush', (root, { shift: si = 0 }) => {
 
   function pickStack(t, lvl, btn) {
     if (G.busy || G.fire || G.over || lvl < t.step) return;
+    t.tried = t.tried || {};
+    if (!t.tried[t.step]) { t.tried[t.step] = true; record(['producer', 'primary', 'secondary', 'tertiary'][t.step], lvl === t.step); }
     if (lvl === t.step) {
       sfx('pop'); const c = centerOf(btn); sparkle(c.x, c.y, 8);
       t.step++;
-      if (t.step >= 4) { G.busy = true; renderOrder(); record('producer', t.errors === 0); record('tertiary', t.errors === 0); setTimeout(() => flyBlob($('.cake-tower', ans), '#ffb3c7').then(() => serve(t)), 350); }
+      if (t.step >= 4) { G.busy = true; renderOrder(); setTimeout(() => flyBlob($('.cake-tower', ans), '#ffb3c7').then(() => serve(t)), 350); }
       else renderOrder();
     } else {
       t.errors++; btn.classList.add('shake'); setTimeout(() => btn.classList.remove('shake'), 500);

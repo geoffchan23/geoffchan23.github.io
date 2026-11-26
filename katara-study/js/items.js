@@ -1,6 +1,7 @@
 // Question bank + generators + grading for Katara's Test Prep.
 // Mirrors the real test: multiple choice, short answer, matching, true/false.
-import { TERMS, T, SCENARIOS, CUSTOM, TRUEFALSE } from '../../katara-kitchen/js/content.js';
+import { TERMS, T, qd, SCENARIOS, CUSTOM, TRUEFALSE } from '../../katara-kitchen/js/content.js';
+import { canon, profile, givesAway, selfLeak, namesIn, keysIn } from './reveal.js';
 import { defToTerm, termToDef, scenario, custom, shuffle, pick } from '../../katara-kitchen/js/questions.js';
 import { state } from '../../katara-kitchen/js/state.js';
 
@@ -105,6 +106,7 @@ export const LISTS = [
 // Corrections for the false statements, shown after answering
 export const TF_FIX = {
   'Abiotic means living.': 'Abiotic means NON-living. Biotic means living.',
+  'An ecosystem is just one single animal on its own.': 'An ecosystem is ALL the living and non-living things in a place, depending on each other.',
   'A primary consumer is a carnivore.': 'A primary consumer is a HERBIVORE. A secondary consumer is a carnivore.',
   'Energy can be created out of nothing.': 'Energy cannot be created or destroyed (First Law of Thermodynamics).',
   'Polyculture means growing only one type of crop.': 'Polyculture is MANY crops together. Monoculture is only one.',
@@ -113,15 +115,6 @@ export const TF_FIX = {
   'A limiting factor helps a population grow forever.': 'A limiting factor RESTRICTS how much a population can grow.',
   'Sustainability means using up everything as fast as we can.': 'Sustainability means living within our needs so there is enough for the future.',
 };
-// Extra auto-made T/F: pair a term with the wrong definition
-function makeTF() {
-  if (Math.random() < 0.7) { const tf = pick(TRUEFALSE); return { type: 'tf', prompt: tf.q, answer: tf.a, termId: tf.t, fix: TF_FIX[tf.q] }; }
-  const t = pick(TERMS);
-  if (Math.random() < 0.5) return { type: 'tf', prompt: `${t.term}: ${lower(t.def)}.`, answer: true, termId: t.id };
-  const others = TERMS.filter(x => x.id !== t.id && x.id !== t.same && x.group === t.group);
-  const o = pick(others.length ? others : TERMS.filter(x => x.id !== t.id && x.id !== t.same));
-  return { type: 'tf', prompt: `${t.term}: ${lower(o.def)}.`, answer: false, termId: t.id, fix: `That's the definition of ${o.term}. ${t.term} means: ${lower(t.def)}.` };
-}
 const lower = (s) => s.charAt(0).toLowerCase() + s.slice(1);
 
 /* ------------------------------------------------------------------ */
@@ -129,82 +122,208 @@ const lower = (s) => s.charAt(0).toLowerCase() + s.slice(1);
 /* ------------------------------------------------------------------ */
 export function weight(id) {
   const m = state.mastery[id];
-  if (!m) return 2;
-  return Math.max(0.3, 1.2 + m.w * 1.0 - m.s * 0.45);
+  if (!m || !m.seen) return 2;
+  const h = (m.h || []).slice(-3);
+  const misses = h.filter(x => !x).length;
+  return Math.max(0.35, 0.6 + misses * 0.9 - (h.length - misses) * 0.15);
 }
+const wpick = (ids) => {
+  const ws = ids.map(weight); let r = Math.random() * ws.reduce((a, b) => a + b, 0);
+  for (let k = 0; k < ids.length; k++) { r -= ws[k]; if (r <= 0) return ids[k]; }
+  return ids[ids.length - 1];
+};
 export function pickTerms(n, pool = TERMS.map(t => t.id), avoid = []) {
   const out = []; let cand = pool.filter(id => !avoid.includes(id));
   while (out.length < n && cand.length) {
-    const ws = cand.map(weight); let r = Math.random() * ws.reduce((a, b) => a + b, 0), k = 0;
-    for (; k < cand.length - 1; k++) { r -= ws[k]; if (r <= 0) break; }
-    const id = cand[k]; out.push(id);
-    cand = cand.filter(x => x !== id && x !== T[id].same);
+    const id = wpick(cand); out.push(id);
+    cand = cand.filter(x => canon(x) !== canon(id));
   }
   return out;
 }
 export function weakTerms() {
-  return TERMS.filter(t => { const m = state.mastery[t.id]; return m && m.w > 0 && m.s < 2; }).map(t => t.id);
+  return TERMS.filter(t => { const m = state.mastery[t.id]; if (!m || !m.seen) return false; const h = (m.h || []).slice(-3); return h.length && h.filter(Boolean).length < Math.min(2, h.length) || (h[h.length - 1] === false); }).map(t => t.id);
 }
 
 /* ------------------------------------------------------------------ */
-/* Generators                                                          */
+/* Item generators                                                     */
 /* ------------------------------------------------------------------ */
-const fromMC = (q) => ({ type: 'mc', prompt: q.prompt, options: q.options, termId: q.termId });
-export function makeMC(id) {
-  const sc = SCENARIOS.filter(s => s.a === id), cu = CUSTOM.filter(c => c.t === id);
-  const r = Math.random();
-  if (r < 0.35 && sc.length) return fromMC(scenario(pick(sc)));
-  if (r < 0.5 && cu.length) return fromMC(custom(pick(cu)));
-  if (r < 0.7) return fromMC(termToDef(id, 4));
-  return fromMC(defToTerm(id, 4));
+const fromMC = (q) => ({ type: 'mc', prompt: q.prompt, options: q.options, termId: q.termId, style: q.style });
+export function mcVariants(id, avoid = []) {
+  const v = [() => fromMC(defToTerm(id, 4, avoid))];
+  SCENARIOS.filter(s => s.a === id).forEach(sc => v.push(() => fromMC(scenario(sc, 4, avoid))));
+  CUSTOM.filter(c => c.t === id).forEach(c => v.push(() => fromMC(custom(c))));
+  v.push(() => fromMC(termToDef(id, 4, avoid)));
+  return v;
 }
+export function makeMC(id, avoid = []) { return pick(mcVariants(id, avoid))(); }
 export function makeSATerm(id) {
   const t = T[id];
-  return { type: 'sa-term', prompt: t.def, termId: id, answers: ALIASES[id] || [t.term], display: t.term };
+  return { type: 'sa-term', prompt: qd(id), termId: id, answers: ALIASES[id] || [t.term], display: t.term };
 }
 export function makeSAList(item) { return { type: 'sa-list', prompt: item.q, termId: item.t, ok: item.ok, need: item.need, model: item.model }; }
 export function makeSAExplain(item) { return { type: 'sa-explain', prompt: item.q, termId: item.t, model: item.model, keys: item.keys, need: item.need }; }
-export function makeSA(id, kind) {
-  kind = kind || pick(['term', 'term', 'explain', 'list']);
-  if (kind === 'explain') { const e = EXPLAIN.filter(x => x.t === id); return makeSAExplain(e.length ? pick(e) : pick(EXPLAIN)); }
-  if (kind === 'list') { const l = LISTS.filter(x => x.t === id); return makeSAList(l.length ? pick(l) : pick(LISTS)); }
-  return makeSATerm(id);
+export function saVariants(id) {
+  return [() => makeSATerm(id), ...EXPLAIN.filter(x => x.t === id).map(e => () => makeSAExplain(e)), ...LISTS.filter(x => x.t === id).map(l => () => makeSAList(l))];
+}
+export function tfVariants(id, others = TERMS.map(t => t.id)) {
+  const t = T[id];
+  const v = TRUEFALSE.filter(x => x.t === id).map(tf => () => ({ type: 'tf', prompt: tf.q, answer: tf.a, termId: tf.t, fix: TF_FIX[tf.q] }));
+  v.push(() => ({ type: 'tf', prompt: `${t.term}: ${lower(qd(id))}.`, answer: true, termId: id }));
+  const wrong = others.filter(x => canon(x) !== canon(id));
+  if (wrong.length) v.push(() => { const o = T[pick(wrong)]; return { type: 'tf', prompt: `${t.term}: ${lower(qd(o.id))}.`, answer: false, termId: id, fix: `That's what ${o.term} means. ${t.term} means: ${lower(qd(id))}.` }; });
+  return v;
 }
 export function makeMatch(n = 8, pool) {
   const ids = pickTerms(n, pool);
-  return { type: 'match', termId: null, pairs: shuffle(ids).map(id => ({ termId: id, term: T[id].term, def: T[id].def })), bank: shuffle(ids) };
-}
-export function makeTFItem(id) {
-  if (id) {
-    const own = TRUEFALSE.filter(x => x.t === id);
-    if (own.length && Math.random() < 0.6) { const tf = pick(own); return { type: 'tf', prompt: tf.q, answer: tf.a, termId: tf.t, fix: TF_FIX[tf.q] }; }
-    const t = T[id];
-    if (Math.random() < 0.5) return { type: 'tf', prompt: `${t.term}: ${lower(t.def)}.`, answer: true, termId: id };
-    const o = pick(TERMS.filter(x => x.id !== id && x.id !== t.same));
-    return { type: 'tf', prompt: `${t.term}: ${lower(o.def)}.`, answer: false, termId: id, fix: `That's the definition of ${o.term}. ${t.term} means: ${lower(t.def)}.` };
-  }
-  return makeTF();
+  return { type: 'match', termId: null, pairs: shuffle(ids).map(id => ({ termId: id, term: T[id].term, def: qd(id) })), bank: shuffle(ids) };
 }
 
-// A full practice test in the real test's format
-export function makeTest() {
-  const items = [];
-  pickTerms(4).forEach(id => items.push({ ...makeMC(id), section: 'mc' }));
-  // short answer: 2 write-the-word, 2 explain, 1 list — one explain is often the farming question
-  const saIds = pickTerms(2);
-  saIds.forEach(id => items.push({ ...makeSATerm(id), section: 'sa' }));
-  const ex = shuffle(EXPLAIN).sort((a, b) => weight(b.t) - weight(a.t) + (Math.random() - .5) * 2);
-  const farm = Math.random() < 0.5 ? [EXPLAIN[Math.random() < 0.5 ? 0 : 1]] : [];
-  const exPick = [...farm, ...ex.filter(e => !farm.includes(e))].slice(0, 2);
-  exPick.forEach(e => items.push({ ...makeSAExplain(e), section: 'sa' }));
-  items.push({ ...makeSAList(pick(LISTS)), section: 'sa' });
-  items.push({ ...makeMatch(8), section: 'match' });
-  const seen = new Set();
-  while (items.filter(i => i.section === 'tf').length < 4) {
-    const tf = makeTF(); if (seen.has(tf.prompt)) continue; seen.add(tf.prompt);
-    items.push({ ...tf, section: 'tf' });
+/* ------------------------------------------------------------------ */
+/* Builder: no question may give away another question's answer        */
+/* ------------------------------------------------------------------ */
+const ALL = [...new Set(TERMS.map(t => canon(t.id)))];
+// ordered=true (drills): an earlier question (incl. its explanation) must not give away a later one.
+// ordered=false (tests): nothing on the page may give away anything else.
+function fits(item, built, { ordered, feedback }) {
+  if (selfLeak(item)) return false;
+  const p = profile(item, { feedback });
+  for (const b of built) {
+    if (givesAway(b.p, p)) return false;
+    if (!ordered && givesAway(p, b.p)) return false;
+    if ([...p.ans].some(x => b.p.ans.has(x))) return false; // never the same word twice
   }
-  return items;
+  return p;
+}
+const consumed = (built) => new Set(built.flatMap(b => [...b.p.ans, ...b.p.shows]));
+
+function tryBuild(slots, opts) {
+  const built = [];
+  for (let si = 0; si < slots.length; si++) {
+    const slot = slots[si];
+    const used = consumed(built);
+    const free = ALL.filter(c => !used.has(c));
+    const need = slots.slice(si + 1).reduce((a, s) => a + (s.size || 1), 0); // concepts later slots still need
+    let ok = null;
+    if (slot.kind === 'match') {
+      const pool = (slot.pool || TERMS.map(t => t.id)).filter(id => !used.has(canon(id)));
+      for (let k = 0; k < 40 && !ok; k++) {
+        if (pool.length < slot.size) break;
+        const ids = pickTerms(slot.size, pool);
+        if (ids.length < slot.size) break;
+        const it = { type: 'match', termId: null, pairs: shuffle(ids).map(id => ({ termId: id, term: T[id].term, def: qd(id) })), bank: shuffle(ids) };
+        const p = fits(it, built, opts); if (p) ok = { it, p };
+      }
+    } else {
+      const pool = (slot.pool || TERMS.map(t => t.id)).filter(id => !used.has(canon(id)));
+      const saAns = built.filter(b => b.it.type === 'sa-term').map(b => b.it.termId);
+      const avoid = [...saAns, ...built.flatMap(b => [...b.p.ans])];
+      for (let k = 0; k < 30 && !ok && pool.length; k++) {
+        const id = wpick(pool);
+        const vars = slot.variants(id, avoid);
+        if (!vars.length) continue;
+        for (const mk of shuffle(vars).slice(0, 4)) {
+          const it = mk(); if (!it || (slot.reject && slot.reject(it))) continue;
+          const p = fits(it, built, opts); if (!p) continue;
+          const after = new Set([...used, ...p.ans, ...p.shows]);
+          if (ALL.length - after.size < need) continue; // would starve later questions
+          ok = { it, p }; break;
+        }
+      }
+    }
+    if (!ok) return null;
+    built.push({ ...ok, slot });
+  }
+  return built;
+}
+export const buildStats = { attempts: 0, builds: 0 };
+export function build(slots, opts = { ordered: false, feedback: false }) {
+  buildStats.builds++;
+  for (let attempt = 0; attempt < 300; attempt++) {
+    buildStats.attempts++;
+    const b = tryBuild(slots, opts);
+    if (b) return b.map(x => ({ ...x.it, section: x.slot.section }));
+  }
+  return null;
+}
+
+function makeTFItemFallback(id, asked) { const v = tfVariants(id).map(f => f()).find(it => !asked.has(it.prompt)); return v || makeSATerm(id); }
+// Order words so the explanation shown for one never mentions a word still to come
+// (e.g. abiotic's memory trick mentions biotic, so biotic is asked first).
+const explains = (x) => new Set(keysIn(T[x].def + ' ' + T[x].tip).map(canon));
+export function topoOrder(ids) {
+  const left = shuffle(ids), out = [];
+  while (left.length) { let k = left.findIndex(x => !left.some(y => y !== x && explains(x).has(y))); if (k < 0) k = 0; out.push(...left.splice(k, 1)); }
+  return out;
+}
+// Quiz-show run (Bake-Off): tap-only questions, n of them. With a small topic each word comes up
+// twice; the second time it's asked a different way, after all the others.
+export function makeQuizRun(n, pool) {
+  const D = { ordered: true, feedback: true };
+  const ids = [...new Set((pool || TERMS.map(t => t.id)).map(canon))];
+  const tap = (id, avoid) => [...mcVariants(id, avoid), ...tfVariants(id)];
+  if (ids.length >= n) return build(Array.from({ length: n }, () => ({ section: 'mc', pool: pool, variants: tap })), D);
+  const out = [], asked = new Set();
+  for (let r = 1; out.length < n && r <= 8; r++) {
+    const order = topoOrder(ids).slice(0, Math.min(ids.length, n - out.length));
+    const slots = (rej) => order.map(id => ({ section: 'mc', pool: [id, ...(id === 'apex' ? ['tertiary'] : [])].filter(x => (pool || [x]).includes(x)), variants: tap, reject: rej }));
+    const got = build(slots((it) => asked.has(it.prompt)), D) || build(slots(null), D) || [];
+    got.forEach(it => { asked.add(it.prompt); out.push({ ...it, round: r }); });
+    if (!got.length) break;
+  }
+  return out;
+}
+const listVariants = (id) => LISTS.filter(l => l.t === id).map(l => () => makeSAList(l));
+const explainVariants = (id) => EXPLAIN.filter(e => e.t === id).map(e => () => makeSAExplain(e));
+const mcSafe = (id, avoid) => mcVariants(id, avoid);
+const LIST_POOL = [...new Set(LISTS.map(l => l.t))], EXPLAIN_POOL = [...new Set(EXPLAIN.map(e => e.t))];
+
+// A full practice test in the real test's format: 4 MC, 5 short answer, 8 matching, 4 T/F
+export function makeTest() {
+  const slots = [
+    { section: 'sa', variants: (id) => [() => makeSATerm(id)] },
+    { section: 'sa', variants: (id) => [() => makeSATerm(id)] },
+    { section: 'sa', variants: explainVariants, pool: Math.random() < 0.5 ? ['poly', 'organic'] : EXPLAIN_POOL },
+    { section: 'sa', variants: explainVariants, pool: EXPLAIN_POOL },
+    { section: 'sa', variants: listVariants, pool: LIST_POOL },
+    ...[0, 1, 2, 3].map(() => ({ section: 'mc', variants: (id, avoid) => mcSafe(id, avoid) })),
+    ...[0, 1, 2, 3].map(() => ({ section: 'tf', variants: (id) => tfVariants(id).slice(0, -1) })), // single-word T/F only
+    { section: 'match', kind: 'match', size: 8 },
+  ];
+  let items = build(slots, { ordered: false, feedback: false });
+  if (!items) items = build(slots.map(s => s.section === 'sa' && s.pool === EXPLAIN_POOL ? { ...s, pool: undefined, variants: (id) => [() => makeSATerm(id)] } : s), { ordered: false, feedback: false });
+  // present in test order: MC, SA (words, explains, list), matching, T/F
+  const order = { mc: 0, sa: 1, match: 2, tf: 3 };
+  return items.map((it, i) => ({ it, i })).sort((a, b) => order[a.it.section] - order[b.it.section] || a.i - b.i).map(x => x.it);
+}
+
+// Drills: 8 questions; an answer's explanation never gives away a later question
+export function makeDrill(kind, pool) {
+  const D = { ordered: true, feedback: true };
+  const n = 8;
+  if (kind === 'match') return [makeMatch(8)];
+  const variantsFor = {
+    mc: (id, avoid) => mcVariants(id, avoid),
+    tf: (id) => tfVariants(id),
+    sa: null,
+  }[kind];
+  if (kind === 'mc' || kind === 'tf') return build(Array.from({ length: n }, () => ({ section: kind, variants: variantsFor })), D);
+  if (kind === 'sa') {
+    const kinds = shuffle(['term', 'term', 'term', 'explain', 'explain', 'list', 'list', 'term']);
+    return build(kinds.map(k => k === 'term' ? { section: 'sa', variants: (id) => [() => makeSATerm(id)] }
+      : k === 'explain' ? { section: 'sa', variants: explainVariants, pool: EXPLAIN_POOL } : { section: 'sa', variants: listVariants, pool: LIST_POOL }), D)
+      || build(Array.from({ length: n }, () => ({ section: 'sa', variants: (id) => [() => makeSATerm(id)] })), D);
+  }
+  // weak words / fix my mistakes: round 1 = each word once; round 2 = each word again in a new format
+  const base = [...new Set((pool && pool.length ? pool : pickTerms(6)).map(canon))].slice(0, 6);
+  const mixed = (id, avoid) => [...mcVariants(id, avoid), () => makeSATerm(id), ...tfVariants(id)];
+  const ordered = () => topoOrder(base);
+  const round = (reject) => build(ordered().map(id => ({ section: 'mix', pool: [id, ...(id === 'apex' ? ['tertiary'] : [])], variants: mixed, reject })), D);
+  const r1 = round() || base.map(id => makeMC(id));
+  // round 2 asks each word a different way (never the same question or the same definition prompt)
+  const asked = new Set(r1.map(it => it.prompt));
+  const r2 = round((it) => asked.has(it.prompt)) || base.map(id => makeTFItemFallback(id, asked));
+  // shuffle round 2 so it's not in the same order
+  return [...r1, ...r2.map((it, i) => ({ ...it, round: 2, roundStart: i === 0 }))];
 }
 
 /* ------------------------------------------------------------------ */

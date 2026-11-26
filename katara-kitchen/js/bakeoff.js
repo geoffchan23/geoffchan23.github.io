@@ -5,6 +5,7 @@ import { sfx, music } from './audio.js';
 import { confetti, rain, sparkle, floatText, centerOf, wait } from './fx.js';
 import { TERMS, T, GROUPS } from './content.js';
 import { makeQuestion, shuffle } from './questions.js';
+import { makeQuizRun } from '../../katara-study/js/items.js';
 import { $, $$, go, register, topbar, esc } from './ui.js';
 
 const NQ = 10;
@@ -48,10 +49,13 @@ register('bakeoff', (root, { group = 'all' } = {}) => {
   /* ---------------- question loop ---------------- */
   async function run() {
     const ids = TERMS.filter(t => group === 'all' || t.group === group).map(t => t.id);
-    const recent = [];
+    // built so no question (or the answer shown after it) gives away a later one
+    const qs = (makeQuizRun(NQ, ids) || []).map(it => it.type === 'tf'
+      ? { kind: 'mc', tf: true, prompt: it.prompt, termId: it.termId, options: [{ label: 'True', correct: it.answer }, { label: 'False', correct: !it.answer }] }
+      : { kind: 'mc', prompt: it.prompt, termId: it.termId, options: it.options, style: it.style });
+    while (qs.length < NQ) qs.push(makeQuestion(ids, { allowLong: true, nOpts: 4, recent: qs.map(q => q.termId) }));
     for (let qi = 0; qi < NQ && alive; qi++) {
-      const q = makeQuestion(ids, { allowLong: true, nOpts: 4, recent });
-      recent.push(q.termId); if (recent.length > Math.min(6, ids.length - 2)) recent.shift();
+      const q = qs[qi];
       await askQuestion(q, qi);
       if (!alive) return;
       await scoreboard(qi);
