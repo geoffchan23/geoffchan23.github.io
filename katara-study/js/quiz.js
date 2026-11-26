@@ -20,7 +20,9 @@ export function explainHTML(item) {
   return h;
 }
 
+let _q = 0; const uidq = () => `${Date.now().toString(36)}${++_q}`;
 export function renderItem(el, item, { mode = 'drill', onChange = () => { }, onDone = () => { } } = {}) {
+  if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
   const drill = mode === 'drill';
   el.innerHTML = `<div class="q-card q-${item.type}">
     <div class="q-kicker">${KICKER[item.type]}</div>
@@ -65,9 +67,10 @@ export function renderItem(el, item, { mode = 'drill', onChange = () => { }, onD
   }
 
   else if (item.type === 'sa-term') {
-    body.innerHTML = `<input class="sa-input" type="text" placeholder="Type the word..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" value="${esc(item.resp || '')}">
+    body.innerHTML = `<input class="sa-input" type="text" name="ans-${uidq()}" id="ans-${uidq()}" placeholder="Type the word..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" value="${esc(item.resp || '')}">
       ${drill ? `<div class="sa-actions"><button class="small-btn ghost hint">Hint</button><button class="big-btn check">Check</button></div>` : ''}`;
     const inp = $('input', body);
+    inp.value = item.resp || ''; // set explicitly: Safari can carry text over from the previous box
     inp.oninput = () => { item.resp = inp.value; onChange(); };
     if (drill) {
       let hints = 0;
@@ -90,10 +93,11 @@ export function renderItem(el, item, { mode = 'drill', onChange = () => { }, onD
   }
 
   else if (item.type === 'sa-list' || item.type === 'sa-explain') {
-    body.innerHTML = `<textarea class="sa-input" rows="${item.type === 'sa-explain' ? 4 : 2}" placeholder="${item.type === 'sa-explain' ? 'Write your answer in full sentences...' : 'Type your examples...'}" spellcheck="true">${esc(item.resp || '')}</textarea>
+    body.innerHTML = `<textarea class="sa-input" name="ans-${uidq()}" autocomplete="off" rows="${item.type === 'sa-explain' ? 4 : 2}" placeholder="${item.type === 'sa-explain' ? 'Write your answer in full sentences...' : 'Type your examples...'}" spellcheck="true">${esc(item.resp || '')}</textarea>
       ${drill ? `<div class="sa-actions"><button class="big-btn check">Check</button></div>` : ''}
       ${item.type === 'sa-explain' ? `<p class="sa-tip">Tip: use the vocabulary words in your answer, just like on the test.</p>` : ''}`;
     const ta = $('textarea', body);
+    ta.value = item.resp || '';
     const grow = () => { ta.style.height = 'auto'; ta.style.height = ta.scrollHeight + 6 + 'px'; };
     ta.oninput = () => { item.resp = ta.value; grow(); onChange(); };
     requestAnimationFrame(grow);

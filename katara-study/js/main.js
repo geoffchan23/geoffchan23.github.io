@@ -1,12 +1,12 @@
 // Katara's Test Prep — study-first companion to Mochi's Mini Kitchen.
 import { mochi, icon, heart, coin, star } from '../../katara-kitchen/js/art.js';
 import { TERMS, T, GROUPS } from '../../katara-kitchen/js/content.js';
-import { state, save, addCoins, record, masteryLevel } from '../../katara-kitchen/js/state.js';
+import { state, save, addCoins, record, masteryLevel, practiced } from '../../katara-kitchen/js/state.js';
 import { sfx, unlock } from '../../katara-kitchen/js/audio.js';
 import { confetti, rain, flyCoins, centerOf } from '../../katara-kitchen/js/fx.js';
 import { $, $$, go, register, topbar, modal, toast, esc, screens } from '../../katara-kitchen/js/ui.js';
 import { shuffle, pick } from '../../katara-kitchen/js/questions.js';
-import { SECTIONS, makeTest, makeMC, makeSA, makeMatch, makeTFItem, pickTerms, weakTerms, grade, answered, correctText, checkExplain } from './items.js';
+import { SECTIONS, makeTest, makeDrill, weakTerms, grade, answered, correctText } from './items.js';
 import { renderItem, selfCheck, explainHTML } from './quiz.js';
 
 if (!state.tests) state.tests = [];
@@ -57,10 +57,15 @@ register('home', (root) => {
     <div class="history">${tests.map(t => `<div class="hbar"><div class="hb-fill" style="height:${Math.max(6, t.pct)}%;background:${t.pct >= 90 ? '#7fd8be' : t.pct >= 70 ? '#ffd24d' : '#ff9eb8'}"></div><b>${t.pct}%</b><small>${fmtDate(t.date)}</small></div>`).join('')}</div>` : ''}
 
     <h3 class="h-sec">Word mastery</h3>
+    <p class="m-key">${heart(true)} Each heart = one of your last 3 answers for that word was right. Tap a topic to see its words.</p>
     <div class="mastery">${Object.entries(GROUPS).map(([g, info]) => {
       const ts = TERMS.filter(t => t.group === g);
+      const tried = ts.filter(t => practiced(t.id)).length;
       const p = Math.round(100 * ts.reduce((a, t) => a + masteryLevel(t.id), 0) / (ts.length * 3));
-      return `<div class="mg"><span>${info.name}</span><div class="mg-bar"><i style="width:${p}%;background:${info.color}"></i></div><b>${p}%</b></div>`;
+      const got = ts.reduce((a, t) => a + masteryLevel(t.id), 0);
+      return `<details class="mg-d"><summary class="mg2"><div class="mg2-top"><b class="mg2-name">${info.name} <i class="chev">▸</i></b><span class="mg2-h">${heart(true)} ${got} / ${ts.length * 3}</span></div>
+        <div class="mg-bar"><i style="width:${p}%;background:${info.color}"></i></div><small class="mg2-sub">${tried === ts.length ? `All ${ts.length} words practiced` : `${tried} of ${ts.length} words practiced`}</small></summary>
+        <div class="mg-words">${ts.map(t => `<div class="mw"><span>${t.term}</span>${practiced(t.id) ? `<span class="hearts">${[0, 1, 2].map(k => heart(k < masteryLevel(t.id))).join('')}</span>` : '<small>not asked yet</small>'}</div>`).join('')}</div></details>`;
     }).join('')}</div>
 
     <a class="game-link" href="${GAME}"><span>${mochi({ mood: 'yum' })}</span><div><b>Done studying? Play Mochi's Mini Kitchen</b><small>Every correct answer here earns coins for your kitchen!</small></div><i>›</i></a>`;
@@ -80,6 +85,7 @@ register('home', (root) => {
 register('test', (root) => {
   const bar = tb('Practice Test'); root.appendChild(bar);
   const items = makeTest();
+  if (new URLSearchParams(location.search).has('debug')) window.__test = items;
   let page = 0; // 0..items.length (last = review)
   const el = document.createElement('div'); el.className = 'scr-test'; root.appendChild(el);
   // point slots for the progress strip
@@ -201,25 +207,21 @@ const DRILL_NAME = { mc: 'Multiple Choice', sa: 'Short Answer', match: 'Matching
 register('drill', (root, { kind = 'mc', ids = null } = {}) => {
   const bar = tb(DRILL_NAME[kind]); root.appendChild(bar);
   const el = document.createElement('div'); el.className = 'scr-drill'; root.appendChild(el);
-  const pool = kind === 'weak' ? weakTerms() : ids;
-  let queue = [];
-  const N = 8;
-  if (kind === 'mc') queue = pickTerms(N, pool || undefined).map(makeMC);
-  else if (kind === 'tf') { const seen = new Set(); let tries = 0; while (queue.length < N && tries++ < 60) { const q = makeTFItem(Math.random() < .5 ? pick(pickTerms(3)) : null); if (!seen.has(q.prompt)) { seen.add(q.prompt); queue.push(q); } } }
-  else if (kind === 'sa') { const kinds = shuffle(['term', 'term', 'term', 'explain', 'explain', 'list', 'list', 'term']); queue = pickTerms(N).map((id, i) => makeSA(id, kinds[i])); }
-  else if (kind === 'match') queue = [makeMatch(8)];
-  else { // weak / mixed: rotate types over the chosen words, twice through
-    const base = pool && pool.length ? pool : pickTerms(6);
-    const order = shuffle([...base, ...base]).slice(0, Math.max(6, Math.min(12, base.length * 2)));
-    const makers = [makeMC, (id) => makeSA(id, 'term'), makeTFItem, makeMC, (id) => makeSA(id)];
-    queue = order.map((id, i) => makers[i % makers.length](id));
-    if (base.length >= 4) queue.splice(Math.floor(queue.length / 2), 0, makeMatch(Math.min(8, base.length), base));
+  let pool = kind === 'weak' ? weakTerms() : ids;
+  if (kind === 'weak' && pool.length < 4) { // top up with her least-practiced words so it's a real practice round
+    const extra = TERMS.map(t => t.id).filter(id => !pool.includes(id) && !pool.includes(T[id].same))
+      .sort((a, b) => masteryLevel(a) - masteryLevel(b) || (state.mastery[a]?.seen || 0) - (state.mastery[b]?.seen || 0) || Math.random() - .5);
+    for (const id of extra) { if (pool.length >= 4) break; if (!pool.some(p => T[p].same === id)) pool.push(id); }
   }
+  const queue = makeDrill(kind, pool);
+  if (new URLSearchParams(location.search).has('debug')) window.__drill = queue;
   let i = 0, pts = 0, max = 0, streak = 0;
   function show() {
     window.scrollTo(0, 0);
     if (i >= queue.length) return done();
-    el.innerHTML = `<div class="d-top"><div class="d-prog"><i style="width:${100 * i / queue.length}%"></i></div><span>${i + 1} / ${queue.length}</span>${streak >= 2 ? `<span class="streak">${streak} in a row!</span>` : ''}</div><div class="item-host"></div>`;
+    const q = queue[i];
+    el.innerHTML = `<div class="d-top"><div class="d-prog"><i style="width:${100 * i / queue.length}%"></i></div><span>${i + 1} / ${queue.length}</span>${streak >= 2 ? `<span class="streak">${streak} in a row!</span>` : ''}</div>
+      ${q.roundStart ? `<div class="round2"><b>Round 2: do you remember?</b><span>Same words again, asked a different way.</span></div>` : ''}<div class="item-host"></div>`;
     renderItem($('.item-host', el), queue[i], {
       mode: 'drill', onDone: (g) => {
         pts += g.pts; max += g.max; streak = g.pts === g.max ? streak + 1 : 0;

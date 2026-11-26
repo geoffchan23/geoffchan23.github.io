@@ -31,6 +31,7 @@ export const TERMS = [
     tip: 'Bio (life) + diversity (lots of different) = lots of different living things.',
     ex: 'A rainforest with thousands of kinds of plants and animals.' },
   { id: 'apex', term: 'Apex Predator', group: 'chain', icon: 'apex', same: 'tertiary',
+    qdef: 'At the very top of the food chain, with nothing that hunts it',
     def: 'Has no natural predator (at the top of the food chain)',
     tip: 'Apex = the tippy top. Nothing hunts it! Same thing as a tertiary consumer.',
     ex: 'A hawk or an eagle that nothing else hunts.' },
@@ -51,6 +52,7 @@ export const TERMS = [
     tip: "Plants PRODUCE food and oxygen using the sun's energy.",
     ex: 'Grass, trees and sunflowers soaking up sunshine.' },
   { id: 'decomposer', term: 'Decomposer', group: 'chain', icon: 'decomposer',
+    qdef: "Breaks down animals' waste & dead biotic elements",
     def: "Decomposes (breaks down) animals' waste & dead biotic elements",
     tip: "De-compose = break down. They're nature's clean-up crew!",
     ex: 'Worms and mushrooms breaking down a fallen log.' },
@@ -67,10 +69,12 @@ export const TERMS = [
     tip: 'Secondary = a second chance. Life comes back after a disaster like a fire or flood.',
     ex: 'Plants and animals coming back to a forest after a wildfire.' },
   { id: 'sustain', term: 'Sustainability', group: 'change', icon: 'recycle',
+    qdef: 'Living within our needs so that there is enough to support life in the future',
     def: 'Living within our needs so that we are able to sustain life for the future',
     tip: 'Use only what we need so there is enough left for the future.',
     ex: 'Turning off taps and recycling so resources last a long time.' },
   { id: 'matter', term: 'Matter Cycling', group: 'change', icon: 'cycle',
+    qdef: 'How elements and compounds get reused over and over in an ecosystem',
     def: 'How matter like elements and compounds recycle in an ecosystem. Also called biogeochemical cycling',
     tip: 'Matter goes round and round like a recycling bin. Also called biogeochemical cycling!',
     ex: 'Water and carbon moving from the air to plants to animals and back again.' },
@@ -105,14 +109,16 @@ export const TERMS = [
 ];
 
 export const T = Object.fromEntries(TERMS.map(t => [t.id, t]));
+// Definition used inside quiz questions: the teacher's wording, except where it contains the answer word itself.
+export const qd = (id) => T[id].qdef || T[id].def;
 
 // Scenario / example questions → which term?
 export const SCENARIOS = [
   { q: 'A hawk that no other animal hunts is an…', a: 'apex' },
   { q: 'An eagle at the very top of the food chain is a…', a: 'tertiary' },
   { q: 'A rabbit munching on clover is a…', a: 'primary' },
-  { q: 'A deer that only eats plants (a herbivore) is a…', a: 'primary' },
-  { q: 'A snake that eats mice (a carnivore) is a…', a: 'secondary' },
+  { q: 'A deer that eats only grass and leaves is a…', a: 'primary' },
+  { q: 'A snake that eats mice is a…', a: 'secondary' },
   { q: 'Sunflowers using sunlight to make food and oxygen are…', a: 'producer' },
   { q: 'Mushrooms and worms breaking down a fallen log are…', a: 'decomposer' },
   { q: 'Sunlight, water, rocks and air are all…', a: 'abiotic' },
@@ -126,7 +132,6 @@ export const SCENARIOS = [
   { q: 'Plants regrow on a field after a big flood. This is…', a: 'ssucc' },
   { q: 'Using less water and recycling so there is enough for the future is…', a: 'sustain' },
   { q: 'Water and carbon moving from the air, to plants, to animals and back again is…', a: 'matter' },
-  { q: 'Another name for biogeochemical cycling is…', a: 'matter' },
   { q: 'A farm that uses compost and ladybugs instead of man-made chemical sprays is doing…', a: 'organic' },
   { q: 'A farm using big tractors, fertilizers and chemicals while protecting the environment is doing…', a: 'traditional' },
   { q: 'A gigantic field growing ONLY corn is a…', a: 'mono' },
@@ -156,12 +161,14 @@ export const CUSTOM = [
   { q: 'Which one is ABIOTIC?', a: 'Sunlight', w: ['Mushroom', 'Bee', 'Tree'], t: 'abiotic' },
   { q: 'Which one is BIOTIC?', a: 'Bacteria', w: ['Rock', 'Wind', 'Rain'], t: 'biotic' },
   { q: 'In a food chain, energy flows from…', a: 'Producer → consumer', w: ['Consumer → sun', 'Decomposer → sun', 'Fox → grass'], t: 'producer' },
-  { q: 'What does an apex predator have?', a: 'No natural predator', w: ['Lots of predators', 'Only plants to eat', 'No food'], t: 'apex' },
+  { q: 'What is special about a tertiary consumer?', a: 'It has no natural predator', w: ['It eats only plants', 'It breaks down waste', 'It makes food from sunlight'], t: 'tertiary' },
   { q: 'Carrying capacity is the ___ population an environment can support over time.', a: 'Maximum', w: ['Smallest', 'Newest', 'Loudest'], t: 'carrying' },
   { q: 'Sustainability means living within our needs so we can sustain life for the…', a: 'Future', w: ['Weekend', 'Past', 'Dinosaurs'], t: 'sustain' },
 ];
 
 export const TRUEFALSE = [
+  { q: 'A pond, with all of its plants, animals, water and sunlight, is an example of an ecosystem.', a: true, t: 'ecosystem' },
+  { q: 'An ecosystem is just one single animal on its own.', a: false, t: 'ecosystem' },
   { q: 'Abiotic means living.', a: false, t: 'abiotic' },
   { q: 'Sunlight is abiotic.', a: true, t: 'abiotic' },
   { q: 'A fish is biotic.', a: true, t: 'biotic' },
