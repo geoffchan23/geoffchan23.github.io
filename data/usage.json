@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-25T23:29:42Z",
+  "generatedAt": "2026-11-26T00:29:56Z",
   "last24h": {
     "totalTokens": 485828643,
     "costUsd": 371.53969979999994,
@@ -3161,6 +3161,12 @@
         "claude-opus-5-5": 484830800,
         "claude-haiku-5-5": 997843
       }
+    },
+    {
+      "t": "2026-11-26",
+      "tokens": 0,
+      "costUsd": 0,
+      "byModel": {}
     }
   ]
 }
