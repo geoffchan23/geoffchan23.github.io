@@ -13,7 +13,7 @@
 
   let lastHour = hourIdx();
   setInterval(() => {
-    tick(); renderTop();
+    tick(); renderTop(); loveTick();
     const h = hourIdx();
     if (h !== lastHour) { lastHour = h; refreshBadges(); if (ROUTE.name === "home" && !modalStack.length && $("#tray") && $("#tray").hidden) render(); }
   }, 30000);
@@ -21,6 +21,7 @@
   addEventListener("pointerdown", () => getAC(), { once: true });
 
   startCloud();
+  loveTick(true);
   // PWA
   addEventListener("beforeinstallprompt", e => { e.preventDefault(); window.__installPrompt = e; });
   if ("serviceWorker" in navigator && location.protocol !== "file:") {

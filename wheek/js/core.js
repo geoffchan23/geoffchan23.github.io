@@ -86,6 +86,7 @@ const sfx = {
   levelup() { [523, 659, 784, 1047, 784, 1047, 1319].forEach((f, i) => tone(f, i * .1, .35, "triangle", .13)); },
   sad() { [440, 415, 392, 370].forEach((f, i) => tone(f, i * .35, .5, "sine", .08)); },
   burp() { tone(95, 0, .45, "sawtooth", .12, 65); },
+  comb() { [0, .05, .1].forEach(s => noise(.04, "highpass", 5000 + Math.random() * 2000, 3000, .14, s)); },
   squeak() { const f = 900 + Math.random() * 500; tone(f, 0, .16, "square", .06, f * 1.6); tone(f * 1.3, .1, .12, "sine", .08, f); },
   gulp() { tone(260, 0, .18, "sine", .2, 120); noise(.08, "lowpass", 700, 200, .25, .08); },
   splash() { noise(.45, "bandpass", 1800, 500, .35); [0, .08, .16].forEach(s => tone(600 + Math.random() * 600, s, .08, "sine", .05, 1600)); },

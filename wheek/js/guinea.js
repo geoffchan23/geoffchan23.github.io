@@ -26,6 +26,10 @@ const PERSONALITIES = {
   nerdy: { n: "Nerdy", d: "Reads books upside down. Wears glasses on its butt." },
 };
 const NAMES = ["Biscuit", "Nugget", "Mochi", "Peanut", "Waffles", "Sir Squeaks", "Toot", "Pickles", "Bean", "Cinnamon", "Oreo", "Marshmallow", "Sprinkles", "Nibbles", "Pumpkin", "Tofu", "Dumpling", "Pebble", "Muffin", "Snickers", "Coco", "Taco", "Noodle", "Fudge", "Ziggy", "Bubbles", "Hazel", "Clover", "Ginger Snap", "Potato", "Lord Fluffington", "Princess Poot", "Captain Wheek", "Squishy", "Gizmo", "Bonbon", "Pancake", "Jellybean", "Popcorn", "Butterscotch", "Meatball", "Sushi", "Kiwi", "Mango", "Turnip", "Radish", "Parsnip", "Snoot", "Wiggles", "Fluffernutter", "Gumdrop", "Twinkie", "Scooter", "Pip", "Wombat", "Barnaby", "Doris", "Gertrude", "Kevin", "Gary", "Linda", "Duchess", "Baron Von Toot", "Señor Squeak", "Mr. Tumbles", "Tater Tot", "Cheeto", "Pretzel", "Lentil", "Chickpea", "Bagel", "Croissant", "Fig", "Olive", "Wasabi", "Nacho", "Smudge", "Patches", "Sundae", "Truffle", "Cupcake", "Brownie", "Snowball", "Puddle", "Slurpee", "Goober", "Blorp", "Zoomer", "Rocket", "Comet", "Nebula", "Pixel", "Glitter", "Sparkle Butt", "Stinky Pete", "Professor Nibs", "Queen Wheekie", "Sir Poops-a-Lot", "Lettuce Larry", "Cucumber Carl"];
+/* fur dyes from the Fluff Salon (worn over natural colour; mutants keep their magic look) */
+const DYES = { pink: { n: "Bubblegum Pink", c: "#ff9fd0" }, blue: { n: "Sky Blue", c: "#8fd3ff" }, mint: { n: "Minty Green", c: "#a6f0c6" }, lavender: { n: "Lavender", c: "#cdb6ff" }, sunshine: { n: "Sunshine Yellow", c: "#ffe066" }, peach: { n: "Peachy", c: "#ffb98a" }, rainbow: { n: "Rainbow", c: "#ff9fd0" } };
+/* messy fur tufts: 10 spots along the top of the body; combing removes them */
+const TUFT_SPOTS = Array.from({ length: 10 }, (_, i) => { const a = (-168 + i * 17.3) * Math.PI / 180; return [100 + Math.cos(a) * 84, 100 + Math.sin(a) * 60, (a * 180 / Math.PI) + 90]; });
 const SEX = { boar: { n: "Boy", ico: "♂", c: "#3d8bff" }, sow: { n: "Girl", ico: "♀", c: "#ff5fa8" } };
 
 function randGenes(rnd = Math.random, opts = {}) {
@@ -106,6 +110,8 @@ function guineaSVG(g, opts = {}) {
   let base = FUR[gn.c].c, patch = FUR[gn.c2].c, ear = shadeHex(patch, -.1);
   const skinny = gn.h === "skinny";
   if (skinny) { base = "#ffc9c2"; patch = "#f5a8a0"; ear = "#f29a92"; }
+  const dye = !gn.m && g.dye && DYES[g.dye] ? g.dye : null;
+  if (dye) { base = DYES[dye].c; ear = shadeHex(base, -.18); }
   let defs = "", over = "", glow = "";
   let bodyFill = base;
   if (gn.m === "golden") { defs += `<linearGradient id="${id}gd" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff3a8"/><stop offset=".5" stop-color="#ffcc33"/><stop offset="1" stop-color="#e09a00"/></linearGradient>`; bodyFill = `url(#${id}gd)`; ear = "#e8a800"; patch = "#ffe680"; }
@@ -114,6 +120,7 @@ function guineaSVG(g, opts = {}) {
   if (gn.m === "slime") { defs += `<radialGradient id="${id}sl" cx=".4" cy=".35" r=".8"><stop offset="0" stop-color="#c8ffa8"/><stop offset=".6" stop-color="#7be04a"/><stop offset="1" stop-color="#3f9a1a"/></radialGradient>`; bodyFill = `url(#${id}sl)`; ear = "#5cc22a"; patch = "#a8f070"; }
   if (gn.m === "ghost") { bodyFill = "#f1f0ff"; ear = "#d8d4ff"; patch = "#ffffff"; glow = `<ellipse cx="100" cy="100" rx="100" ry="74" fill="#c7b3ff" opacity=".35"/>`; }
   if (gn.m === "disco") { defs += `<linearGradient id="${id}dc" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff8fc7"/><stop offset=".5" stop-color="#5fd3ff"/><stop offset="1" stop-color="#ffd84d"/></linearGradient>`; bodyFill = `url(#${id}dc)`; ear = "#ff5fa8"; }
+  if (dye === "rainbow") { defs += `<linearGradient id="${id}dy" x1="0" y1="0" x2="1" y2="1">${["#ff9fd0", "#ffd28a", "#fff08a", "#a6f0c6", "#8fd3ff", "#cdb6ff"].map((c, i) => `<stop offset="${(i / 5).toFixed(2)}" stop-color="${c}"/>`).join("")}</linearGradient>`; bodyFill = `url(#${id}dy)`; }
   const body = cachedBody(gn.h, seed);
   defs += `<clipPath id="${id}c"><path d="${body}"/></clipPath>`;
   const rnd = mulberry(seed);
@@ -130,6 +137,7 @@ function guineaSVG(g, opts = {}) {
   if (gn.m === "slime") pat = `<circle cx="60" cy="70" r="10" fill="#e4ffd0" opacity=".6"/><circle cx="140" cy="130" r="7" fill="#e4ffd0" opacity=".5"/><circle cx="120" cy="60" r="4" fill="#fff" opacity=".7"/>`;
   if (gn.m === "rainbow") pat = `<path d="M100 40C110 40 116 70 118 100C120 130 112 156 100 156S80 130 82 100C84 70 90 40 100 40Z" fill="#fff" opacity=".35"/>`;
   if (gn.m === "ghost") pat = `<path d="M18 140q14 18 28 0q14 18 28 0q14 18 28 0q14 18 28 0q14 18 28 0q14 18 28 0" fill="#ffffff" stroke="none"/>`;
+  if (g.glitter) pat += Array.from({ length: 26 }, () => { const x = 22 + rnd() * 156, y = 46 + rnd() * 108, r = 1 + rnd() * 1.8; return `<path class="glit" d="M${x.toFixed(0)} ${(y - r * 2).toFixed(1)}l${(r * .6).toFixed(1)} ${(r * 1.4).toFixed(1)}l${(r * 1.4).toFixed(1)} ${(r * .6).toFixed(1)}l${(-r * 1.4).toFixed(1)} ${(r * .6).toFixed(1)}l${(-r * .6).toFixed(1)} ${(r * 1.4).toFixed(1)}l${(-r * .6).toFixed(1)} ${(-r * 1.4).toFixed(1)}l${(-r * 1.4).toFixed(1)} ${(-r * .6).toFixed(1)}l${(r * 1.4).toFixed(1)} ${(-r * .6).toFixed(1)}z" fill="${pick(["#fff", "#fff3a8", "#ffd1ec"])}"/>`; }).join("");
   // muzzle blaze (most patterns)
   const blaze = (!skinny && !gn.m && gn.p !== "himi") || gn.m === "golden" ? `<path d="M100 76C108 76 112 90 113 102C114 114 108 122 100 122S86 114 87 102C88 90 92 76 100 76Z" fill="${shadeHex(gn.m === "golden" ? "#ffcc33" : base, .55)}" opacity=".9"/>` : "";
   const wrinkles = skinny ? `<path d="M60 70q10 -6 20 0M120 70q10 -6 20 0M40 120q10 6 20 0M140 120q10 6 20 0" stroke="#d98a82" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M95 58l2 -12M101 58l0 -13M107 58l-2 -12" stroke="#c98a6a" stroke-width="2.5" stroke-linecap="round"/>` : "";
@@ -141,6 +149,10 @@ function guineaSVG(g, opts = {}) {
   const sick = g.sick;
   const fur = shadeHex(typeof bodyFill === "string" && bodyFill[0] === "#" ? bodyFill : base, -.05);
   const outfit = opts.noOutfit ? "" : outfitLayers(g.outfit);
+  const backL = opts.noOutfit ? "" : slotLayer(g.outfit, "back"), feetL = opts.noOutfit ? "" : slotLayer(g.outfit, "feet");
+  const tuftFill = typeof bodyFill === "string" && bodyFill[0] === "#" ? bodyFill : (dye ? DYES[dye].c : patch);
+  const mask = opts.noTufts ? 0 : (g.tuftMask || 0);
+  const tufts = mask ? `<g class="tufts">${TUFT_SPOTS.map(([x, y, a], i) => (mask >> i) & 1 ? `<path class="tuft" data-t="${i}" transform="translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${a.toFixed(0)})" d="M-8 3L-6 -9L-2 -2L0 -14L3 -2L8 -11L8 3Z" fill="${tuftFill}" stroke="#2b1640" stroke-width="3" stroke-linejoin="round"/>` : "").join("")}</g>` : "";
   const mood = opts.mood || "";
   const sc = stage === "baby" ? .62 : stage === "kid" ? .8 : 1;
   const preg = g.preg ? ' transform="translate(100 160) scale(1.07 1.02) translate(-100 -160)"' : "";
@@ -149,16 +161,16 @@ function guineaSVG(g, opts = {}) {
   return `<svg class="gp ${mood} ${gn.m === "disco" ? "disco" : ""} ${opts.cls || ""}" viewBox="0 -26 200 198" width="${size}" height="${Math.round(size * .99)}" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><defs>${defs}</defs>
   <ellipse cx="100" cy="164" rx="${70 * sc}" ry="8" fill="#2b1640" opacity=".15"/>
   <g${flip}><g transform="translate(100 164) scale(${sc}) translate(-100 -164)"><g class="body"${preg}>
-    ${glow}
+    ${glow}${backL}
     <g class="ear ear-l"><ellipse cx="52" cy="56" rx="21" ry="15" transform="rotate(-32 52 56)" fill="${ear}" stroke="#2b1640" stroke-width="5"/><ellipse cx="54" cy="58" rx="10" ry="6" transform="rotate(-32 54 58)" fill="#ffb3c7"/></g>
     <g class="ear ear-r"><ellipse cx="148" cy="56" rx="21" ry="15" transform="rotate(32 148 56)" fill="${ear}" stroke="#2b1640" stroke-width="5"/><ellipse cx="146" cy="58" rx="10" ry="6" transform="rotate(32 146 58)" fill="#ffb3c7"/></g>
     <path d="${body}" fill="${bodyFill}"/>
     <g clip-path="url(#${id}c)">${pat}${blaze}</g>
     ${gn.m === "ghost" ? "" : `<path d="${body}" fill="none" stroke="#2b1640" stroke-width="5"/>`}
     ${gn.m === "ghost" ? `<path d="${body}" fill="none" stroke="#8f80c8" stroke-width="4" stroke-dasharray="2 0"/>` : ""}
-    ${wrinkles}${peruFringe}
+    ${tufts}${wrinkles}${peruFringe}
     <ellipse class="foot foot-l" cx="70" cy="160" rx="12" ry="6" fill="#ffc9b0" stroke="#2b1640" stroke-width="4"/>
-    <ellipse class="foot foot-r" cx="130" cy="160" rx="12" ry="6" fill="#ffc9b0" stroke="#2b1640" stroke-width="4"/>
+    <ellipse class="foot foot-r" cx="130" cy="160" rx="12" ry="6" fill="#ffc9b0" stroke="#2b1640" stroke-width="4"/>${feetL}
     <g class="eyes-n"><circle cx="74" cy="92" r="${er}" fill="${eyeC}"/><circle cx="126" cy="92" r="${er}" fill="${eyeC}"/>${gn.e !== "dark" ? `<circle cx="74" cy="92" r="${er * .45}" fill="#2b1640"/><circle cx="126" cy="92" r="${er * .45}" fill="#2b1640"/>` : ""}<circle cx="77.5" cy="88.5" r="${er / 3}" fill="#fff"/><circle cx="129.5" cy="88.5" r="${er / 3}" fill="#fff"/><circle cx="71" cy="96" r="1.4" fill="#fff"/><circle cx="123" cy="96" r="1.4" fill="#fff"/></g>
     <g class="eyes-h" fill="none" stroke="#2b1640" stroke-width="5.5" stroke-linecap="round"><path d="M64 96q10 -13 20 0"/><path d="M116 96q10 -13 20 0"/></g>
     <g class="eyes-o" fill="none" stroke="#2b1640" stroke-width="5.5" stroke-linecap="round"><path d="M66 86l14 8l-14 8"/><path d="M134 86l-14 8l14 8"/></g>
@@ -180,6 +192,7 @@ function guineaSVG(g, opts = {}) {
 function sparkles(rnd) {
   return Array.from({ length: 3 }, (_, i) => { const x = [18, 182, 172][i], y = [20, 30, 150][i], r = 7 - i; return `<path class="spk" style="animation-delay:${(i * .4).toFixed(1)}s" d="M${x} ${y - r}L${x + r * .3} ${y - r * .3}L${x + r} ${y}L${x + r * .3} ${y + r * .3}L${x} ${y + r}L${x - r * .3} ${y + r * .3}L${x - r} ${y}L${x - r * .3} ${y - r * .3}Z" fill="#ffd84d" stroke="#2b1640" stroke-width="1.6"/>`; }).join("");
 }
+function slotLayer(o, slot) { const it = o && o[slot] && ITEM[o[slot]]; return it && it.svg ? `<g class="slot-${slot}">${it.svg}</g>` : ""; }
 function outfitLayers(o) {
   if (!o) return "";
   return ["neck", "face", "hat"].map(s => { const it = o[s] && ITEM[o[s]]; return it && it.svg ? it.svg : ""; }).join("");
@@ -206,7 +219,7 @@ function makeGuinea(o = {}) {
     food: o.food ?? 80, joy: o.joy ?? 80, clean: o.clean ?? 90, health: 100,
     pers: o.pers || pick(Object.keys(PERSONALITIES)), fav: o.fav || pick(["strawberry", "carrot", "cucumber", "pepper", "dandelion", "lettuce", "watermelon", "celery"]),
     outfit: o.outfit || {}, boops: 0, fed: 0, gen: o.gen || 1, parents: o.parents || null,
-    home: o.home || "hutch", preg: null, lastMate: 0, sick: false, poop: 0, lastPoop: now(), kids: 0,
+    home: o.home || "hutch", preg: null, lastMate: 0, sick: false, poop: 0, lastPoop: now(), kids: 0, tuftMask: (1 << 1) | (1 << 4) | (1 << 7),
   };
 }
 
@@ -215,11 +228,12 @@ function simGuinea(g, hrs, farm) {
   if (hrs <= 0) return;
   const st = stageOf(g);
   let food = st === "baby" ? 7 : 5.5, joy = 4, clean = 2.4;
+  if (g.home === "farm" && G.farm.grid) { joy *= 1 - Math.min(.6, .12 * Math.min(5, G.farm.grid.filter(s => FB[s.t] && FB[s.t].cat === "fun").length)); clean *= 1 - Math.min(.5, .25 * G.farm.grid.filter(s => s.t === "fountain").length); }
   if (g.pers === "greedy") food *= 1.2;
   if (g.pers === "cuddly") joy *= 1.2;
   if (G.settings.sitter && G.settings.sitter > now()) { food *= .25; joy *= .25; clean *= .25; }
   // farm hay rack auto-feeds
-  if (g.home === "farm" && G.farm.hay > 0 && g.food - food * hrs < 55) {
+  if (g.home === "farm" && G.farm.hay > 0 && (!G.farm.grid || G.farm.grid.some(s => s.t === "hayrack")) && g.food - food * hrs < 55) {
     const need = Math.min(G.farm.hay, Math.ceil((60 - (g.food - food * hrs)) / 30));
     if (need > 0) { G.farm.hay -= need; g.food = Math.min(100, g.food + need * 30); }
   }
@@ -231,12 +245,17 @@ function simGuinea(g, hrs, farm) {
   else g.health = clamp(g.health + 4 * hrs, 0, 100);
   if (g.health < 40) g.sick = true;
   if (g.sick) g.lost = (g.lost || 0) + hrs * 1.5;
+  // fur gets messy: a new tuft every ~90 minutes
+  g.tuftT = (g.tuftT || 0) + hrs;
+  while (g.tuftT >= 1.5) { g.tuftT -= 1.5; addTuft(g); }
   // poop! one every 40 minutes, max 8 waiting per guinea
   if (g.home === "farm") {
     const p = Math.floor((now() - g.lastPoop) / (40 * MIN));
     if (p > 0) { g.poop = Math.min(8, (g.poop || 0) + p); g.lastPoop += p * 40 * MIN; }
   } else g.lastPoop = now();
 }
+function addTuft(g, n = 1) { for (let k = 0; k < n; k++) { const free = TUFT_SPOTS.map((_, i) => i).filter(i => !((g.tuftMask || 0) >> i & 1)); if (!free.length) return; g.tuftMask = (g.tuftMask || 0) | (1 << pick(free)); } }
+const tuftCount = g => { let n = 0, m = g.tuftMask || 0; while (m) { n += m & 1; m >>= 1; } return n; };
 function mood(g) {
   if (g.sick) return "sad";
   const m = Math.min(g.food, g.joy, g.clean);

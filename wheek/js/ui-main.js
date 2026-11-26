@@ -49,7 +49,7 @@ function renderTop() {
   const tq = $("#tbQuest"); if (tq) tq.onclick = () => { play("click"); showQuests(); };
   const tl = $("#tbLevel"); if (tl) tl.onclick = () => { play("click"); toast(`Keeper level ${G.level}. ${xpFor(G.level) - G.xp} XP to level ${G.level + 1}!`, "⭐"); };
 }
-const evColor = id => ({ golden: "#ffd84d", sale: "#ff8fc7", love: "#ff8fc7", slimetide: "#7be04a", fartstorm: "#b6e36a", babyboom: "#9fd8ff", merchant: "#c7b3ff", squishyrain: "#5fd3ff", parade: "#ffb36b", lucky: "#7be04a" }[id] || "#fff");
+const evColor = id => ({ golden: "#ffd84d", sale: "#ff8fc7", love: "#ff8fc7", slimetide: "#7be04a", fartstorm: "#b6e36a", babyboom: "#9fd8ff", merchant: "#c7b3ff", squishyrain: "#5fd3ff", parade: "#ffb36b", tips: "#ffd84d" }[id] || "#fff");
 function questBadge() { const n = (G.daily.quests || []).filter(q => !q.done).length; return n ? `<span class="badge">${n}</span>` : ""; }
 function renderNav() {
   const nav = $("#nav"); if (!nav) return;
@@ -74,6 +74,7 @@ function itemIcon(id, big) {
   const it = ITEM[id]; if (!it) return "❓";
   if (it.art) { const a = SNACK_ART.find(s => s.id === it.art); if (a) return `<span class="ii art">${a.svg}</span>`; }
   if (it.cat === "outfit") return `<span class="ii outfit">${outfitPreview(it)}</span>`;
+  if (it.cat === "squishy") return `<span class="ii sqi">${squishySVG(SQUISHIES.find(s => s.id === it.sq))}</span>`;
   if (it.cat === "wall" || it.cat === "floor") return `<span class="ii swatch" style="background:${it.css}"></span>`;
   return `<span class="ii">${it.ico}</span>`;
 }
@@ -91,17 +92,19 @@ VIEWS.home = (el) => {
   const wall = ITEM[G.home.wall] || WALLS[0], floor = ITEM[G.home.floor] || FLOORS[0];
   const pk = G.packages[0];
   const courier = pk ? COURIERS.find(c => c.id === pk.courier) : null;
-  const need = { food: g.food < 40, toy: g.joy < 40, care: g.clean < 40 || g.sick };
+  const need = { food: g.food < 40, toy: g.joy < 40, care: g.clean < 40 || g.sick || tuftCount(g) >= 5 };
   const act = (k, ico, label, attr) => `<button class="act ${need[k] ? "need" : ""}" ${attr}><span>${ico}</span>${label}${need[k] ? `<i class="badge">!</i>` : ""}</button>`;
   el.innerHTML = `
     <section class="room" style="--wall:${wall.css};--floor:${floor.css}">
       <div class="wall"></div><div class="floor"></div>
+      ${G.home.rug && ITEM[G.home.rug] ? `<div class="rug" style="background:${ITEM[G.home.rug].css}"></div>` : ""}
       ${G.home.decor.map((d, i) => d && ITEM[d] ? `<div class="decor d${i}">${ITEM[d].ico}</div>` : "").join("")}
+      <button class="deco-btn" data-deco aria-label="Decorate your hutch">✏️</button>
       ${others.map(o => `<button class="pal" data-pal="${o.id}" aria-label="Switch to ${esc(o.name)}">${guineaSVG(o, { size: 84, mood: mood(o) })}<span class="pal-n">${esc(o.name)}</span></button>`).join("")}
-      <div class="pet-name"><span>${esc(g.name)}</span> ${sexIco(g)} ${tierChip(g)}</div>
+      <div class="pet-name"><span>${esc(g.name)}</span> ${sexIco(g)}</div>
       <div class="bubble" id="bubble">${esc(needLine(g))}</div>
       <button class="pet-main" id="pet" aria-label="Boop ${esc(g.name)}">${guineaSVG(g, { size: 210, mood: mood(g), cls: "idle" })}</button>
-      ${G.stats.boops < 15 || (G.stats.pets || 0) < 10 ? `<div class="tap-tip">👆 Tap to boop · 🤚 swipe to pet</div>` : ""}
+      ${G.stats.boops < 15 || (G.stats.pets || 0) < 10 ? `<div class="tap-tip">👆 Tap: boop · 🤚 Swipe: pet</div>` : ""}
       ${courier ? `<button class="courier" id="courier" aria-label="Open package"><span class="c-ico">${courier.ico}</span><span class="c-box">📦</span><span class="c-tip">Tap to open!</span></button>` : ""}
       ${G.settings.sitter > now() ? `<div class="sitter">👵 Granny sitting: ${dur(G.settings.sitter - now())}</div>` : ""}
     </section>
@@ -111,10 +114,10 @@ VIEWS.home = (el) => {
     </section>
     <section class="actions">
       ${act("food", "🥕", "Feed", 'data-tray="food"')}
+      ${act("care", "🪮", "Groom", 'data-tray="care"')}
       ${act("toy", "🧸", "Play", 'data-tray="toy"')}
-      ${act("care", "🛁", "Care", 'data-tray="care"')}
+      <button class="act games" data-homegames><span>🎮</span>Games</button>
       <button class="act" id="dress"><span>👒</span>Dress</button>
-      <button class="act" data-go="map"><span>🗺️</span>Go out</button>
     </section>
     <div class="sheet" id="tray" hidden></div>`;
   const petBtn = $("#pet", el);
@@ -122,12 +125,15 @@ VIEWS.home = (el) => {
   $$("[data-tray]", el).forEach(b => b.onclick = () => { play("click"); openTray(b.dataset.tray, g); });
   $$("[data-go]", el).forEach(b => b.onclick = () => { play("click"); go(b.dataset.go); });
   $("#dress", el).onclick = () => { play("click"); openWardrobe(g); };
+  $("[data-deco]", el).onclick = () => { play("click"); bagTab = "decor"; go("bag"); };
+  $("[data-homegames]", el).onclick = () => { play("click"); openHomeGames(g); };
   const cr = $("#courier", el); if (cr) cr.onclick = () => openPackage(G.packages[0]);
   renderSuggest();
   paInit(g);
+  const loveStop = loveHomeInit();
   const iv = setInterval(() => { const b = $("#bubble"); if (b && Math.random() < .5) { b.textContent = needLine(g); b.classList.remove("pop"); void b.offsetWidth; b.classList.add("pop"); } if (g.pers === "gassy" && Math.random() < .15) toot(g, petBtn); }, 9000);
   const statIv = setInterval(() => { tick(); refreshStatBars(g); renderSuggest(); }, 30000);
-  return () => { clearInterval(iv); clearInterval(statIv); paStop(); };
+  return () => { clearInterval(iv); clearInterval(statIv); hgStop(); paStop(); loveStop(); };
 };
 
 /* ---------- "what should I do next?" helper ---------- */
@@ -139,6 +145,7 @@ const TUT = [
   { id: "map", t: () => "Go out and explore the World", ico: "🗺️", go: "map" },
   { id: "game", t: () => "Play a game at the Arcade", ico: "🕹️", go: "place/arcade" },
   { id: "shop", t: () => "Buy something at Squeakmart", ico: "🛒", go: "shop/squeakmart" },
+  { id: "comb", t: g => `Comb ${g.name}'s messy fur`, ico: "🪮", act: g => openTray("care", g) },
   { id: "bath", t: g => `Give ${g.name} a bubble bath`, ico: "🛁", act: g => openTray("care", g) },
   { id: "slime", t: () => "Make a slime at the Slime Lab", ico: "🧪", go: "place/lab" },
 ];
@@ -153,10 +160,10 @@ function tutMark(id) {
     saveSoon(); renderSuggest();
   }, 600);
 }
-const QUEST_GO = { pet: "home", play: "place/arcade", luck: "place/carnival", boop: "home", feed: "home:food", bath: "home:care", toy: "home:toy", earn: "place/arcade", package: "place/post", slime: "place/lab", box: "shop/boxes", poop: "place/farm", harvest: "place/farm" };
+const QUEST_GO = { comb: "home:care", homegame: "home:games", collect: "place/farm", build: "place/farm", squishy: "shop/boxes", pet: "home", play: "place/arcade", luck: "place/carnival", boop: "home", feed: "home:food", bath: "home:care", toy: "home:toy", earn: "place/arcade", package: "place/post", slime: "place/lab", box: "shop/boxes", poop: "place/farm", harvest: "place/farm" };
 function goQuest(k) {
   const r = QUEST_GO[k] || "map";
-  if (r.startsWith("home")) { const t = r.split(":")[1]; if (ROUTE.name !== "home") go("home"); if (t) setTimeout(() => openTray(t, activeG()), ROUTE.name === "home" ? 50 : 350); else setTimeout(() => TUT[0].act(), 400); }
+  if (r.startsWith("home")) { const t = r.split(":")[1]; if (ROUTE.name !== "home") go("home"); if (t === "games") setTimeout(() => openHomeGames(activeG()), 400); else if (t) setTimeout(() => openTray(t, activeG()), ROUTE.name === "home" ? 50 : 350); else setTimeout(() => TUT[0].act(), 400); }
   else go(r);
 }
 function suggestion() {
@@ -168,12 +175,15 @@ function suggestion() {
   if (g.food < 40) return { ico: "🥕", t: `${g.name} is hungry! Feed them`, act: () => openTray("food", g), hot: true };
   if (g.clean < 40) return { ico: "🛁", t: `${g.name} is stinky! Bath time`, act: () => openTray("care", g), hot: true };
   if (g.joy < 40) return { ico: "🧸", t: `${g.name} is bored! Play together`, act: () => openTray("toy", g), hot: true };
+  if (tuftCount(g) >= 5) return { ico: "🪮", t: `${g.name}'s fur is super messy! Comb it`, act: () => openTray("care", g) };
   const hungryOthers = G.guineas.filter(x => x !== g && (x.food < 30 || x.sick));
   if (hungryOthers.length) return { ico: "🐹", t: `${hungryOthers[0].name} needs you!`, go: "pet/" + hungryOthers[0].id };
+  if (G.farm.level && G.farm.grid && farmReadyCoins() >= 25) return { ico: "💰", t: `Your farm shops made ${fmt(farmReadyCoins())} coins! Collect them`, go: "place/farm" };
   if (G.nursery.length) return { ico: "🍼", t: "Babies are waiting at the Adoption Center", go: "place/adopt" };
-  if (!G.daily.spun) return { ico: "🎡", t: "Your FREE prize wheel spin is ready!", go: "place/wheel" };
   const q = (G.daily.quests || []).find(q => !q.done);
   if (q) return { ico: "📋", t: `Quest: ${q.t}`, act: () => goQuest(q.k), label: `${q.have}/${q.n}` };
+  if (!G.farm.level && G.coins >= FARM_PRICE) return { ico: "🌾", t: "You can afford the Guinea Farm! Go buy it", go: "place/farm" };
+  if ((G.stats.homeGames || 0) < 3) return { ico: "🎮", t: `Play a game with ${g.name}!`, act: () => openHomeGames(g) };
   return { ico: "🗺️", t: "Go out and play games for coins!", go: "map" };
 }
 function renderSuggest() {
@@ -200,7 +210,8 @@ function boop(g, btn, e) {
   const joyGain = eventOn("parade") ? 3 : 1.5; g.joy = clamp(g.joy + joyGain, 0, 100);
   haptic(8);
   if (nose) { play("sneeze"); petAnim(btn, "sneeze", 900); floatText(x, y - 30, "ACHOO!", "#5fd3ff", 26); say(pick(["ACHOO! Hey, that's my nose!", "*sneeze* Bless me.", "My nose is VERY boopable and VERY sneezy."])); confetti(x, y, 10, false); }
-  else { play("boop"); petAnim(btn, boopState.combo % 5 === 0 ? "spin" : "squish", 500); hearts(x, y - 10, 2); floatText(x, y - 30, boopState.combo > 2 ? `BOOP x${boopState.combo}` : pick(["boop!", "bop!", "boink!", "squish!"]), "#e8458f", 20 + Math.min(14, boopState.combo)); }
+  else { play("boop"); petAnim(btn, boopState.combo % 5 === 0 ? "spin" : "squish", 500); }
+  loveBoop(x, y, nose);
   if (boopState.combo === 10) { play("giggle"); say("Hehehe! STOP! Okay don't stop!"); }
   if (boopState.combo === 25) { play("wheek"); confetti(x, y, 40); say("BOOP MANIA!!! I LOVE IT!"); }
   const coinChance = eventOn("parade") ? .12 : .035;
@@ -218,26 +229,24 @@ function openTray(cat, g) {
   const tray = $("#tray"); if (!tray) return;
   if (!tray.hidden && tray.dataset.cat === cat) { tray.hidden = true; return; }
   tray.dataset.cat = cat; tray.hidden = false;
-  const title = { food: `Feed ${g.name}`, toy: `Play with ${g.name}`, care: `Take care of ${g.name}` }[cat];
-  const ids = Object.keys(G.inv).filter(id => ITEM[id] && ITEM[id].cat === cat && G.inv[id] > 0);
-  const brush = cat === "care" ? `<button class="tray-it" data-brush><span class="ii">🪮</span><b>Brush</b><small>free</small></button>` : "";
+  const title = { food: `Feed ${g.name}`, toy: `Play with ${g.name}`, care: `Groom ${g.name}` }[cat];
+  const how = { food: `Drag a snack to ${g.name}'s mouth!`, toy: "Tap a toy to play!", care: "Drag the comb or sponge onto your guinea!" }[cat];
+  const ids = Object.keys(G.inv).filter(id => ITEM[id] && ITEM[id].cat === cat && G.inv[id] > 0 && id !== "soap");
+  const soapN = G.inv.soap || 0;
+  const brush = cat === "care" ? `<button class="tray-it drag" data-drag="comb"><span class="ii">🪮</span><b>Comb</b><small>${tuftCount(g) ? tuftCount(g) + " messy bits" : "free"}</small></button><button class="tray-it drag ${soapN ? "" : "out"}" data-drag="soap"><span class="ii">🧽</span><b>Bubble Bath</b><small>x${soapN}</small></button>` : "";
   const pet = cat === "toy" ? `<button class="tray-it" data-tickle><span class="ii">🪶</span><b>Tickle</b><small>free</small></button>` : "";
-  tray.innerHTML = `<div class="sheet-hd"><b>${esc(title)}</b><span class="muted">Tap one!</span><button class="sheet-x" aria-label="Close">✕</button></div><div class="tray-in">${brush}${pet}${ids.map(id => `<button class="tray-it" data-use="${id}">${itemIcon(id)}<b>${esc(ITEM[id].name)}</b><small>x${G.inv[id]}</small></button>`).join("")}
-    ${!ids.length ? `<div class="tray-empty">No ${cat === "food" ? "food" : cat === "toy" ? "toys" : "care stuff"} in your bag! <button class="btn small" data-go="shop/squeakmart">Go shopping</button></div>` : ""}</div>`;
+  tray.innerHTML = `<div class="sheet-hd"><b>${esc(title)}</b><span class="muted">${esc(how)}</span><button class="sheet-x" aria-label="Close">✕</button></div><div class="tray-in">${brush}${pet}${ids.map(id => `<button class="tray-it ${dragKind(id) ? "drag" : ""}" ${dragKind(id) ? `data-drag="${id}"` : `data-use="${id}"`}>${itemIcon(id)}<b>${esc(ITEM[id].name)}</b><small>x${G.inv[id]}</small></button>`).join("")}
+    ${!ids.length && cat !== "care" ? `<div class="tray-empty">No ${cat === "food" ? "food" : cat === "toy" ? "toys" : "care stuff"} in your bag! <button class="btn small" data-go="shop/squeakmart">Go shopping</button></div>` : ""}</div>`;
   $$("[data-go]", tray).forEach(b => b.onclick = () => go(b.dataset.go));
   $(".sheet-x", tray).onclick = () => { play("click"); tray.hidden = true; };
   $$("[data-use]", tray).forEach(b => b.onclick = () => useItem(g, b.dataset.use, b));
-  const br = $("[data-brush]", tray); if (br) br.onclick = () => {
-    const last = g.brushed || 0; if (now() - last < 15 * MIN) { say("I'm already sooo fluffy. Try again later!"); play("buzz"); return; }
-    g.brushed = now(); g.clean = clamp(g.clean + 15, 0, 100); g.joy = clamp(g.joy + 5, 0, 100);
-    tray.hidden = true; animCare("brush"); refreshStatBars(g); saveSoon();
-  };
+  $$("[data-drag]", tray).forEach(b => { b.addEventListener("touchstart", e => e.preventDefault(), { passive: false }); b.addEventListener("pointerdown", e => trayDragStart(e, b.dataset.drag, b)); });
   const tk = $("[data-tickle]", tray); if (tk) tk.onclick = () => {
     const last = g.tickled || 0; if (now() - last < 10 * MIN) { say("Hehe... I'm all tickled out. Later!"); play("buzz"); return; }
     g.tickled = now(); g.joy = clamp(g.joy + 8, 0, 100); tray.hidden = true; say("HEHEHEHE! STOP! NO DON'T STOP!"); animPlay("tickle"); refreshStatBars(g); saveSoon();
   };
 }
-function useItem(g, id, btn) {
+function useItem(g, id, btn, dropVP) {
   const it = ITEM[id];
   const res = useOn(g, id);
   const pet = $("#pet"); const [x, y] = centerOf(pet);
@@ -245,8 +254,9 @@ function useItem(g, id, btn) {
   if (res.full) { say(pick(["I'm SO full. My tummy is a balloon.", "No more! I'll pop!", "*burp* ...no thank you."])); play("burp"); return; }
   if (res.pointless) { say("I feel great! I don't need medicine."); play("buzz"); return; }
   if (res.maxed) { say("I've had all the vitamins I can have!"); play("buzz"); return; }
-  const fromVP = btn && btn.getBoundingClientRect ? centerOf(btn) : null;
-  const tr = $("#tray"); if (tr) tr.hidden = true;
+  const fromVP = dropVP || (btn && btn.getBoundingClientRect ? centerOf(btn) : null);
+  const tr = $("#tray"); if (tr && !dropVP) tr.hidden = true;
+  if (tr && dropVP && !tr.hidden) { const c = tr.dataset.cat; tr.hidden = true; openTray(c, g); }
   if (it.cat === "food") {
     say(res.fav ? `${it.name.toUpperCase()}!!! MY FAVOURITE!!!` : pick(["Nom nom nom!", "*crunch crunch*", "Mmm! More please!", `${it.name}? Yes please!`, "SNACK TIME!", "Gimme gimme gimme!"]));
     animEat(id, fromVP);
@@ -255,7 +265,7 @@ function useItem(g, id, btn) {
     for (let i = 0; i < toots; i++) setTimeout(() => toot(g, $("#pet") || pet), 3200 + i * 900);
   } else if (it.cat === "care") {
     say(id === "soap" ? pick(["Splish splash! Bath time!", "Bubbles! I LOVE bubbles!", "Scrub behind my ears!"]) : (res.text || "I feel SO much better!"));
-    animCare(id);
+    animCare(id, fromVP);
   } else if (it.cat === "toy") { say(pick(["WHEEEE!", "This is the BEST toy EVER!", "Again! Again!", "Play with me! PLAY WITH ME!"])); animPlay(id); }
   if (res.care) { addCoins(res.care, [x, y]); }
   if (res.text && it.cat !== "care") toast(res.text);
@@ -265,17 +275,48 @@ function useItem(g, id, btn) {
   renderSuggest();
   checkAchievements();
 }
+let wardTab = "hat";
 function openWardrobe(g) {
-  const owned = OUTFITS.filter(o => G.owned[o.id]);
-  const slots = [["hat", "Hats"], ["face", "Face"], ["neck", "Neck"]];
+  const tabs = [["hat", "🎩 Hats"], ["face", "😎 Face"], ["neck", "🎀 Neck"], ["back", "🪽 Back"], ["feet", "👟 Feet"], ["fur", "🎨 Fur"]];
   const m = openModal(`<h2>${esc(g.name)}'s Wardrobe</h2>
-    <div class="ward-prev" id="wprev">${guineaSVG(g, { size: 150, mood: "happy" })}</div>
-    ${owned.length ? slots.map(([s, n]) => `<h3 class="sub">${n}</h3><div class="chips">${owned.filter(o => o.slot === s).map(o => `<button class="chip ${g.outfit[s] === o.id ? "on" : ""}" data-wear="${o.id}">${o.ico} ${esc(o.name)}</button>`).join("") || `<span class="muted">Nothing yet</span>`}</div>`).join("") : `<p class="mtext">No outfits yet! Visit <b>Fluff Boutique</b> in town or open a Fashion Mystery Bag.</p>`}
-    <div class="mrow"><button class="btn white" data-off>Take everything off</button><button class="btn pink" data-shop>Boutique</button></div>`, { onClose: () => { if (ROUTE.name === "home") render(); } });
-  const refresh = () => { $("#wprev", m.el).innerHTML = guineaSVG(g, { size: 150, mood: "happy" }); $$("[data-wear]", m.el).forEach(b => b.classList.toggle("on", Object.values(g.outfit).includes(b.dataset.wear))); };
-  $$("[data-wear]", m.el).forEach(b => b.onclick = () => { const o = ITEM[b.dataset.wear]; if (g.outfit[o.slot] === o.id) delete g.outfit[o.slot]; else g.outfit[o.slot] = o.id; play("pop"); refresh(); saveSoon(); });
-  $("[data-off]", m.el).onclick = () => { g.outfit = {}; play("squish"); refresh(); saveSoon(); };
+    <div class="ward-prev" id="wprev"></div>
+    <div class="tabs scroll ward-tabs">${tabs.map(([k, n]) => `<button class="tab" data-wtab="${k}">${n}</button>`).join("")}</div>
+    <div id="wbody"></div>
+    <div class="mrow"><button class="btn white" data-off>Take everything off</button><button class="btn pink" data-shop>🎀 Boutique</button></div>`, { onClose: () => { if (ROUTE.name === "home") render(); } });
+  const draw = () => {
+    $("#wprev", m.el).innerHTML = guineaSVG(g, { size: 150, mood: "happy" });
+    $$("[data-wtab]", m.el).forEach(b => b.classList.toggle("on", b.dataset.wtab === wardTab));
+    const body = $("#wbody", m.el);
+    if (wardTab === "fur") {
+      const dyes = Object.keys(DYES).filter(k => has("dye_" + k));
+      body.innerHTML = g.genes.m ? `<p class="muted center">${esc(g.name)} has magic ${esc(MUTANTS[g.genes.m].n)} fur. It can't be dyed, but glitter works!</p>` : "";
+      body.innerHTML += `<div class="ward-grid">
+        ${g.genes.m ? "" : `<button class="ward-it ${!g.dye ? "on" : ""}" data-dye=""><span class="dye-dot" style="background:${FUR[g.genes.c].c}"></span><b>Natural</b><small>free</small></button>`}
+        ${g.genes.m ? "" : Object.entries(DYES).map(([k, d]) => `<button class="ward-it ${g.dye === k ? "on" : ""} ${has("dye_" + k) || g.dye === k ? "" : "locked"}" data-dye="${k}"><span class="dye-dot" style="background:${k === "rainbow" ? "linear-gradient(135deg,#ff9fd0,#fff08a,#a6f0c6,#8fd3ff,#cdb6ff)" : d.c}"></span><b>${esc(d.n)}</b><small>${g.dye === k ? "wearing" : has("dye_" + k) ? "x" + G.inv["dye_" + k] : "buy at Salon"}</small></button>`).join("")}
+        <button class="ward-it ${g.glitter ? "on" : ""} ${has("glitter") || g.glitter ? "" : "locked"}" data-glitter><span class="dye-dot" style="background:radial-gradient(#fff 1px,transparent 2px) 0 0/6px 6px,#ffd1ec">✨</span><b>Glitter</b><small>${g.glitter ? "tap to remove" : has("glitter") ? "x" + G.inv.glitter : "buy at Salon"}</small></button>
+      </div><p class="muted center">Dye and glitter come from the <b>Salon</b> tab in Fluff Boutique.</p>`;
+    } else {
+      const items = OUTFITS.filter(o => o.slot === wardTab && G.owned[o.id]);
+      body.innerHTML = items.length ? `<div class="ward-grid">${items.map(o => `<button class="ward-it ${g.outfit[o.slot] === o.id ? "on" : ""}" data-wear="${o.id}"><span class="ward-ico">${itemIcon(o.id)}</span><b>${esc(o.name)}</b></button>`).join("")}</div>` : `<div class="empty"><b>Nothing here yet!</b><p>Buy some at Fluff Boutique.</p></div>`;
+    }
+    $$("[data-wear]", m.el).forEach(b => b.onclick = () => { const o = ITEM[b.dataset.wear]; if (g.outfit[o.slot] === o.id) delete g.outfit[o.slot]; else g.outfit[o.slot] = o.id; play("pop"); saveSoon(); draw(); });
+    $$("[data-dye]", m.el).forEach(b => b.onclick = () => {
+      const k = b.dataset.dye;
+      if (!k) { g.dye = null; play("squish"); saveSoon(); draw(); return; }
+      if (g.dye === k) return;
+      if (!has("dye_" + k)) { play("buzz"); toast("Buy this dye at the Salon in Fluff Boutique!", "🧴"); return; }
+      addItem("dye_" + k, -1); g.dye = k; play("sparkle"); const [x, y] = centerOf($("#wprev", m.el)); confetti(x, y, 30, false); saveSoon(); draw();
+    });
+    const gl = $("[data-glitter]", m.el); if (gl) gl.onclick = () => {
+      if (g.glitter) { g.glitter = false; play("squish"); saveSoon(); draw(); return; }
+      if (!has("glitter")) { play("buzz"); toast("Buy Glitter Fur Spray at the Salon!", "✨"); return; }
+      addItem("glitter", -1); g.glitter = true; play("sparkle"); const [x, y] = centerOf($("#wprev", m.el)); confetti(x, y, 40, true); saveSoon(); draw();
+    };
+  };
+  $$("[data-wtab]", m.el).forEach(b => b.onclick = () => { wardTab = b.dataset.wtab; play("click"); draw(); });
+  $("[data-off]", m.el).onclick = () => { g.outfit = {}; play("squish"); saveSoon(); draw(); };
   $("[data-shop]", m.el).onclick = () => { m.close(); go("shop/boutique"); };
+  draw();
 }
 
 /* ---------- packages & reveal ---------- */

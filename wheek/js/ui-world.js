@@ -6,14 +6,13 @@ const PLACES = {
   vet: { name: "Vet Clinic", ico: "🏥", x: 77, y: 8, color: "#d9f3ff", npc: "hoot", blurb: "Get well soon!" },
   squeakmart: { name: "Squeakmart", ico: "🛒", x: 22, y: 20, color: "#ffe9b3", npc: "nibbles", shop: true, blurb: "Food, care & toys" },
   boutique: { name: "Fluff Boutique", ico: "🎀", x: 78, y: 20, color: "#ffd6ec", npc: "fernando", shop: true, blurb: "Hats, outfits & decor" },
-  well: { name: "Wishing Well", ico: "⛲", x: 50, y: 29, color: "#d9f3ff", npc: "wisher", blurb: "Toss a coin, make a wish" },
-  boxes: { name: "Blind Box Bonanza", ico: "🎁", x: 20, y: 36, color: "#e8dcff", npc: "gus", shop: true, blurb: "What's inside?!" },
+  boxes: { name: "Squishy Shop", ico: "🍡", x: 20, y: 36, color: "#e8dcff", npc: "gus", shop: true, blurb: "Collect all 32!" },
   post: { name: "Post Office", ico: "📮", x: 79, y: 36, color: "#ffe1e6", npc: "pidge", blurb: "Packages every hour" },
   home: { name: "My Hutch", ico: "🏠", x: 22, y: 49, color: "#fff1d6", blurb: "Home sweet home" },
   adopt: { name: "Adoption Center", ico: "🐹", x: 77, y: 48, color: "#e4fbd5", npc: "clover", blurb: "Find new guinea friends" },
   farm: { name: "Guinea Farm", ico: "🌾", x: 50, y: 61, color: "#fff3c4", npc: "hayley", blurb: "Grow your herd!" },
   arcade: { name: "Arcade Burrow", ico: "🕹️", x: 22, y: 75, color: "#dcd6ff", npc: "pixel", blurb: "Skill games" },
-  carnival: { name: "Carnival of Chance", ico: "🎪", x: 77, y: 74, color: "#ffe1d0", npc: "skunk", blurb: "Luck games & prizes" },
+  carnival: { name: "Fun Fair", ico: "🎪", x: 77, y: 74, color: "#ffe1d0", npc: "skunk", blurb: "Skill games" },
   swamp: { name: "Stinky Swamp", ico: "🐸", x: 24, y: 90, color: "#d7ecc0", npc: "swampy", blurb: "Gross treasure" },
   lab: { name: "Slime Lab", ico: "🧪", x: 76, y: 90, color: "#d6ffe4", npc: "gloop", blurb: "Make & sell slime" },
 };
@@ -38,7 +37,7 @@ function mapSVG() {
   const r = mulberry(42);
   let trees = ""; for (let i = 0; i < 26; i++) { const x = r() < .5 ? 14 + r() * 50 : 336 + r() * 50, y = 60 + r() * 1050; trees += tree(x, y, .6 + r() * .5); }
   let flowers = ""; for (let i = 0; i < 70; i++) flowers += flower(20 + r() * 360, 20 + r() * 1140, pick(["#ff8fc7", "#ffd84d", "#c7b3ff", "#fff", "#5fd3ff"]));
-  const road = [P.meadow, P.vet, P.squeakmart, P.boutique, P.well, P.boxes, P.post, P.home, P.adopt, P.farm, P.arcade, P.carnival, P.swamp, P.lab];
+  const road = [P.meadow, P.vet, P.squeakmart, P.boutique, P.boxes, P.post, P.home, P.adopt, P.farm, P.arcade, P.carnival, P.swamp, P.lab];
   const order = [P.meadow, P.squeakmart, P.boxes, P.home, P.arcade, P.swamp];
   const order2 = [P.vet, P.boutique, P.post, P.adopt, P.carnival, P.lab];
   const curve = arr => arr.map((p, i) => (i ? "L" : "M") + px(p) + " " + (py(p) + 18)).join("");
@@ -54,12 +53,12 @@ function mapSVG() {
     <path d="M40 30C120 0 300 0 370 34C400 120 392 300 384 520C392 760 396 980 372 1130C300 1176 110 1178 30 1140C6 980 12 760 18 520C8 300 4 110 40 30Z" fill="none" stroke="#fff7c4" stroke-width="10" opacity=".6" transform="translate(0 6)"/>
     <path d="M30 20C80 4 140 6 190 30C150 110 70 130 26 120Z" fill="#ffe8f6" opacity=".8"/>
     ${["#ff5a5f", "#ff9f43", "#ffd43b", "#51cf66", "#4dabf7", "#845ef7"].map((c, i) => `<path d="M${20 + i * 6} 140A${70 - i * 6} ${70 - i * 6} 0 0 1 ${160 - i * 6} 140" stroke="${c}" stroke-width="6" fill="none" opacity=".75"/>`).join("")}
-    <circle cx="200" cy="${py(P.well) + 6}" r="70" fill="#efe3c8" stroke="#2b1640" stroke-width="4" opacity=".9"/>
-    <circle cx="200" cy="${py(P.well) + 6}" r="54" fill="none" stroke="#d8c8a0" stroke-width="3" stroke-dasharray="8 8"/>
+    <circle cx="200" cy="${py({ y: 29 }) + 6}" r="70" fill="#efe3c8" stroke="#2b1640" stroke-width="4" opacity=".9"/>
+    <circle cx="200" cy="${py({ y: 29 }) + 6}" r="54" fill="none" stroke="#d8c8a0" stroke-width="3" stroke-dasharray="8 8"/>
     <path d="${curve(order)}" stroke="#f2deb0" stroke-width="22" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
     <path d="${curve(order2)}" stroke="#f2deb0" stroke-width="22" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
     ${road.map(p => `<path d="M200 ${py(P.farm) - 30}L${px(p)} ${py(p) + 18}" stroke="#f2deb0" stroke-width="14" fill="none" stroke-linecap="round" opacity="${[P.home, P.adopt, P.arcade, P.carnival].includes(p) ? 1 : 0}"/>`).join("")}
-    <path d="M200 ${py(P.well) + 70}V${py(P.farm) - 40}" stroke="#f2deb0" stroke-width="18" stroke-linecap="round"/>
+    <path d="M200 ${py({ y: 29 }) + 70}V${py(P.farm) - 40}" stroke="#f2deb0" stroke-width="18" stroke-linecap="round"/>
     <g opacity=".95">${Array.from({ length: 6 }, (_, i) => `<rect x="${112 + i * 30}" y="${py(P.farm) - 20}" width="24" height="90" rx="6" fill="${i % 2 ? "#c9a35a" : "#7cc04a"}" stroke="#2b1640" stroke-width="2.5"/>`).join("")}</g>
     ${Array.from({ length: 8 }, (_, i) => `<rect x="${104 + i * 26}" y="${py(P.farm) + 74}" width="6" height="22" fill="#fff" stroke="#2b1640" stroke-width="2"/>`).join("")}<path d="M104 ${py(P.farm) + 80}H294M104 ${py(P.farm) + 90}H294" stroke="#fff" stroke-width="3"/>
     <ellipse cx="110" cy="1080" rx="100" ry="70" fill="url(#swampG)" stroke="#2b1640" stroke-width="4"/>
@@ -78,7 +77,7 @@ function mapSVG() {
     ${bld(px(P.arcade), py(P.arcade) + 18, 74, 46, "#2d2a4a", "#5fd3ff", "dome")}
     ${bld(px(P.carnival), py(P.carnival) + 18, 80, 40, "#ffe0d0", "#ff5a5f", "tent")}
     ${bld(px(P.lab), py(P.lab) + 18, 72, 46, "#e6fff0", "#3fd6b0", "dome")}
-    <g transform="translate(200 ${py(P.well) + 6})"><circle r="26" fill="#bfefff" stroke="#2b1640" stroke-width="4"/><circle r="16" fill="#5fd3ff"/><path class="fountain" d="M0 -6q-10 -24 -20 -6M0 -6q10 -24 20 -6M0 -6v-26" stroke="#bfefff" stroke-width="4" fill="none" stroke-linecap="round"/></g>
+    <g transform="translate(200 ${py({ y: 29 }) + 6})"><circle r="26" fill="#bfefff" stroke="#2b1640" stroke-width="4"/><circle r="16" fill="#5fd3ff"/><path class="fountain" d="M0 -6q-10 -24 -20 -6M0 -6q10 -24 20 -6M0 -6v-26" stroke="#bfefff" stroke-width="4" fill="none" stroke-linecap="round"/></g>
     <g class="cloud c1"><ellipse cx="80" cy="200" rx="36" ry="14" fill="#fff" opacity=".85"/><ellipse cx="100" cy="190" rx="22" ry="14" fill="#fff" opacity=".85"/></g>
     <g class="cloud c2"><ellipse cx="300" cy="620" rx="40" ry="15" fill="#fff" opacity=".8"/><ellipse cx="318" cy="608" rx="22" ry="14" fill="#fff" opacity=".8"/></g>
     <g class="balloon"><text x="0" y="0" font-size="34">🎈</text></g>
@@ -87,11 +86,9 @@ function mapSVG() {
 function placeBadge(id) {
   if (id === "post" && G.packages.length) return G.packages.length;
   if (id === "vet") { const n = G.guineas.filter(g => g.sick).length; return n ? "🤒" : ""; }
-  if (id === "farm") { if (!G.farm.level) return ""; const p = farmPoops(), r = G.farm.plots.filter(plotReady).length; return r ? "🥬" : p >= 5 ? "💩" : ""; }
+  if (id === "farm") { if (!G.farm.level || !G.farm.grid) return ""; const p = farmPoops(), r = G.farm.grid.filter(s => s.plot && now() >= s.plot.ready).length; if (farmReadyCoins() >= 20) return "💰"; return r ? "🥬" : p >= 5 ? "💩" : ""; }
   if (id === "adopt" && G.nursery.length) return G.nursery.length;
-  if (id === "carnival" && !G.daily.spun) return "FREE";
   if (id === "home" && G.guineas.some(g => g.home === "hutch" && g.food < 30)) return "!";
-  if (id === "well" && eventOn("lucky")) return "🍀";
   if (id === "lab" && eventOn("slimetide")) return "x2";
   return "";
 }
@@ -153,11 +150,11 @@ const PLACE_VIEWS = {};
 /* ---------- SHOPS ---------- */
 const SHOPS = {
   squeakmart: { npc: "nibbles", tabs: [["food", "Food"], ["care", "Care"], ["toy", "Toys"], ["love", "Love"], ["farm", "Farm"], ["sell", "Sell"]] },
-  boutique: { npc: "fernando", tabs: [["hat", "Hats"], ["face", "Face"], ["neck", "Neck"], ["decor", "Decor"], ["wall", "Walls"], ["floor", "Floors"]] },
-  boxes: { npc: "gus", tabs: [["box", "Boxes"]] },
+  boutique: { npc: "fernando", tabs: [["hat", "Hats"], ["face", "Face"], ["neck", "Neck"], ["back", "Back"], ["feet", "Feet"], ["salon", "Salon"], ["decor", "Furniture"], ["walldecor", "Wall art"], ["rug", "Rugs"], ["wall", "Wallpaper"], ["floor", "Floors"]] },
+  boxes: { npc: "gus", tabs: [["common", "Common"], ["rare", "Rare"], ["legendary", "Legendary"]] },
   merchant: { npc: "merchant", tabs: [["rare", "Rare Wares"]] },
 };
-const MERCHANT = [["youth", 1200], ["mango", 180], ["goldlettuce", 150], ["unicornhorn", 900], ["d_ufo", 1200], ["rainbowcarrot", 80], ["box_mega", 380], ["vitc", 60]];
+const MERCHANT = [["youth", 1200], ["mango", 180], ["goldlettuce", 150], ["unicornhorn", 900], ["d_ufo", 1200], ["rainbowcarrot", 80], ["halo", 280], ["vitc", 60]];
 const shopTab = {};
 function shopItems(shop, tab) {
   if (shop === "squeakmart") {
@@ -165,12 +162,15 @@ function shopItems(shop, tab) {
     return ITEMS.filter(i => i.cat === tab && i.price > 0 && !i.rare);
   }
   if (shop === "boutique") {
-    if (["hat", "face", "neck"].includes(tab)) return OUTFITS.filter(o => o.slot === tab && o.price > 0).map(o => ITEM[o.id]);
-    if (tab === "decor") return DECOR.filter(d => d.price > 0).map(d => ITEM[d.id]);
+    if (["hat", "face", "neck", "back", "feet"].includes(tab)) return OUTFITS.filter(o => o.slot === tab && o.price > 0).map(o => ITEM[o.id]);
+    if (tab === "salon") return ITEMS.filter(i => i.cat === "dye");
+    if (tab === "decor") return DECOR.filter(d => d.price > 0 && !d.wall).map(d => ITEM[d.id]);
+    if (tab === "walldecor") return DECOR.filter(d => d.price > 0 && d.wall).map(d => ITEM[d.id]);
+    if (tab === "rug") return RUGS.map(d => ITEM[d.id]);
     if (tab === "wall") return WALLS.filter(d => d.price > 0).map(d => ITEM[d.id]);
     return FLOORS.filter(d => d.price > 0).map(d => ITEM[d.id]);
   }
-  if (shop === "boxes") return BOXES.map(b => ITEM[b.id]);
+  if (shop === "boxes") return SQUISHIES.filter(q => q.r === tab).map(q => ITEM["sq_" + q.id]);
   if (shop === "merchant") return MERCHANT.map(([id, p]) => Object.assign({}, ITEM[id], { price: p, mprice: true }));
   return [];
 }
@@ -186,10 +186,11 @@ VIEWS.shop = (el, shop) => {
   const tab = shopTab[shop] || S.tabs[0][0];
   const sale = eventOn("sale");
   const items = tab === "sell" ? [] : shopItems(shop, tab);
-  const ownedFlat = it => (it.cat === "outfit" || it.cat === "wall" || it.cat === "floor") && G.owned[it.id];
+  const ownedFlat = it => ((it.cat === "outfit" || it.cat === "wall" || it.cat === "floor" || it.cat === "rug") && G.owned[it.id]) || (it.cat === "squishy" && G.squishies[it.sq]);
   el.innerHTML = placeHeader(shop === "merchant" ? "merchant" : shop, sale && shop !== "merchant" ? `<span class="sale-tag">30% OFF!</span>` : "") + `
     <div class="pad">
       ${npcBox(S.npc)}
+      ${undoButtonHTML()}
       ${shop === "boutique" ? `<div class="deal">⏰ Hat of the Hour: <b>${esc(ITEM[hatOfHour()].name)}</b> is 25% off for ${minsLeftInHour()} more minutes!</div>` : ""}
       ${S.tabs.length > 1 ? `<div class="tabs">${S.tabs.map(([k, n]) => `<button class="tab ${k === tab ? "on" : ""}" data-tab="${k}">${n}</button>`).join("")}</div>` : ""}
       ${tab === "sell" ? sellList() : `<div class="shop-grid">${items.map(it => {
@@ -204,6 +205,7 @@ VIEWS.shop = (el, shop) => {
     </div>`;
   wireCommon(el);
   $$("[data-tab]", el).forEach(b => b.onclick = () => { shopTab[shop] = b.dataset.tab; play("click"); render(); });
+  wireUndo(el);
   $$("[data-buy]", el).forEach(b => b.onclick = () => buy(b.dataset.buy, +b.dataset.p, b, shop));
   $$("[data-sell]", el).forEach(b => b.onclick = () => { const id = b.dataset.sell, it = ITEM[id]; if (!has(id)) return; addItem(id, -1); addCoins(it.sell, b); play("coin"); render(); });
 };
@@ -217,9 +219,10 @@ function buy(id, p, btn, shop) {
   if (!spendCoins(p)) { btn.classList.add("nope"); setTimeout(() => btn.classList.remove("nope"), 400); return; }
   play("coin"); haptic(10); tutMark("shop");
   const [x, y] = centerOf(btn); confetti(x, y, 14, false);
+  if (it.cat === "squishy") { recordBuy({ type: "squishy", sq: it.sq, id, price: p, name: it.name }); grant({ squishy: it.sq }); questProgress("squishy"); play("squish"); toast(`${it.name} joined your collection! (${Object.keys(G.squishies).length}/32)`, "🍡"); addXP(4); saveSoon(); checkAchievements(); render(); return; }
   if (it.cat === "box") { G.stats.boxes++; questProgress("box"); const rewards = openBoxRewards(id); rewards.forEach(grant); saveSoon(); revealSequence({ title: it.name, ico: "🦝", line: pick(NPCS.gus.lines), box: it.ico, rewards }, () => { checkAchievements(); render(); }); return; }
-  if (it.cat === "outfit" || it.cat === "wall" || it.cat === "floor" || it.cat === "decor") { own(id); toast(`${it.name} is yours!`, it.ico || "🎀"); }
-  else { addItem(id, 1); floatText(x, y - 30, "+1 " + it.name, "#2f7d14", 18); }
+  if (it.cat === "outfit" || it.cat === "wall" || it.cat === "floor" || it.cat === "decor" || it.cat === "rug") { recordBuy({ type: it.cat === "decor" ? "decor" : "own", id, price: p, name: it.name }); own(id); toast(it.cat === "outfit" ? `${it.name} is yours! Try it on with Dress.` : `${it.name} is yours! Place it with ✏️ Decorate at home.`, it.ico || "🎀"); }
+  else { addItem(id, 1); recordBuy({ type: "item", id, n: 1, price: p, name: it.name }); floatText(x, y - 30, "+1 " + it.name, "#2f7d14", 18); }
   addXP(2); saveSoon(); checkAchievements();
   render();
 }
@@ -237,7 +240,6 @@ PLACE_VIEWS.adopt = (el) => {
       <b>${esc(o.name)}</b> <span style="color:${SEX[o.sex].c}">${SEX[o.sex].ico} ${SEX[o.sex].n}</span>
       <small>${esc(coatName(o.genes))} · ${esc(PERSONALITIES[o.pers].n)}</small>${tierChip(o)}
       ${sold ? `<span class="si-own">Adopted! 💕</span>` : `<button class="btn small green" data-adopt="${i}">${COIN} ${fmt(o.price)}</button>`}</div>`; }).join("")}</div>
-    <div class="basket card"><span class="big-emoji">🧺</span><div><b>Surprise Guinea Basket</b><p>A random guinea with a BIG chance of being rare. Could be Golden! Could be Galaxy! Could be... Kevin.</p></div><button class="btn pink" data-basket>${COIN} ${fmt(price({ price: 800 }))}</button></div>
     ${G.nursery.length ? `<h2 class="sec">Nursery (${G.nursery.length})</h2><p class="muted">These babies were born when your homes were full. Make room, then bring them home!</p><div class="adopt-grid">${G.nursery.map((b, i) => `<div class="ad-card" style="--tc:${TIERS[tierOf(b)].c}"><div class="ad-art">${guineaSVG(b, { size: 100 })}</div><b>${esc(b.name)}</b> ${sexIco(b)}<small>${esc(coatName(b.genes))}</small>${tierChip(b)}<button class="btn small green" data-claim="${i}">Bring home</button><button class="btn small white" data-rehomen="${i}">Rehome +${rehomeValue(b)}</button></div>`).join("")}</div>` : ""}
     <div class="card note"><b>Need space?</b> Rehome a guinea from its page in Guineas. Auntie Clover finds them a loving family and the family sends you a thank-you gift of coins. ${G.farm.level ? "" : "Or buy the <b>Guinea Farm</b> for room for 8 more!"}</div>
   </div>`;
@@ -247,104 +249,12 @@ PLACE_VIEWS.adopt = (el) => {
     if (!home) { play("buzz"); toast(G.farm.level ? "No room! Upgrade your farm or rehome someone." : "Your hutch is full! Buy the Guinea Farm for more room.", "🏠"); return; }
     if (!(await confirmBox(`Adopt ${esc(o.name)}?`, `${esc(o.name)} (${SEX[o.sex].n}, ${esc(coatName(o.genes))}) will live in your ${home}. Costs ${fmt(o.price)} coins.`, "Adopt!", "Not yet"))) return;
     if (!spendCoins(o.price)) return;
-    st.sold[o.key] = 1; const g = adoptGuinea(o, home); play("fanfare"); confetti(innerWidth / 2, innerHeight / 2, 80);
+    st.sold[o.key] = 1; const g = adoptGuinea(o, home); recordBuy({ type: "adopt", gid: g.id, key: o.key, price: o.price, name: g.name + " (adopted)" }); play("fanfare"); confetti(innerWidth / 2, innerHeight / 2, 80);
     toast(`${g.name} moved into your ${home}!`, "🏠"); render();
   });
-  $("[data-basket]", el).onclick = async () => {
-    const home = freeHome(); const p = price({ price: 800 });
-    if (!home) { play("buzz"); toast("No room for a new guinea! Make space first.", "🏠"); return; }
-    if (!spendCoins(p)) return;
-    const genes = randGenes(Math.random, { mut: .12 });
-    if (Math.random() < .5) genes.h = pick(["teddy", "aby", "lion", "peru", "skinny"]);
-    if (Math.random() < .3) genes.e = pick(["ruby", "blue"]);
-    const rw = { guinea: { genes, sex: Math.random() < .5 ? "boar" : "sow", name: pick(NAMES) } };
-    grant(rw); addXP(30); saveSoon();
-    revealSequence({ title: "Surprise Guinea Basket", ico: "🐰", line: "Ooh, who's in the basket? Shake it gently, dear!", box: "🧺", rewards: [rw] }, () => { checkAchievements(); render(); });
-  };
   $$("[data-claim]", el).forEach(b => b.onclick = () => { const home = freeHome(); if (!home) { play("buzz"); toast("Still no room! Rehome someone or upgrade the farm.", "🏠"); return; } const g = G.nursery.splice(+b.dataset.claim, 1)[0]; g.home = home; G.guineas.push(g); play("wheek"); toast(`${g.name} came home!`, "🏠"); saveSoon(); render(); });
   $$("[data-rehomen]", el).forEach(b => b.onclick = async () => { const g = G.nursery[+b.dataset.rehomen]; if (!(await confirmBox(`Rehome ${esc(g.name)}?`, `Auntie Clover will find ${esc(g.name)} a loving family. They'll send you ${rehomeValue(g)} coins as a thank-you.`, "Find a family", "Keep"))) return; G.nursery.splice(+b.dataset.rehomen, 1); addCoins(rehomeValue(g), b); play("heart"); render(); });
 };
-
-/* ---------- FARM ---------- */
-PLACE_VIEWS.farm = (el) => {
-  if (!G.farm.level) {
-    const cost = FARM_LEVELS[1].cost;
-    el.innerHTML = placeHeader("farm") + `<div class="pad">
-      ${npcBox("hayley", "This old farm is up for sale! With a farm you can keep 8 more guineas, grow your own veggies and scoop poop for coins. Yes, POOP.")}
-      <div class="deed card"><div class="big-emoji">📜🌾</div><h2>Farm For Sale!</h2>
-      <ul class="perks"><li>🐹 Room for <b>8 more guineas</b> (upgrade for up to 50!)</li><li>🥕 <b>3 garden plots</b> to grow free food</li><li>🧺 A <b>hay rack</b> so farm guineas feed themselves</li><li>💩 Farm guineas make <b>poop you can sell</b></li><li>💕 Room to raise <b>lots of babies</b></li></ul>
-      <div class="price-big">${COIN} ${fmt(cost)}</div>
-      <div class="progress"><i style="width:${Math.min(100, G.coins / cost * 100)}%"></i><span>${fmt(Math.min(G.coins, cost))} / ${fmt(cost)}</span></div>
-      <button class="btn green" data-buyfarm ${G.coins < cost ? "disabled" : ""}>Buy the Farm!</button>
-      ${G.coins < cost ? `<p class="muted">Play games at the Arcade and Carnival to save up!</p>` : ""}</div></div>`;
-    wireCommon(el);
-    $("[data-buyfarm]", el).onclick = () => { if (!spendCoins(cost)) return; G.farm.level = 1; ensurePlots(); G.farm.hay = 12; play("fanfare"); confetti(innerWidth / 2, innerHeight / 2, 150); addXP(100); checkAchievements(); toast("You bought the Guinea Farm! Move guineas here from the Guineas page.", "🌾"); render(); };
-    return;
-  }
-  ensurePlots();
-  const L = FARM_LEVELS[G.farm.level], next = FARM_LEVELS[G.farm.level + 1];
-  const herd = farmList();
-  el.innerHTML = placeHeader("farm", `<span class="sale-tag">${esc(L.n)}</span>`) + `<div class="pad">
-    ${npcBox("hayley")}
-    <div class="farm-field" id="field" style="height:${Math.max(1, Math.ceil(herd.length / 4)) * 70 + 140}px">
-      ${herd.map((g, i) => `<button class="fg" data-pet="${g.id}" style="left:${3 + (i % 4) * 24 + (Math.floor(i / 4) % 2) * 6}%;top:${8 + Math.floor(i / 4) * 70}px;animation-delay:${(i % 5) * .7}s">${guineaSVG(g, { size: 64, mood: mood(g) })}</button>`).join("")}
-      ${(() => { const poops = herd.flatMap(g => Array.from({ length: g.poop || 0 }, () => g.id)); const rows = Math.max(1, Math.ceil(herd.length / 4)) * 70 + 14; return poops.slice(0, 24).map((id, k) => `<button class="poop" data-poop="${id}" style="left:${2 + (k % 8) * 12 + (hashStr(id + k) % 4)}%;top:${rows + Math.floor(k / 8) * 40 + (hashStr(k + id) % 8)}px">💩</button>`).join("") + (poops.length > 24 ? `<span class="poop-more">+${poops.length - 24} more</span>` : ""); })()}
-      ${!herd.length ? `<p class="field-empty">No guineas live here yet! Move some from the Guineas page or adopt new ones.</p>` : ""}
-    </div>
-    <p class="muted center">Herd: ${herd.length}/${L.cap} · Tap poops to scoop them (+1 coin, and every 10 makes fertilizer)</p>
-    <div class="farm-row">
-      <div class="card hayrack"><b>🧺 Hay Rack</b><div class="progress"><i style="width:${Math.min(100, G.farm.hay / 40 * 100)}%"></i><span>${G.farm.hay} meals</span></div><small>Farm guineas eat from here when hungry.</small>
-        <button class="btn small green" data-hay ${has("haybale") ? "" : ""}>${has("haybale") ? `Add hay bale (${G.inv.haybale})` : `Buy bale ${COIN}${price(ITEM.haybale)}`}</button></div>
-      <div class="card hayrack"><b>🎉 Herd care</b><small>Give everyone a treat at once.</small><button class="btn small sky" data-feedall>Feed all (uses food)</button><button class="btn small pink" data-bathall>Bath all (${G.inv.soap || 0} 🧼)</button></div>
-    </div>
-    <h2 class="sec">Garden</h2>
-    <div class="plots">${G.farm.plots.map((p, i) => {
-      if (!p.seed) return `<button class="plot empty" data-plant="${i}"><span>🟫</span><small>Plant</small></button>`;
-      const it = ITEM[p.seed], ready = plotReady(p), pct = ready ? 100 : Math.round((now() - p.planted) / (p.ready - p.planted) * 100);
-      const crop = it.yields[0] === "magic" ? "🫘" : ITEM[it.yields[0]].ico;
-      return `<button class="plot ${ready ? "ready" : ""}" data-plot="${i}"><span class="crop" style="--s:${.4 + pct / 160}">${ready ? crop : "🌱"}</span><small>${ready ? "Harvest!" : dur(p.ready - now())}</small><i class="pbar" style="width:${pct}%"></i></button>`;
-    }).join("")}</div>
-    ${has("fertilizer") ? `<p class="muted center">You have ${G.inv.fertilizer} 💩 Poop Fertilizer. Tap a growing plant to use one!</p>` : ""}
-    ${next ? `<div class="card upgrade"><b>Upgrade to ${esc(next.n)}</b><p>Room for ${next.cap} guineas and ${next.plots} garden plots!</p><button class="btn green" data-upgrade ${G.coins < next.cost ? "disabled" : ""}>${COIN} ${fmt(next.cost)}</button></div>` : `<div class="card upgrade"><b>👑 You own the Guinea Palace!</b><p>The biggest farm in Wheek World.</p></div>`}
-  </div>`;
-  wireCommon(el);
-  $$("[data-pet]", el).forEach(b => b.onclick = () => { play("wheek"); go("pet/" + b.dataset.pet); });
-  $$("[data-poop]", el).forEach(b => b.onclick = () => {
-    const g = G.guineas.find(x => x.id === b.dataset.poop); if (!g || !g.poop) return;
-    g.poop--; G.stats.poop++; G.farm.poopN = (G.farm.poopN || 0) + 1; questProgress("poop");
-    const [x, y] = centerOf(b); play("splat"); b.remove();
-    if (Math.random() < .01) { addCoins(50, [x, y]); toast("A GOLDEN POOP! +50 coins!", "✨"); play("bigwin"); }
-    else addCoins(1, [x, y]);
-    if (G.farm.poopN >= 10) { G.farm.poopN -= 10; addItem("fertilizer", 1); toast("10 poops = 1 Poop Fertilizer!", "💩"); }
-    saveSoon(); checkAchievements();
-  });
-  $("[data-hay]", el).onclick = () => { if (!has("haybale")) { if (!spendCoins(price(ITEM.haybale))) return; addItem("haybale", 1); } addItem("haybale", -1); G.farm.hay += ITEM.haybale.hay; play("crunch"); render(); };
-  $("[data-feedall]", el).onclick = () => {
-    const foods = Object.keys(G.inv).filter(id => ITEM[id] && ITEM[id].cat === "food" && !ITEM[id].rare).sort((a, b) => ITEM[a].price - ITEM[b].price);
-    let fed = 0; for (const g of herd) { if (g.food > 80) continue; const f = foods.find(id => has(id)); if (!f) break; useOn(g, f); fed++; }
-    if (fed) { play("nom"); toast(`Fed ${fed} guinea${fed > 1 ? "s" : ""}!`, "🥕"); render(); } else { play("buzz"); toast(foods.length ? "Everyone's already full!" : "No food in your bag!", "🥕"); }
-  };
-  $("[data-bathall]", el).onclick = () => { let n = 0; for (const g of herd) { if (g.clean > 80 || !has("soap")) continue; useOn(g, "soap"); n++; } if (n) { play("squelch"); confetti(innerWidth / 2, innerHeight / 2, 40, false); toast(`Bathed ${n} guinea${n > 1 ? "s" : ""}!`, "🧼"); render(); } else { play("buzz"); toast(has("soap") ? "Everyone's already sparkly!" : "No Bubble Bath in your bag!", "🧼"); } };
-  $$("[data-plant]", el).forEach(b => b.onclick = () => plantPicker(+b.dataset.plant));
-  $$("[data-plot]", el).forEach(b => b.onclick = () => {
-    const i = +b.dataset.plot, p = G.farm.plots[i];
-    if (plotReady(p)) { const out = harvest(i); const [x, y] = centerOf(b); play("win"); confetti(x, y, 30); if (out.coins) addCoins(0); floatText(x, y - 20, out.coins ? `+${out.coins} coins` : `+${out.n} ${ITEM[out.item].name}`, "#2f7d14", 20); if (out.coins) coinRain(x, y, 10); setTimeout(render, 500); }
-    else if (has("fertilizer")) { addItem("fertilizer", -1); p.ready = now(); play("sparkle"); toast("Poop power! It grew instantly!", "💩"); render(); }
-    else { play("buzz"); toast("Still growing! Poop Fertilizer makes it instant.", "🌱"); }
-  });
-  const up = $("[data-upgrade]", el); if (up) up.onclick = () => { if (!spendCoins(next.cost)) return; G.farm.level++; ensurePlots(); play("fanfare"); confetti(innerWidth / 2, innerHeight / 3, 150); addXP(150); toast(`Upgraded to ${next.n}!`, "🏰"); render(); };
-  const iv = setInterval(() => { if ($$(".plot:not(.empty)").length) { const ready = G.farm.plots.some(plotReady); if (ready && !$(".plot.ready")) render(); } }, 15000);
-  return () => clearInterval(iv);
-};
-function plantPicker(i) {
-  const seeds = ITEMS.filter(s => s.cat === "seed");
-  const m = openModal(`<h2>Plant something</h2><div class="pick-list">${seeds.map(s => `<button class="pick" data-seed="${s.id}"><span class="ii">${s.yields[0] === "magic" ? "🫘" : ITEM[s.yields[0]].ico}</span><span><b>${esc(s.name)}</b><small>${esc(s.desc)}</small></span><span class="pk-r">${has(s.id) ? `x${G.inv[s.id]}` : `${COIN}${price(s)}`}</span></button>`).join("")}</div>`);
-  $$("[data-seed]", m.el).forEach(b => b.onclick = () => {
-    const s = ITEM[b.dataset.seed];
-    if (!has(s.id)) { if (!spendCoins(price(s))) return; addItem(s.id, 1); }
-    addItem(s.id, -1); G.farm.plots[i] = { seed: s.id, planted: now(), ready: now() + s.grow * MIN }; play("pop"); saveSoon(); m.close(); render();
-  });
-}
 
 /* ---------- VET ---------- */
 PLACE_VIEWS.vet = (el) => {
@@ -389,42 +299,8 @@ PLACE_VIEWS.post = (el) => {
   $$("[data-open]", el).forEach(b => b.onclick = () => { openPackage(G.packages[+b.dataset.open]); setTimeout(() => ROUTE.name === "place" && render(), 50); });
 };
 
-/* ---------- WISHING WELL ---------- */
-PLACE_VIEWS.well = (el) => {
-  el.innerHTML = placeHeader("well") + `<div class="pad">
-    ${npcBox("wisher")}
-    <div class="well-stage"><div class="well" id="well"><div class="well-water"></div><span class="well-face">😮</span></div></div>
-    <p class="center muted">Toss coins and make a wish. The well might give you something amazing... or just burp.${eventOn("lucky") ? " <b>🍀 Lucky Lettuce Hour: extra lucky!</b>" : ""}</p>
-    <div class="bets">${[10, 50, 200].map(n => `<button class="btn ${n === 200 ? "pink" : "sky"}" data-wish="${n}">Toss ${COIN}${n}</button>`).join("")}</div>
-    <div id="wishOut" class="wish-out"></div>
-  </div>`;
-  wireCommon(el);
-  let busy = false;
-  $$("[data-wish]", el).forEach(b => b.onclick = () => {
-    if (busy) return; const n = +b.dataset.wish; if (!spendCoins(n)) return; busy = true;
-    play("whoosh"); const well = $("#well", el); well.classList.remove("plop"); void well.offsetWidth; well.classList.add("plop");
-    questProgress("luck");
-    setTimeout(() => {
-      const lucky = eventOn("lucky") ? 1.25 : 1;
-      const r = weighted([{ k: "burp", w: 34 / lucky }, { k: "half", w: 18 }, { k: "same", w: 14 }, { k: "double", w: 16 * lucky }, { k: "item", w: 10 * lucky }, { k: "triple", w: 5 * lucky }, { k: "box", w: 2.5 * lucky }, { k: "mega", w: .6 * lucky }]).k;
-      const out = $("#wishOut", el); const face = $(".well-face", el);
-      const [x, y] = centerOf(well);
-      if (r === "burp") { play("burp"); face.textContent = "🤢"; out.innerHTML = `<b>*BUUURP*</b> The well ate your coins. Rude.`; }
-      else if (r === "half") { addCoins(Math.round(n / 2), [x, y]); face.textContent = "😐"; out.innerHTML = `The well spat half your coins back. "Blub."`; }
-      else if (r === "same") { addCoins(n, [x, y]); face.textContent = "🙂"; out.innerHTML = `The well gave your coins back. It's shy.`; }
-      else if (r === "double") { addCoins(n * 2, [x, y]); play("win"); face.textContent = "😄"; out.innerHTML = `<b>Wish granted!</b> Double coins!`; }
-      else if (r === "triple") { addCoins(n * 3, [x, y]); play("bigwin"); confetti(x, y, 60); face.textContent = "🤩"; out.innerHTML = `<b>TRIPLE!</b> The well loves you!`; }
-      else if (r === "item") { const id = n >= 200 ? pick(["vitc", "lovepotion", "box_squishy", "squeaky", "haycake"]) : n >= 50 ? pick(["haycake", "squeaky", "box_snack", "slimekit", "strawberry"]) : pick(["strawberry", "lettuce", "chew", "slimekit"]); addItem(id, 1); play("sparkle"); face.textContent = "😊"; out.innerHTML = `A <b>${esc(ITEM[id].name)}</b> floated up! ${ITEM[id].ico}`; }
-      else if (r === "box") { addItem("box_fashion", 1); play("bigwin"); confetti(x, y, 80); face.textContent = "🥰"; out.innerHTML = `<b>A Fashion Mystery Bag!</b> Open it from your Bag!`; }
-      else { addCoins(n * 10, [x, y]); play("bigwin"); confetti(x, y, 150); document.body.classList.add("flash"); setTimeout(() => document.body.classList.remove("flash"), 500); face.textContent = "🤯"; out.innerHTML = `<b>MEGA WISH!!! 10x COINS!!!</b>`; G.stats.bigWin = Math.max(G.stats.bigWin, n * 10); }
-      out.classList.remove("pop"); void out.offsetWidth; out.classList.add("pop");
-      busy = false; saveSoon(); checkAchievements();
-    }, 900);
-  });
-};
-
 /* ---------- GAME HALLS ---------- */
-const HALLS = { arcade: "Skill games. The better you play, the more coins you win!", carnival: "Games of chance! Bet coins, win BIG. (Or don't. That's gambling, baby.)", swamp: "Stinky games for brave guineas. Hold your nose!" };
+const HALLS = { arcade: "Free games! The better you play, the more coins you win.", carnival: "Free games of skill! Beat your best score for bigger prizes.", swamp: "Stinky games for brave guineas. Hold your nose!" };
 function hallView(id) {
   return (el) => {
     const games = Object.values(WW.games).filter(g => g.place === id || (id === "arcade" && g.place === "lab"));
@@ -433,7 +309,6 @@ function hallView(id) {
     el.innerHTML = placeHeader(id, x2 ? `<span class="sale-tag">x2 COINS!</span>` : "") + `<div class="pad">
       ${npcBox(PLACES[id].npc)}
       <p class="muted center">${HALLS[id]}</p>
-      ${id === "carnival" ? `<button class="wheel-tile card" data-go="place/wheel"><span class="big-emoji sm">🎡</span><span><b>Prize Wheel</b><small>${G.daily.spun ? "Spin again for 30 coins" : "Your FREE daily spin is ready!"}</small></span>${G.daily.spun ? "" : `<span class="badge">FREE</span>`}</button>` : ""}
       <div class="game-grid">${games.map(g => `<button class="game-tile" data-play="${g.id}"><span class="gt-ico">${g.icon}</span><b>${esc(g.name)}</b><small>${esc(g.blurb)}</small><span class="gt-kind ${g.kind}">${g.kind === "luck" ? "🎲 Luck" : "🎯 Skill"}</span>${G.best[g.id] ? `<span class="gt-best">Best: ${fmt(G.best[g.id])}</span>` : ""}</button>`).join("") || `<p class="muted">The games are still being set up! Come back soon.</p>`}</div>
     </div>`;
     wireCommon(el);
@@ -443,50 +318,15 @@ function hallView(id) {
 PLACE_VIEWS.arcade = hallView("arcade");
 PLACE_VIEWS.carnival = hallView("carnival");
 
-/* ---------- PRIZE WHEEL ---------- */
-const WHEEL = [
-  { t: "10", c: "#ffd84d", rw: { coins: 10 }, w: 20 }, { t: "💨", c: "#b6e36a", rw: null, w: 12 }, { t: "25", c: "#ff8fc7", rw: { coins: 25 }, w: 18 },
-  { t: "🎒", c: "#5fd3ff", rw: { item: "box_snack", n: 1 }, w: 10 }, { t: "50", c: "#c7b3ff", rw: { coins: 50 }, w: 14 }, { t: "🧪", c: "#7be04a", rw: { item: "slimekit", n: 2 }, w: 10 },
-  { t: "100", c: "#ff9f43", rw: { coins: 100 }, w: 8 }, { t: "📦", c: "#ff8fc7", rw: { item: "box_squishy", n: 1 }, w: 4 }, { t: "✨", c: "#fff3a8", rw: { item: "goldlettuce", n: 1 }, w: 3 }, { t: "500", c: "#ff3d9a", rw: { coins: 500 }, w: 1 },
-];
-PLACE_VIEWS.wheel = (el) => {
-  const n = WHEEL.length, seg = 360 / n;
-  const wedges = WHEEL.map((s, i) => { const a0 = (i * seg - 90) * Math.PI / 180, a1 = ((i + 1) * seg - 90) * Math.PI / 180, mid = (i + .5) * seg; return `<path d="M0 0L${(Math.cos(a0) * 140).toFixed(1)} ${(Math.sin(a0) * 140).toFixed(1)}A140 140 0 0 1 ${(Math.cos(a1) * 140).toFixed(1)} ${(Math.sin(a1) * 140).toFixed(1)}Z" fill="${s.c}" stroke="#2b1640" stroke-width="3"/><text transform="rotate(${mid}) translate(0 -100) rotate(${-mid} 0 0)" text-anchor="middle" dominant-baseline="middle" font-family="Bagel Fat One, sans-serif" font-size="${s.t.length > 2 ? 20 : 24}" fill="#2b1640">${s.t}</text>`; }).join("");
-  el.innerHTML = placeHeader("carnival") + `<div class="pad center">
-    ${npcBox("skunk", "Spin the wheel! One FREE spin every day. After that it's 30 coins. Round and round she goes!")}
-    <div class="wheel-wrap"><div class="pointer">▼</div><svg class="wheel" id="wheel" viewBox="-150 -150 300 300"><circle r="148" fill="#2b1640"/>${wedges}<circle r="22" fill="#fff" stroke="#2b1640" stroke-width="4"/><text text-anchor="middle" dominant-baseline="middle" font-size="22">🐹</text></svg></div>
-    <button class="btn green big" id="spin">${G.daily.spun ? `Spin ${COIN}30` : "FREE SPIN!"}</button>
-    <button class="btn white small" data-go="place/carnival">Back to Carnival</button>
-    <div id="wheelOut" class="wish-out"></div></div>`;
-  wireCommon(el);
-  let rot = 0, busy = false;
-  $("#spin", el).onclick = () => {
-    if (busy) return;
-    if (G.daily.spun) { if (!spendCoins(30)) return; } else G.daily.spun = true;
-    busy = true; questProgress("luck");
-    const lucky = eventOn("lucky");
-    const idx = weighted(WHEEL.map((s, i) => ({ i, w: lucky && s.rw && (s.rw.coins >= 100 || s.rw.item) ? s.w * 1.8 : s.w }))).i;
-    const target = 360 * 6 + (360 - (idx + .5) * seg) + (Math.random() - .5) * seg * .6;
-    rot = rot - (rot % 360) + target;
-    const w = $("#wheel", el); w.style.transition = "transform 4.2s cubic-bezier(.12,.7,.08,1)"; w.style.transform = `rotate(${rot}deg)`;
-    let ticks = 0; const tk = setInterval(() => { play("tick"); if (++ticks > 34) clearInterval(tk); }, 110);
-    setTimeout(() => {
-      clearInterval(tk); busy = false;
-      const s = WHEEL[idx], out = $("#wheelOut", el); const [x, y] = centerOf(w);
-      if (!s.rw) { play("fart"); gas(x, y, 30); out.innerHTML = "💨 <b>TOOT!</b> You won... a smell. Spin again?"; G.stats.toots++; }
-      else { grant(Object.assign({}, s.rw)); if (s.rw.coins) { coinRain(x, y, 12); floatText(x, y, "+" + s.rw.coins, "#e0a800", 30); } if ((s.rw.coins || 0) >= 100 || s.t === "✨" || s.t === "📦") { play("bigwin"); confetti(x, y, 100); } else play("win"); out.innerHTML = s.rw.coins ? `You won <b>${s.rw.coins} coins!</b>` : `You won <b>${s.rw.n > 1 ? s.rw.n + "x " : ""}${esc(ITEM[s.rw.item].name)}</b>! It's in your Bag.`; if (s.rw.coins >= 500) G.stats.bigWin = Math.max(G.stats.bigWin, 500); }
-      $("#spin", el).innerHTML = `Spin ${COIN}30`; saveSoon(); checkAchievements(); refreshBadges();
-    }, 4300);
-  };
-};
-
 /* ---------- SWAMP ---------- */
+const fishCasts = () => (G.fish && G.fish.h === hourIdx()) ? G.fish.n : 0;
 PLACE_VIEWS.swamp = (el) => {
   hallView("swamp")(el);
   const grid = $(".game-grid", el);
-  if (grid) grid.insertAdjacentHTML("beforeend", `<button class="game-tile" id="fish"><span class="gt-ico">🎣</span><b>Swamp Fishing</b><small>Cast a line. What's in the muck? (5 coins)</small><span class="gt-kind luck">🎲 Luck</span></button>`);
+  if (grid) grid.insertAdjacentHTML("beforeend", `<button class="game-tile" id="fish"><span class="gt-ico">🎣</span><b>Swamp Fishing</b><small>Free! Cast a line. What's in the muck? (${Math.max(0, 5 - fishCasts())} casts left this hour)</small><span class="gt-kind luck">🎲 Luck</span></button>`);
   const f = $("#fish", el); if (f) f.onclick = () => {
-    if (!spendCoins(5)) return; play("whoosh"); questProgress("luck");
+    if (fishCasts() >= 5) { play("buzz"); toast("The fish are sleeping. Come back next hour!", "🎣"); return; }
+    G.fish = { h: hourIdx(), n: fishCasts() + 1 }; play("whoosh");
     setTimeout(() => {
       const r = weighted([{ k: "sock", w: 30 }, { k: "coins", w: 35 }, { k: "boot", w: 15 }, { k: "fossil", w: 6 }, { k: "gem", w: 3 }, { k: "frog", w: 10 }, { k: "golden", w: 1 }]).k;
       const [x, y] = centerOf(f);
@@ -509,7 +349,7 @@ VIEWS.play = (el, id) => {
   el.innerHTML = `<div class="stage" id="stage"></div>`;
   const stage = $("#stage", el);
   const counted = { v: false };
-  const count = () => { if (counted.v) return; counted.v = true; tutMark("game"); G.stats.games++; questProgress("play"); if (def.kind === "luck") questProgress("luck"); addXP(8); checkAchievements(); };
+  const count = () => { if (counted.v) return; counted.v = true; tutMark("game"); G.stats.games++; questProgress("play"); addXP(8); checkAchievements(); };
   const ev = currentEvent();
   const mult = ev.id === "golden" || (ev.id === "fartstorm" && def.place === "swamp") ? 2 : 1;
   let inst = null, ended = false;
@@ -517,7 +357,7 @@ VIEWS.play = (el, id) => {
   const api = {
     coins: () => G.coins,
     spend(n) { if (G.coins < n) { play("buzz"); return false; } G.coins -= n; G.stats.spent += n; renderCoins(); count(); saveSoon(); return true; },
-    award(n, opts = {}) { n = Math.max(0, Math.round(n * mult)); if (!n) return 0; G.coins += n; G.stats.earned += n; G.daily.earned = (G.daily.earned || 0) + n; questProgress("earn", n); if (n > (G.stats.bigWin || 0)) G.stats.bigWin = n; renderCoins(); bumpCoins(); count(); saveSoon(); checkAchievements(); return n; },
+    award(n, opts = {}) { n = Math.max(0, Math.round(n * mult * keeperBonus())); if (!n) return 0; G.coins += n; G.stats.earned += n; G.daily.earned = (G.daily.earned || 0) + n; questProgress("earn", n); if (n > (G.stats.bigWin || 0)) G.stats.bigWin = n; renderCoins(); bumpCoins(); count(); saveSoon(); checkAchievements(); return n; },
     multiplier: mult,
     get muted() { return !!G.settings.muted; },
     best: gid => G.best[gid] || 0,
@@ -528,7 +368,7 @@ VIEWS.play = (el, id) => {
     highscore(gid, score) { const b = G.best[gid] || 0; if (score > b) { G.best[gid] = score; saveSoon(); return { best: score, isNew: true }; } return { best: b, isNew: false }; },
     done(s = {}) {
       count(); if (ended) return; ended = true;
-      const m = openModal(`<div class="center"><div class="big-emoji">${def.icon}</div><h2>${esc(s.title || "Round over!")}</h2>${s.text ? `<p class="mtext">${esc(s.text)}</p>` : ""}<div class="earned">${COIN}<b>+${fmt(s.earned || 0)}</b></div>${mult > 1 ? `<p class="kicker">x${mult} event bonus included!</p>` : ""}<div class="mrow"><button class="btn white" data-leave>Leave</button><button class="btn green" data-again>Play again</button></div></div>`, { sticky: true });
+      const m = openModal(`<div class="center"><div class="big-emoji">${def.icon}</div><h2>${esc(s.title || "Round over!")}</h2>${s.text ? `<p class="mtext">${esc(s.text)}</p>` : ""}${keeperBonus() > 1 ? `<p class="muted">Includes your keeper level ${G.level} bonus: +${Math.round((keeperBonus() - 1) * 100)}%</p>` : ""}<div class="earned">${COIN}<b>+${fmt(s.earned || 0)}</b></div>${mult > 1 ? `<p class="kicker">x${mult} event bonus included!</p>` : ""}<div class="mrow"><button class="btn white" data-leave>Leave</button><button class="btn green" data-again>Play again</button></div></div>`, { sticky: true });
       if ((s.earned || 0) > 0) { play("win"); confetti(innerWidth / 2, innerHeight / 3, 50); }
       $("[data-again]", m.el).onclick = () => { m.close(); remount(); };
       $("[data-leave]", m.el).onclick = () => { m.close(); back(); };

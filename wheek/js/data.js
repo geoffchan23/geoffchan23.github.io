@@ -39,6 +39,8 @@ const OUTFITS = [
   { id: "pearls", slot: "neck", name: "Fancy Pearls", ico: "🦪", price: 240, svg: Array.from({ length: 13 }, (_, i) => { const t = i / 12, x = 50 + t * 100, y = 132 + Math.sin(Math.PI * t) * 14; return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="5" fill="#fffaf3" stroke="${K}" stroke-width="2"/>`; }).join("") },
 ];
 
+if (typeof OUTFITS2 !== "undefined") OUTFITS.push(...OUTFITS2);
+
 /* ---------- consumables & stuff ---------- */
 const ITEMS = [
   // food
@@ -56,6 +58,9 @@ const ITEMS = [
   { id: "haycake", name: "Hay Birthday Cake", ico: "🎂", cat: "food", price: 45, food: 50, joy: 40, desc: "Every day is a birthday." },
   { id: "goldlettuce", name: "Golden Lettuce", ico: "✨", cat: "food", price: 0, rare: true, food: 100, joy: 60, health: 60, clean: 30, desc: "Legendary leafy. Fills everything." },
   { id: "rainbowcarrot", name: "Rainbow Carrot", ico: "🌈", cat: "food", price: 0, rare: true, food: 40, joy: 80, xp: 30, desc: "Tastes like every colour." },
+  // salon (fur dye: one bottle = one makeover; "Natural" is always free)
+  ...Object.entries(DYES).map(([k, d]) => ({ id: "dye_" + k, dye: k, name: d.n + " Fur Dye", ico: k === "rainbow" ? "🌈" : "🧴", cat: "dye", price: k === "rainbow" ? 300 : 90, desc: `Dye your guinea's fur ${d.n.toLowerCase()}! Use it in the Wardrobe.` })),
+  { id: "glitter", name: "Glitter Fur Spray", ico: "✨", cat: "dye", price: 150, desc: "Sparkly fur! Use it in the Wardrobe. Brushing keeps it." },
   // care
   { id: "soap", name: "Bubble Bath", ico: "🧼", cat: "care", price: 12, clean: 60, joy: 5, desc: "Scrub-a-dub-wheek." },
   { id: "gummies", name: "Get-Well Gummies", ico: "💊", cat: "care", price: 45, cure: true, health: 50, desc: "Cures sickness. Tastes like grape." },
@@ -96,6 +101,11 @@ const WALLS = [
   { id: "w_space", name: "Outer Space", price: 300, css: "radial-gradient(#fff 1.2px,transparent 2px) 0 0/34px 34px, radial-gradient(#fff 1px,transparent 1.6px) 17px 17px/34px 34px, linear-gradient(#2d1f7a,#140c3c)" },
   { id: "w_slime", name: "Slime Drip", price: 220, css: "radial-gradient(ellipse 14px 26px at 50% 0,#7be04a 99%,transparent) 0 0/44px 60px, #e4fbd5" },
   { id: "w_candy", name: "Candy Shop", price: 260, css: "repeating-linear-gradient(45deg,#fff 0 16px,#ffd1e8 16px 32px)" },
+  { id: "w_sunset", name: "Sunset Sky", price: 240, css: "linear-gradient(#ff9fd0,#ffb98a 55%,#ffe066)" },
+  { id: "w_sea", name: "Under the Sea", price: 280, css: "radial-gradient(circle at 20% 30%,rgba(255,255,255,.5) 4px,transparent 5px) 0 0/50px 60px, radial-gradient(circle at 70% 70%,rgba(255,255,255,.4) 6px,transparent 7px) 0 0/70px 80px, linear-gradient(#8fe3ff,#3fa9d8)" },
+  { id: "w_jungle", name: "Jungle Leaves", price: 220, css: "radial-gradient(ellipse 18px 9px at 30% 30%,#5cc22a 98%,transparent) 0 0/46px 40px, radial-gradient(ellipse 14px 7px at 70% 70%,#7be04a 98%,transparent) 0 0/46px 40px, #d7f5c0" },
+  { id: "w_clouds", name: "Fluffy Clouds", price: 180, css: "radial-gradient(circle at 30% 40%,#fff 14px,transparent 15px) 0 0/90px 70px, radial-gradient(circle at 45% 40%,#fff 18px,transparent 19px) 0 0/90px 70px, #bfe8ff" },
+  { id: "w_gold", name: "Royal Gold", price: 600, css: "repeating-linear-gradient(90deg,#ffe680 0 18px,#ffd84d 18px 36px)" },
 ];
 const FLOORS = [
   { id: "f_wood", name: "Wood Floor", price: 0, css: "repeating-linear-gradient(90deg,#e0b483 0 46px,#d4a574 46px 48px)" },
@@ -103,6 +113,9 @@ const FLOORS = [
   { id: "f_check", name: "Checkerboard", price: 150, css: "conic-gradient(#fff 25%,#ffb3d9 0 50%,#fff 0 75%,#ffb3d9 0) 0 0/44px 44px" },
   { id: "f_grass", name: "Indoor Grass", price: 180, css: "repeating-linear-gradient(80deg,#7be04a 0 5px,#5cc22a 5px 8px)" },
   { id: "f_gold", name: "Gold Tiles", price: 500, css: "conic-gradient(#ffd84d 25%,#ffe680 0 50%,#ffd84d 0 75%,#ffe680 0) 0 0/40px 40px" },
+  { id: "f_carpet", name: "Comfy Carpet", price: 140, css: "radial-gradient(#e7a3c8 1.5px,transparent 2px) 0 0/8px 8px, #f2b8d6" },
+  { id: "f_ice", name: "Ice Rink", price: 260, css: "linear-gradient(115deg,rgba(255,255,255,.7) 0 10%,transparent 10% 30%,rgba(255,255,255,.5) 30% 33%,transparent 33%), #cfefff" },
+  { id: "f_sand", name: "Beach Sand", price: 160, css: "radial-gradient(#e0c080 1px,transparent 1.6px) 0 0/7px 7px, #f6dca0" },
 ];
 const DECOR = [
   { id: "d_house", name: "Hidey House", ico: "🏠", price: 90 }, { id: "d_plant", name: "Potted Plant", ico: "🪴", price: 60 },
@@ -113,15 +126,33 @@ const DECOR = [
   { id: "d_cupcake", name: "Giant Cupcake", ico: "🧁", price: 130 }, { id: "d_toilet", name: "Golden Toilet", ico: "🚽", price: 777 },
   { id: "d_tent", name: "Tiny Circus Tent", ico: "🎪", price: 240 }, { id: "d_robot", name: "Robot Butler", ico: "🤖", price: 400 },
   { id: "d_volcano", name: "Slime Volcano", ico: "🌋", price: 450 }, { id: "d_trophy", name: "Big Trophy", ico: "🏆", price: 0, special: true },
-  { id: "d_ufo", name: "Crashed UFO", ico: "🛸", price: 0, special: true }, { id: "d_unicorn", name: "Unicorn Statue", ico: "🦄", price: 0, special: true },
+  { id: "d_ufo", name: "Crashed UFO", ico: "🛸", price: 0, special: true },
+  { id: "d_books", name: "Bookshelf", ico: "📚", price: 160 }, { id: "d_piano", name: "Tiny Piano", ico: "🎹", price: 320 },
+  { id: "d_fish", name: "Fish Tank", ico: "🐠", price: 280 }, { id: "d_cactus", name: "Cactus Buddy", ico: "🌵", price: 70 },
+  { id: "d_scope", name: "Telescope", ico: "🔭", price: 260 }, { id: "d_gumball", name: "Gumball Machine", ico: "🍬", price: 190 },
+  { id: "d_chest", name: "Treasure Chest", ico: "🧰", price: 230 }, { id: "d_snowman", name: "Snowman", ico: "⛄", price: 150 },
+  { id: "d_rocket", name: "Toy Rocket", ico: "🚀", price: 350 }, { id: "d_castle", name: "Sand Castle", ico: "🏰", price: 420 },
+  { id: "d_balloons", name: "Balloon Bunch", ico: "🎈", price: 90 }, { id: "d_sunflower", name: "Sunflower Pot", ico: "🌻", price: 80 },
+  /* wall hangings (go in the two wall spots) */
+  { id: "d_window", name: "Sunny Window", ico: "🪟", price: 120, wall: true }, { id: "d_clock", name: "Cuckoo Clock", ico: "🕰️", price: 140, wall: true },
+  { id: "d_mirror", name: "Fancy Mirror", ico: "🪞", price: 160, wall: true }, { id: "d_rainbow", name: "Rainbow Sticker", ico: "🌈", price: 110, wall: true },
+  { id: "d_lights", name: "Fairy Lights", ico: "✨", price: 130, wall: true }, { id: "d_poster", name: "Guinea Poster", ico: "🖼️", price: 100, wall: true }, { id: "d_unicorn", name: "Unicorn Statue", ico: "🦄", price: 0, special: true },
 ];
 
+const RUGS = [
+  { id: "r_round", name: "Round Pink Rug", price: 90, css: "radial-gradient(circle,#ffb3d9 0 40%,#ff8fc7 41% 55%,#ffb3d9 56%)" },
+  { id: "r_rainbow", name: "Rainbow Rug", price: 180, css: "repeating-radial-gradient(circle,#ff5a5f 0 6px,#ffd43b 6px 12px,#51cf66 12px 18px,#4dabf7 18px 24px,#845ef7 24px 30px)" },
+  { id: "r_grass", name: "Grass Mat", price: 70, css: "repeating-linear-gradient(80deg,#7be04a 0 4px,#5cc22a 4px 7px)" },
+  { id: "r_check", name: "Picnic Blanket", price: 110, css: "conic-gradient(#ff5a5f 25%,#fff 0 50%,#ff5a5f 0 75%,#fff 0) 0 0/24px 24px" },
+  { id: "r_star", name: "Starry Rug", price: 220, css: "radial-gradient(#fff3a8 2px,transparent 3px) 0 0/16px 16px, #4a3aa8" },
+];
 const ITEM = {};
 OUTFITS.forEach(o => ITEM[o.id] = Object.assign({ cat: "outfit" }, o));
 ITEMS.forEach(o => ITEM[o.id] = o);
 WALLS.forEach(o => ITEM[o.id] = Object.assign({ cat: "wall", ico: "🎨" }, o));
 FLOORS.forEach(o => ITEM[o.id] = Object.assign({ cat: "floor", ico: "🟫" }, o));
 DECOR.forEach(o => ITEM[o.id] = Object.assign({ cat: "decor" }, o));
+RUGS.forEach(o => ITEM[o.id] = Object.assign({ cat: "rug", ico: "🟣" }, o));
 
 /* ---------- blind boxes ---------- */
 const RARITY = {
@@ -162,7 +193,7 @@ const WORLD_EVENTS = [
   { id: "merchant", name: "Merchant Visit", ico: "🧙‍♂️", desc: "A mysterious merchant is in Town Square with rare stuff!", w: 10 },
   { id: "squishyrain", name: "Squishy Rain", ico: "🌧️", desc: "Squishies are falling from the sky! Tap them on the Map!", w: 9 },
   { id: "parade", name: "Guinea Parade", ico: "🎺", desc: "Boops give DOUBLE fun and sometimes coins!", w: 9 },
-  { id: "lucky", name: "Lucky Lettuce", ico: "🍀", desc: "The Wishing Well and Prize Wheel are extra lucky!", w: 8 },
+  { id: "tips", name: "Big Tips Hour", ico: "💰", desc: "Your farm shops earn DOUBLE when you collect!", w: 8 },
 ];
 
 /* ---------- people ---------- */
@@ -173,7 +204,7 @@ const NPCS = {
   clover: { name: "Auntie Clover", ico: "🐰", role: "Guinea Adoption Center", lines: ["Every guinea deserves a loving home! And lots of veggies!", "Ooh, looking to grow your herd? I have just the cutie!", "If you ever need to rehome a guinea, I'll find them a lovely family."] },
   gloop: { name: "Dr. Gloop", ico: "🧑‍🔬", role: "Slime Scientist", lines: ["SCIENCE! But slimier!", "Make me a slime and I'll pay you! If it's rare... I'll pay you A LOT.", "I once made a slime so good it asked for a job."] },
   hoot: { name: "Dr. Hootsworth", ico: "🦉", role: "Guinea Vet", lines: ["Hoo's feeling poorly? Let me have a look.", "An apple a day keeps... me away. Actually, guineas need bell peppers.", "Remember: fed, clean, happy. That's the recipe for a long life."] },
-  skunk: { name: "Toot McGee", ico: "🦨", role: "Carnival of Chance", lines: ["STEP RIGHT UP! Win big! Lose small! Smell... medium.", "The odds are good! Probably! I'm a skunk, not a math teacher!", "Feeling lucky? I'm feeling LUCKY. Also gassy."] },
+  skunk: { name: "Toot McGee", ico: "🦨", role: "Fun Fair", lines: ["STEP RIGHT UP! Games of SKILL! Win coins with your brain and your thumbs!", "Practice makes perfect! Also practice makes toots. Not sure why.", "Beat your best score and the coins come rolling in!"], oldLines: ["STEP RIGHT UP! Win big! Lose small! Smell... medium.", "The odds are good! Probably! I'm a skunk, not a math teacher!", "Feeling lucky? I'm feeling LUCKY. Also gassy."] },
   pixel: { name: "Pixel", ico: "🤖", role: "Arcade Burrow", lines: ["BEEP BOOP. HIGH SCORE DETECTED? NOT YET. TRY HARDER.", "INSERT GUINEA TO CONTINUE.", "MY FAVOURITE GAME IS LETTUCE CATCH. I HAVE NO HANDS."] },
   swampy: { name: "Old Swampy", ico: "🐸", role: "Stinky Swamp", lines: ["Ribbit. The swamp gives... and the swamp takes.", "Treasure's under the mud. So are the stink bombs. Ribbit.", "Breathe through your mouth, kid. Trust me."] },
   pidge: { name: "Postmaster Pidge", ico: "🐦", role: "Post Office", lines: ["Coo! Packages arrive every hour, rain or shine or fart storm!", "If you're away, I'll hold up to 3 packages. Then I eat them. Kidding! Mostly.", "Some couriers are weird. That raccoon? Not employed here."] },
@@ -207,13 +238,13 @@ const QUESTS = [
   { k: "boop", n: 25, t: "Boop guineas 25 times", r: 40 }, { k: "pet", n: 20, t: "Pet your guineas 20 times (swipe!)", r: 40 }, { k: "feed", n: 5, t: "Feed your guineas 5 times", r: 50 },
   { k: "earn", n: 300, t: "Earn 300 coins", r: 80 }, { k: "earn", n: 800, t: "Earn 800 coins", r: 160 },
   { k: "package", n: 1, t: "Open a package", r: 40 }, { k: "slime", n: 1, t: "Make a slime", r: 50 },
-  { k: "bath", n: 2, t: "Give 2 bubble baths", r: 40 }, { k: "box", n: 1, t: "Open a blind box", r: 50 },
-  { k: "luck", n: 3, t: "Play 3 carnival games", r: 60 }, { k: "poop", n: 15, t: "Scoop 15 poops at the farm", r: 60, farm: true },
+  { k: "bath", n: 2, t: "Give 2 bubble baths", r: 40 }, { k: "squishy", n: 1, t: "Buy a squishy at the Squishy Shop", r: 50 },
+  { k: "comb", n: 3, t: "Comb out 3 messy fur tufts", r: 40 }, { k: "homegame", n: 2, t: "Play 2 games with your guinea at home", r: 60 }, { k: "collect", n: 1, t: "Collect coins from your farm shops", r: 50, farm: true }, { k: "build", n: 1, t: "Build something on your farm", r: 60, farm: true }, { k: "poop", n: 15, t: "Scoop 15 poops at the farm", r: 60, farm: true },
   { k: "harvest", n: 2, t: "Harvest 2 plants", r: 60, farm: true }, { k: "toy", n: 2, t: "Play with toys 2 times", r: 40 },
 ];
 const STREAK_GIFTS = [
-  { coins: 50 }, { coins: 75, item: ["lettuce", 3] }, { coins: 100, item: ["slimekit", 2] }, { coins: 125, item: ["box_snack", 1] },
-  { coins: 150, item: ["squeaky", 1] }, { coins: 200, item: ["box_squishy", 1] }, { coins: 400, item: ["box_mega", 1] },
+  { coins: 50 }, { coins: 75, item: ["lettuce", 3] }, { coins: 100, item: ["slimekit", 2] }, { coins: 125, item: ["haycake", 1] },
+  { coins: 150, item: ["squeaky", 1] }, { coins: 200, item: ["vitc", 1] }, { coins: 400, item: ["goldlettuce", 2] },
 ];
 
 /* ---------- achievements ---------- */
@@ -227,7 +258,7 @@ const ACHIEVEMENTS = [
   { id: "games25", n: "Gamer Guinea", d: "Play 25 mini-games", ico: "🕹️", test: () => G.stats.games >= 25, r: 200 },
   { id: "games100", n: "Arcade Legend", d: "Play 100 mini-games", ico: "👾", test: () => G.stats.games >= 100, r: 600, give: "medal" },
   { id: "pkg10", n: "Mail Magnet", d: "Open 10 packages", ico: "📬", test: () => G.stats.packages >= 10, r: 200 },
-  { id: "box10", n: "Box Addict", d: "Open 10 blind boxes", ico: "📦", test: () => G.stats.boxes >= 10, r: 250 },
+  { id: "sq8", n: "Squishy Starter", d: "Collect 8 different squishies", ico: "📦", test: () => Object.keys(G.squishies).length >= 8, r: 200 },
   { id: "sq16", n: "Squishy Fan", d: "Collect 16 different squishies", ico: "🍡", test: () => Object.keys(G.squishies).length >= 16, r: 400 },
   { id: "sq32", n: "Squishy Royalty", d: "Collect ALL 32 squishies", ico: "👑", test: () => Object.keys(G.squishies).length >= 32, r: 2000, give: "d_unicorn" },
   { id: "slime5", n: "Goo Guru", d: "Make 5 slimes", ico: "🧪", test: () => G.stats.slimes >= 5, r: 150 },
@@ -246,9 +277,17 @@ const ACHIEVEMENTS = [
   { id: "fart50", n: "Toot Connoisseur", d: "Witness 50 toots", ico: "💨", test: () => G.stats.toots >= 50, r: 150 },
   { id: "level10", n: "Big Cheese", d: "Reach keeper level 10", ico: "🧀", test: () => G.level >= 10, r: 500, give: "d_trophy" },
   { id: "streak7", n: "Loyal Keeper", d: "Visit 7 days in a row", ico: "📅", test: () => (G.daily.streak || 0) >= 7, r: 500 },
-  { id: "jackpot", n: "JACKPOT!", d: "Win 500+ coins in one go", ico: "🎰", test: () => (G.stats.bigWin || 0) >= 500, r: 300 },
+  { id: "bigwin", n: "Star Player", d: "Earn 150+ coins in one game", ico: "🌟", test: () => (G.stats.bigWin || 0) >= 150, r: 200 },
+  { id: "comb50", n: "Fluff Stylist", d: "Comb out 50 fur tufts", ico: "🪮", test: () => (G.stats.combed || 0) >= 50, r: 200 },
+  { id: "pets200", n: "Gentle Hands", d: "Pet your guineas 200 times", ico: "🤚", test: () => (G.stats.pets || 0) >= 200, r: 200 },
+  { id: "build10", n: "Builder", d: "Build 10 things on your farm", ico: "🔨", test: () => (G.stats.built || 0) >= 10, r: 400 },
+  { id: "shops3", n: "Business Guinea", d: "Own 3 money-making shops", ico: "🏪", test: () => typeof farmShops === "function" && farmShops().length >= 3, r: 500 },
+  { id: "love5", n: "Love Bug", d: "Reach Love Level 5", ico: "💞", test: () => G.love && G.love.level >= 5, r: 300 },
+  { id: "love10", n: "True Love", d: "Reach Love Level 10", ico: "💖", test: () => G.love && G.love.level >= 10, r: 1500 },
+  { id: "helpers10", n: "Boop Army", d: "Own 10 Boop Helpers", ico: "🤖", test: () => G.love && Object.values(G.love.helpers).reduce((a, b) => a + b, 0) >= 10, r: 400 },
+  { id: "home10", n: "Best Friends Forever", d: "Play 10 games with your guinea at home", ico: "💞", test: () => (G.stats.homeGames || 0) >= 10, r: 300 },
   { id: "dress", n: "Fashionista", d: "Own 10 outfits", ico: "👗", test: () => Object.keys(G.owned).filter(k => ITEM[k] && ITEM[k].cat === "outfit").length >= 10, r: 300 },
 ];
 
 /* ---------- levels unlock ---------- */
-const LEVEL_GIFTS = { 2: ["box_snack", 1], 3: ["slimekit", 3], 4: ["box_squishy", 1], 5: ["lovepotion", 1], 6: ["box_fashion", 1], 7: ["vitc", 1], 8: ["box_decor", 1], 10: ["box_mega", 1], 12: ["mango", 1], 15: ["box_mega", 2], 20: ["youth", 1] };
+const LEVEL_GIFTS = { 2: ["haycake", 1], 3: ["slimekit", 3], 4: ["squeaky", 2], 5: ["lovepotion", 1], 6: ["vitc", 1], 7: ["goldlettuce", 1], 8: ["rainbowcarrot", 2], 10: ["mango", 1], 12: ["goldlettuce", 3], 15: ["youth", 1], 20: ["youth", 1] };

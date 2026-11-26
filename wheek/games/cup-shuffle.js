@@ -1,22 +1,26 @@
-/* Where's Pudding? — Wheek World carnival cup shuffle (luck + skill).
-   Bet 5/10/25/50, pick 3, 4 or 5 cups, watch the shuffle, tap the cup hiding Pudding.
-   Pays 0.9 x number of cups: 3 cups x1.6, 4 cups x2.2, 5 cups x2.8 (skill game; trackers come out ahead). "Double or nothing" re-hides her
-   under one more cup (max 5), faster, for 2x the pot. Sometimes the Trickster Rat (announced on a sign
-   first) sneaks one extra swap inside a see-through fart cloud.
-
-   Payout math (Node sim, 1M rounds each; s = chance she tracks the cup correctly, else she guesses):
-     RTP = 0.9 * n * (s + (1 - s) / n)
-     pure guessing (s = 0)        -> 90.0% for 3, 4 and 5 cups
-     so-so tracker (s = 0.15)     -> 3 cups 117%, 4 cups 131%, 5 cups 144%
-   Pure guessing is a 90% game; tracking skill is meant to beat it (the spec calls it "mostly skill").
-   To stop a sharp-eyed player farming it, a "heat" level rises after each win (faster swaps, more of
-   them, occasional double-swaps at 5 cups) and cools after each loss, so a player who wins keeps
-   getting pushed back toward the ~50/50 zone where the edge is small.
+/* Where's Pudding? — Wheek World carnival cup shuffle (FREE skill game, no coins in).
+   Her guinea hides under a cup; watch the shuffle and tap the right cup. Every find starts a harder round
+   (more cups, more and faster swaps, the Trickster Rat's sneaky swap in a fart cloud). A wrong cup costs
+   one of 3 hearts and replays that round. Points per find = 3 + 2 x round; coins = points (cap 200),
+   paid once with api.award when the hearts run out.
+   Rough payouts: pure guessing ~10-20, a decent tracker reaching round 7-9 ~80-120, a great one 200.
 */
 (function () {
   "use strict";
-  const BETS = [5, 10, 25, 50];
-  const MULT = { 3: 1.6, 4: 2.2, 5: 2.8 }; // trimmed: good trackers still win, but slowly
+  const ID = "cup-shuffle", LIVES = 3, CAP = 200;
+  const HEART = '<svg viewBox="0 0 24 22" width="24" height="22"><path d="M12 20S2 13.5 2 7.5A5 5 0 0 1 12 5a5 5 0 0 1 10 2.5C22 13.5 12 20 12 20Z" fill="#ff5a5f" stroke="#2b1640" stroke-width="2.6" stroke-linejoin="round"/><ellipse cx="7" cy="8" rx="2" ry="1.4" fill="#fff" opacity=".7"/></svg>';
+  // difficulty per round (1-based)
+  function level(r) {
+    return {
+      n: r <= 2 ? 3 : r <= 5 ? 4 : 5,
+      swaps: Math.min(17, 4 + r),
+      d0: Math.max(300, 560 - 22 * r),
+      d1: Math.max(150, 400 - 26 * r),
+      rat: r >= 3 ? Math.min(0.6, 0.15 + 0.06 * r) : 0,
+      dbl: r >= 8 ? Math.min(0.5, 0.12 * (r - 7)) : 0,
+    };
+  }
+  const pts = (r) => 3 + 2 * r;
   const INK = "#2b1640";
   const JUNK = ["🧦", "💩", "🥕", "🐛", "🧀", "🍃", "🦴", "🧽", "🍪"];
   const WIN_LINES = ["Wheek! You found me!", "Eagle eyes! Pudding is SO proud.", "Found her! Snack time!", "Nothing gets past you!"];
@@ -65,7 +69,16 @@
   .g-cups .table:after{content:"";position:absolute;left:0;right:0;top:22px;bottom:0;background:repeating-linear-gradient(90deg,transparent 0 60px,rgba(43,22,64,.12) 60px 64px)}
   .g-cups .hud{position:absolute;left:8px;right:8px;top:8px;display:flex;justify-content:space-between;align-items:center;z-index:6;pointer-events:none}
   .g-cups .pill{background:#fff;border:3px solid var(--ink);border-radius:999px;padding:4px 12px;font-family:var(--display);font-size:18px;box-shadow:0 3px 0 var(--ink);white-space:nowrap}
-  .g-cups .pill.pot{background:var(--yellow)}
+  .g-cups .pill.rd{background:var(--yellow)}
+  .g-cups .pill.lv{display:flex;gap:1px;padding:3px 8px}
+  .g-cups .pill.lv svg{display:block;transition:transform .3s,filter .3s,opacity .3s}
+  .g-cups .pill.lv svg.gone{filter:grayscale(1);opacity:.35;transform:scale(.75) rotate(-20deg)}
+  .g-cups .bump{animation:gcu-bump .3s}
+  .g-cups .sheet .btn.go{font-size:24px}
+  .g-cups .sheet .art{display:flex;justify-content:center;align-items:flex-end;gap:4px;height:84px}
+  .g-cups .sheet .art .c{width:56px;height:62px}
+  .g-cups .sheet .art .p{width:76px;animation:gcu-wiggle 1.4s ease-in-out infinite}
+  .g-cups .tot{font-family:var(--display);font-size:24px;margin:2px 0 8px}
   .g-cups .pill.x2{background:var(--orange)}
   .g-cups .hide{display:none!important}
   .g-cups .sign{position:absolute;left:50%;top:62px;transform:translateX(-50%);z-index:5;max-width:86%;
@@ -100,6 +113,7 @@
   .g-cups .row .btn{flex:1}
   .g-cups .msg{font-family:var(--display);font-size:24px;padding:6px 0}
   .g-cups .win{font-family:var(--display);font-size:44px;color:#ffd84d;-webkit-text-stroke:2px var(--ink);text-shadow:0 4px 0 var(--ink);line-height:1}
+  @keyframes gcu-bump{0%{transform:scale(1)}40%{transform:scale(1.25)}100%{transform:scale(1)}}
   @keyframes gcu-blink{0%,100%{background:#ffd84d}50%{background:#ff8fc7}}
   @keyframes gcu-pop{0%{transform:translateX(-50%) scale(.3)}100%{transform:translateX(-50%) scale(1)}}
   @keyframes gcu-up{0%{transform:translateY(120%)}100%{transform:translateY(0)}}
@@ -112,12 +126,12 @@
   const easeOutBack = (p) => { const c = 1.7; return 1 + (c + 1) * Math.pow(p - 1, 3) + c * Math.pow(p - 1, 2); };
 
   WW.registerGame({
-    id: "cup-shuffle",
+    id: ID,
     name: "Where's Pudding?",
     icon: "🥤",
     place: "carnival",
-    kind: "luck",
-    blurb: "Watch the cups, find your guinea, win x1.6 or more!",
+    kind: "skill",
+    blurb: "Follow the cups! Each find gets trickier.",
     mount(root, api) {
       const reduced = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
       const pigName = (api.guinea && api.guinea.name) || "Pudding";
@@ -126,14 +140,14 @@
       el.innerHTML = `<style>${CSS}</style>
         <div class="tent"></div><div class="tentshade"></div><div class="lights"></div>
         <div class="banner">WHERE'S ${pigName.toUpperCase()}?</div><div class="table"></div>
-        <div class="hud"><span class="pill coins">🪙 0</span><span class="pill pot hide"></span><span class="pill x2 hide">x2!</span></div>
+        <div class="hud"><span class="pill lv">${HEART}${HEART}${HEART}</span><span class="pill rd">Round 1</span><span class="pill x2 hide">x2!</span><span class="pill sc">⭐ 0</span></div>
         <div class="sign hide"></div>
         <div class="cups"></div>
         <div class="cloud"></div>
         <div class="rat hide">${RAT_SVG}</div>`;
       root.appendChild(el);
       const $ = (s) => el.querySelector(s);
-      const coinsEl = $(".coins"), potEl = $(".pot"), signEl = $(".sign"), cupsEl = $(".cups"), cloudEl = $(".cloud"), ratEl = $(".rat"), tableEl = $(".table"), banner = $(".banner");
+      const rdEl = $(".rd"), scEl = $(".sc"), hearts = [...el.querySelectorAll(".lv svg")], signEl = $(".sign"), cupsEl = $(".cups"), cloudEl = $(".cloud"), ratEl = $(".rat"), tableEl = $(".table"), banner = $(".banner");
       let alive = true, raf = 0;
       const timers = new Set();
       const wait = (ms) => new Promise((res) => { const id = setTimeout(() => { timers.delete(id); if (alive) res(); }, ms); timers.add(id); });
@@ -141,18 +155,22 @@
       const tween = (dur, fn) => new Promise((res) => tweens.push({ t0: performance.now(), dur, fn, res }));
 
       let W = 0, H = 0, tableY = 0, cupW = 90, cupH = 100;
-      let n = 3, bet = 10, heat = 0, lv = 0, pot = 0, state = "bet";
+      let n = 3, round = 1, lives = LIVES, score = 0, found = 0, bestRound = 0, state = "intro";
       let cups = []; // {el, body, under, slot, x, y, s, z, lift, hasPig}
       let pigCup = null;
 
       // lights
       const lights = $(".lights");
-      function showCoins() { coinsEl.textContent = "🪙 " + api.coins(); $(".x2").classList.toggle("hide", !(api.multiplier > 1)); }
-      function setPot(v) { potEl.classList.toggle("hide", !v); potEl.textContent = "Pot " + v + "🪙"; }
+      function setHud() {
+        $(".x2").classList.toggle("hide", !(api.multiplier > 1));
+        rdEl.textContent = "Round " + round; scEl.textContent = "⭐ " + score;
+        hearts.forEach((h, i) => h.classList.toggle("gone", i >= lives));
+      }
+      function bump(e) { e.classList.remove("bump"); void e.offsetWidth; e.classList.add("bump"); }
 
       function layout() {
         W = root.clientWidth || 390; H = root.clientHeight || 700;
-        tableY = Math.round(Math.min(H * 0.6, H - 250));
+        tableY = Math.round(Math.min(H * 0.66, H - 210));
         tableEl.style.top = tableY - Math.round(cupW * 0.12) + "px"; tableEl.style.bottom = "0";
         lights.innerHTML = "";
         const nl = Math.floor(W / 34);
@@ -174,7 +192,9 @@
         const x = c.x - cupW / 2, y = tableY - cupH + c.y;
         c.el.style.transform = `translate(${x}px,${y}px) scale(${c.s})`;
         c.el.style.zIndex = String(Math.round(10 + c.z * 10));
-        c.body.style.transform = `translateY(${-c.lift * cupH * 0.95}px) rotate(${c.rot || 0}deg)`;
+        // never lift a cup up into the tent/sign on short screens
+        const maxLift = Math.max(0.55, (tableY - cupH - 165) / (cupH * 0.95));
+        c.body.style.transform = `translateY(${-Math.min(c.lift, maxLift) * cupH * 0.95}px) rotate(${c.rot || 0}deg)`;
         c.under.style.visibility = c.lift > 0.04 ? "visible" : "hidden"; // never let a hidden guinea peek out
       }
       function buildCups(pigSlot) {
@@ -196,29 +216,35 @@
       let sheet = null;
       function closeSheet() { if (sheet) { sheet.remove(); sheet = null; } }
       function openSheet(html) { closeSheet(); sheet = document.createElement("div"); sheet.className = "sheet"; sheet.innerHTML = html; el.appendChild(sheet); return sheet; }
-      let firstTime = true;
-      function betSheet() {
-        state = "bet"; lv = 0; pot = 0; setPot(0); showCoins();
-        if (!BETS.some((b) => b <= api.coins())) {
-          openSheet(`<h2>Out of coins!</h2><p>Come back when your piggy bank is fuller.</p><button class="btn white go leave">Leave</button>`);
-          sheet.querySelector(".leave").onclick = () => api.exit();
-          return;
-        }
-        if (bet > api.coins()) bet = BETS.filter((b) => b <= api.coins()).pop();
-        const s = openSheet(`${firstTime ? `<h2>Where's ${pigName}?</h2><p>${pigName} hides under a cup. Watch the shuffle, then tap her cup!</p>` : `<div class="msg">Play again?</div>`}
-          <div class="lbl">Bet</div><div class="chips bets"></div>
-          <div class="lbl">Cups</div><div class="chips ncups"></div>
-          <button class="btn green go"></button>`);
-        const bets = s.querySelector(".bets"), nc = s.querySelector(".ncups"), go = s.querySelector(".go");
-        const refresh = () => {
-          bets.querySelectorAll(".chip").forEach((b) => b.classList.toggle("on", +b.dataset.v === bet));
-          nc.querySelectorAll(".chip").forEach((b) => b.classList.toggle("on", +b.dataset.v === n));
-          go.textContent = `Hide ${pigName}! · ${bet}🪙`;
-        };
-        BETS.forEach((v) => { const b = document.createElement("button"); b.className = "chip"; b.dataset.v = v; b.textContent = v; b.disabled = v > api.coins(); b.onclick = () => { bet = v; api.sfx("click"); refresh(); }; bets.appendChild(b); });
-        [3, 4, 5].forEach((v) => { const b = document.createElement("button"); b.className = "chip"; b.dataset.v = v; b.innerHTML = `${v}<small>x${MULT[v]}</small>`; b.onclick = () => { n = v; api.sfx("click"); refresh(); buildCups(Math.floor(n / 2)); }; nc.appendChild(b); });
-        go.onclick = () => startRound();
-        refresh();
+      function introSheet() {
+        state = "intro";
+        const s = openSheet(`<h2>Where's ${pigName}?</h2>
+          <p>${pigName} hides under a cup. <b>Watch the shuffle</b>, then tap her cup! Each round gets trickier. 3 misses and it's over.</p>
+          <button class="btn green go">Start!</button>`);
+        s.querySelector(".go").onclick = () => startRun();
+      }
+      function startRun() {
+        api.sfx("click");
+        round = 1; lives = LIVES; score = 0; found = 0; bestRound = 0;
+        setHud();
+        startRound();
+      }
+      function endRun() {
+        state = "over";
+        const coins = Math.min(CAP, score);
+        const earned = coins > 0 ? api.award(coins, { reason: "Where's Pudding?" }) : 0;
+        const hs = api.highscore(ID, score);
+        const title = hs.isNew && score > 0 ? "New best!" : found >= 8 ? "Eagle eyes!" : found >= 4 ? "Sharp tracker!" : found ? "Good try!" : "Pfffbt!";
+        const text = found
+          ? `You found ${pigName} ${found} time${found === 1 ? "" : "s"} and reached round ${round}! Score ${score}. ${hs.isNew ? "New best! 🏆" : "Best: " + hs.best}`
+          : `The cups were too sneaky this time. ${pigName} says watch her cup like a hawk! Best: ${hs.best}`;
+        api.done({ earned, title, text, score });
+        api.sfx(found >= 4 ? "fanfare" : "lose");
+        say(found ? `${pigName} had fun! 🎉` : "Pfffbt! Sneaky cups!");
+        const s = openSheet(`<h2>${title}</h2><p>Found ${pigName} <b>${found}</b> time${found === 1 ? "" : "s"} · reached round <b>${round}</b></p>
+          <div class="tot">⭐ ${score} &nbsp; 🪙 +${earned}</div>
+          <button class="btn green go">Play again!</button>`);
+        s.querySelector(".go").onclick = () => startRun();
       }
 
       /* ---------- round ---------- */
@@ -227,40 +253,36 @@
         signEl.innerHTML = txt;
         void signEl.offsetWidth; signEl.classList.add("pop");
       }
-      async function startRound(isDouble) {
-        if (!isDouble) {
-          if (!api.spend(bet)) { api.sfx("buzz"); api.toast("Not enough coins for that bet!"); return; }
-          api.sfx("coin"); showCoins(); firstTime = false;
-          pot = 0;
-        }
-        state = "intro"; closeSheet();
+      async function startRound() {
+        const L = level(round);
+        n = L.n;
+        state = "hide"; closeSheet(); setHud();
         const pigSlot = Math.floor(Math.random() * n);
         buildCups(pigSlot);
         cups.forEach((c) => { c.lift = 1.3; render(c); });
-        // Pudding says hi
-        say(`${pigName} is hiding... watch!`);
+        say(`Round ${round}: ${n} cups!`);
         api.sfx("wheek");
-        await tween(500, (p) => { pigCup.under.style.transform = `scale(${0.4 + 0.6 * easeOutBack(p)})`; });
-        await wait(550);
+        await tween(450, (p) => { pigCup.under.style.transform = `scale(${0.4 + 0.6 * easeOutBack(p)})`; });
+        await wait(round <= 2 ? 650 : 400);
         // cups drop
-        await tween(320, (p) => { const q = p * p; cups.forEach((c) => { c.lift = 1.3 * (1 - q); render(c); }); });
+        await tween(300, (p) => { const q = p * p; cups.forEach((c) => { c.lift = 1.3 * (1 - q); render(c); }); });
         api.sfx("hit"); api.haptic(25); shake(6);
         cups.forEach((c) => squash(c));
-        await wait(450);
+        await wait(380);
         // trickster rat?
-        const rat = el._forceRat || Math.random() < 0.25;
+        const rat = el._forceRat || Math.random() < L.rat;
         if (rat) {
           say(`🐀 TRICKSTER RAT is here!<br><span style="font-size:15px;font-family:var(--body);font-weight:900">He'll sneak an extra swap in a fart cloud!</span>`, "ratsign");
           ratEl.classList.remove("hide");
           await tween(500, (p) => { ratEl.style.transform = `translate(${W - 120 * easeOutBack(p)}px,${ratY()}px) rotate(${-10 + 10 * p}deg)`; });
           api.sfx("boop");
-          await wait(1500);
+          await wait(1300);
           await tween(300, (p) => { ratEl.style.transform = `translate(${W - 120 + 140 * p}px,${ratY()}px)`; });
           ratEl.classList.add("hide");
         }
         say("Watch closely! 👀");
-        await wait(500);
-        await shuffle(rat);
+        await wait(400);
+        await shuffle(rat, L);
         if (!alive) return;
         state = "pick";
         say(`Where's ${pigName}? Tap a cup!`);
@@ -292,10 +314,10 @@
         ca.slot = sb; cb.slot = sa;
         [ca, cb].forEach((c) => { c.y = 0; c.s = 1; c.z = 0; c.rot = 0; c.x = slotX(c.slot); render(c); });
       }
-      async function shuffle(rat) {
-        const count = 7 + 2 * (n - 3) + 2 * lv + Math.min(4, heat);
+      async function shuffle(rat, L) {
+        const count = L.swaps;
         const plan = swapPlan(count);
-        const d0 = 560, d1 = Math.max(190, 330 - 30 * (n - 3) - 25 * lv - 12 * heat);
+        const d0 = L.d0, d1 = L.d1;
         const ratAt = Math.floor(count * (0.45 + Math.random() * 0.3));
         for (let i = 0; i < plan.length; i++) {
           if (!alive) return;
@@ -303,7 +325,7 @@
           if (rat && i === ratAt) await ratSwap();
           // at 5 cups and high heat, sometimes two disjoint swaps at once
           const [a, b] = plan[i];
-          if (n === 5 && heat + lv >= 3 && i > 2 && Math.random() < 0.35) {
+          if (n === 5 && i > 2 && Math.random() < L.dbl) {
             const free = [0, 1, 2, 3, 4].filter((s) => s !== a && s !== b);
             const c1 = free[Math.floor(Math.random() * free.length)];
             const rest = free.filter((s) => s !== c1);
@@ -369,50 +391,42 @@
         if (win) {
           api.sfx("wheek");
           await wait(250);
-          const prize = pot ? pot * 2 : Math.round(bet * MULT[n]);
-          pot = prize; setPot(pot);
-          heat = Math.min(6, heat + 1);
-          api.sfx(lv >= 1 ? "bigwin" : "win"); api.haptic(50);
-          api.confetti(r.left + r.width / 2, r.top + r.height / 2, lv >= 1 ? 120 : 70);
-          api.floatText(r.left + r.width / 2, r.top, "x" + (lv ? 2 : MULT[n]) + "!", "#ffd84d");
+          const got = pts(round);
+          score += got; found++; bestRound = round;
+          api.sfx(round >= 5 ? "bigwin" : "win"); api.haptic(50);
+          api.confetti(r.left + r.width / 2, r.top + r.height / 2, round >= 5 ? 110 : 60);
+          api.floatText(r.left + r.width / 2, r.top, "+" + got + "⭐", "#ffd84d");
           shake(8);
+          setHud(); bump(scEl);
           say(WIN_LINES[Math.floor(Math.random() * WIN_LINES.length)]);
-          winSheet();
+          await wait(1300);
+          if (!alive) return;
+          round++;
+          const nx = level(round);
+          if (nx.n > n) say(`Level up! Now ${nx.n} cups! 🥤`);
+          else say(`Round ${round}: faster! 💨`);
+          setHud(); bump(rdEl);
+          api.sfx("whoosh");
+          await tween(320, (p) => { cups.forEach((k) => { k.lift = Math.max(k.lift, 1.3 * p); render(k); }); });
+          await wait(600);
+          if (!alive) return;
+          startRound();
         } else {
           api.sfx("buzz");
-          await wait(500);
+          await wait(450);
           await tween(380, (p) => { pigCup.lift = easeOutBack(p) * 1.05; render(pigCup); });
-          api.sfx(Math.random() < 0.5 ? "fart" : "lose");
-          heat = Math.max(0, heat - 1);
+          api.sfx(Math.random() < 0.5 ? "fart" : "lose"); api.haptic(80);
+          api.gas(r.left + r.width / 2, r.top + r.height * 0.6);
+          lives--; setHud(); bump(hearts[Math.max(0, lives)]);
           say(LOSE_LINES[Math.floor(Math.random() * LOSE_LINES.length)]);
-          const lost = pot;
-          pot = 0; setPot(0);
-          await wait(400);
-          const s = openSheet(`<div class="msg">${lost ? `Lost the ${lost}🪙 pot! 😱` : "So close!"}</div><p>${pigName} was under the other cup.</p>
-            <div class="row"><button class="btn green again">Play again</button><button class="btn white leave">Leave</button></div>`);
-          s.querySelector(".again").onclick = () => { api.sfx("click"); betSheet(); };
-          s.querySelector(".leave").onclick = () => api.exit();
-          state = "over";
+          await wait(1500);
+          if (!alive) return;
+          if (lives <= 0) { endRun(); return; }
+          say(`${lives} heart${lives === 1 ? "" : "s"} left. Try round ${round} again!`);
+          await wait(1100);
+          if (!alive) return;
+          startRound();
         }
-      }
-      function winSheet() {
-        const nextN = Math.min(5, n + 1);
-        const canDouble = lv < 4;
-        const s = openSheet(`<div class="win">+${pot}🪙</div>
-          <div class="row" style="margin-top:10px"><button class="btn green collect">Collect ${pot}🪙</button>
-          ${canDouble ? `<button class="btn pink dbl" style="flex-direction:column;gap:2px;font-size:16px;line-height:1;padding:8px 6px">Double or nothing<small style="font-family:var(--body);font-weight:900;font-size:13px">win ${pot * 2}🪙 · ${nextN} cups</small></button>` : ""}</div>`);
-        s.querySelector(".collect").onclick = () => {
-          const got = api.award(pot, { reason: "Where's Pudding?" });
-          showCoins();
-          api.sfx("coin");
-          const r = s.querySelector(".collect").getBoundingClientRect();
-          api.floatText(r.left + r.width / 2, r.top, "+" + got, "#ffd84d");
-          if (lv >= 1) api.sfx("fanfare");
-          pot = 0; setPot(0); state = "over";
-          betSheet();
-        };
-        const d = s.querySelector(".dbl");
-        if (d) d.onclick = () => { api.sfx("drum"); lv++; n = Math.min(5, n + 1); startRound(true); };
       }
 
       /* ---------- loop ---------- */
@@ -433,8 +447,8 @@
       buildCups(1);
       cups.forEach((c) => { c.lift = 1.3; render(c); });
       say(`Find ${pigName}!`);
-      showCoins();
-      betSheet();
+      setHud();
+      introSheet();
       raf = requestAnimationFrame(frame);
       el._cups = { cups: () => cups, pig: () => pigCup, state: () => state };
 

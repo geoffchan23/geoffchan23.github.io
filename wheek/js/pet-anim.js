@@ -27,7 +27,11 @@ function paStop() { PA.live++; clearTimeout(PA.idleT); clearTimeout(PA.blinkT); 
 /* ---------- geometry ---------- */
 function roomRect() { return PA.room.getBoundingClientRect(); }
 function partPt(sel, fy = .5) { const s = petSvg(); const e = s && s.querySelector(sel); if (!e) { const r = PA.el.getBoundingClientRect(); return [r.left + r.width / 2, r.top + r.height * .6]; } const r = e.getBoundingClientRect(); return [r.left + r.width / 2, r.top + r.height * fy]; }
-const mouthVP = () => partPt(".mouth", .6);
+function mouthVP() {
+  const s = petSvg(); if (!s) return partPt(".mouth", .6);
+  for (const sel of [".mouth", ".mouth-open"]) { const e = s.querySelector(sel), r = e && e.getBoundingClientRect(); if (r && r.width > 0) return [r.left + r.width / 2, r.top + r.height * (sel === ".mouth" ? .6 : .5)]; }
+  const n = partPt(".nose", .5); return [n[0], n[1] + s.getBoundingClientRect().height * .07];
+}
 const bodyVP = () => { const r = petSvg().getBoundingClientRect(); return [r.left + r.width / 2, r.top + r.height * .62]; };
 const toRoom = ([x, y]) => { const r = roomRect(); return [x - r.left, y - r.top]; };
 function furColor() { return FUR[PA.g.genes.c] ? FUR[PA.g.genes.c].c : "#f2a65a"; }
@@ -170,7 +174,7 @@ async function zoomies() {
 }
 
 /* ---------- CARE ---------- */
-function animCare(id) {
+function animCare(id, fromVP) {
   enqueue(async () => {
     if (id === "soap") {
       const b = toRoom(bodyVP()), sv = petSvg().getBoundingClientRect();
@@ -193,9 +197,9 @@ function animCare(id) {
       for (let i = 0; i < 4; i++) { const a = i % 2 ? x1 : x0, bb = i % 2 ? x0 : x1; play("scrub"); await anim(br, [{ transform: T(a, y + (i % 2) * 14, "rotate(-20deg)") }, { transform: T(bb, y + (i % 2) * 14, "rotate(20deg)") }], 380); bits("dot", r.left + bb, r.top + y, 4, { c: [furColor(), "#fff"], v: 1.2, up: 1.5, g: -.02, s: 4, life: 60 }); }
       br.remove(); say(pick(["Ooh brushy brushy!", "I'm so FLUFFY!", "Do my butt next."])); hearts(...bodyVP(), 5);
     } else if (["gummies", "vitc", "youth"].includes(id)) {
-      const r = roomRect(), m = toRoom(mouthVP());
-      const pill = prop(itemIcon(id), [r.width - 40, 30], 40);
-      await fly(pill, [r.width - 40, 30], m, 520, 60, 360); pill.remove();
+      const r = roomRect(), m = toRoom(mouthVP()), st = fromVP ? toRoom(fromVP) : [r.width - 40, 30];
+      const pill = prop(itemIcon(id), st, 40);
+      await fly(pill, st, m, fromVP ? 260 : 520, fromVP ? 20 : 60, 360); pill.remove();
       pcls("gulp", 450); play("gulp"); await wait(450);
       const b = toRoom(bodyVP()); const ring = prop(`<span class="aura"></span>`, b, 40);
       play("sparkle"); await anim(ring, [{ transform: T(b[0], b[1], "scale(.3)"), opacity: 1 }, { transform: T(b[0], b[1], "scale(5)"), opacity: 0 }], 800, "ease-out"); ring.remove();
@@ -224,47 +228,52 @@ function startPurr() {
 function stopPurr() { if (!purrNodes) return; const { o, lfo, g, a } = purrNodes; purrNodes = null; try { g.gain.setTargetAtTime(.0001, a.currentTime, .08); o.stop(a.currentTime + .4); lfo.stop(a.currentTime + .4); } catch {} }
 function setupPetting(live) {
   const el = PA.el; if (!el) return;
-  let st = null;
+  // one entry per finger: lots of fast taps or two fingers at once can never leave a hand behind
+  const touches = new Map();
+  let petter = null;
+  const dropHand = t => { if (t && t.hand) { const h = t.hand; t.hand = null; h.style.transition = "opacity .2s"; h.style.opacity = 0; setTimeout(() => h.remove(), 220); } };
+  const stopPetting = t => {
+    if (!t || !t.petting) return;
+    t.petting = false; if (petter === t) petter = null; PA.petter = petter; PA.petting = false; stopPurr(); dropHand(t);
+    puncls("petting", "melt"); const sv = petSvg(); if (sv) sv.style.removeProperty("--tilt");
+    if (performance.now() - t.start > 1200) { floatText(...bodyVP(), pick(["♥ purrr", "*happy wheek*", "aaah ♥"]), "#e8458f", 20); play("wheek"); }
+  };
   el.addEventListener("pointerdown", e => {
     if (PA.live !== live) return;
     getAC(); wake();
     try { el.setPointerCapture(e.pointerId); } catch {}
-    st = { x: e.clientX, y: e.clientY, t: performance.now(), moved: 0, petting: false, lx: e.clientX, ly: e.clientY, acc: 0, start: 0 };
+    const old = touches.get(e.pointerId); if (old) { stopPetting(old); dropHand(old); }
+    touches.set(e.pointerId, { x: e.clientX, y: e.clientY, t: performance.now(), moved: 0, petting: false, lx: e.clientX, ly: e.clientY, acc: 0, start: 0 });
+    // tap = boop straight away, so fast tapping feels instant
+    if (!petter) boopNow(e.clientX, e.clientY);
   });
   el.addEventListener("pointermove", e => {
-    if (!st) return;
+    const st = touches.get(e.pointerId); if (!st) return;
     const d = Math.hypot(e.clientX - st.lx, e.clientY - st.ly); st.moved += d; st.lx = e.clientX; st.ly = e.clientY;
-    if (!st.petting && st.moved > 14) {
-      st.petting = true; st.start = performance.now(); PA.petting = true;
+    if (!st.petting && !petter && st.moved > 18 && performance.now() - st.t > 90) {
+      st.petting = true; petter = st; PA.petter = petter; st.start = performance.now(); PA.petting = true;
       pcls("petting"); startPurr(); say(pick(["Purrrrrr...", "Ooh yes. Right there.", "More pets. MORE.", "*happy rumble*", "You have the BEST hands."]));
+      $$(".prop.hand", PA.layer).forEach(h => h.remove());
       st.hand = prop("🤚", toRoom([e.clientX, e.clientY]), 46, "hand");
     }
-    if (st.petting) {
+    if (st.petting && st.hand) {
       const [hx, hy] = toRoom([e.clientX, e.clientY]); st.hand.style.transform = T(hx, hy, `rotate(${(e.clientX - st.x) * .2}deg)`);
       const sv = petSvg(); if (sv) { const r = sv.getBoundingClientRect(); sv.style.setProperty("--tilt", clamp((e.clientX - (r.left + r.width / 2)) / r.width * 14, -8, 8) + "deg"); }
       st.acc += d;
       if (st.acc > 45) {
         st.acc = 0; hearts(e.clientX, e.clientY - 20, 1); haptic(4);
         const g = PA.g; g.joy = clamp(g.joy + .8, 0, 100); g.pets = (g.pets || 0) + 1; G.stats.pets = (G.stats.pets || 0) + 1; questProgress("pet");
+        if (typeof lovePet === "function") lovePet(e.clientX, e.clientY);
         if (Math.random() < .08) bits("dot", e.clientX, e.clientY, 3, { c: [furColor(), "#fff"], v: 1, up: 1, g: -.02, s: 3, life: 50 });
         if (performance.now() - st.start > 3500 && !st.melted) { st.melted = true; pcls("melt"); say(pick(["*melts into a puddle of happy*", "I am... so... relaxed...", "This is my favourite thing EVER."])); play("heart"); }
         refreshStatBars(g); saveSoon(); tutMark("pet");
       }
     }
   });
-  const end = e => {
-    if (!st) return;
-    const s = st; st = null;
-    if (s.petting) {
-      PA.petting = false; stopPurr(); if (s.hand) anim(s.hand, [{ opacity: 1 }, { opacity: 0 }], 250).then(() => s.hand.remove());
-      puncls("petting", "melt"); const sv = petSvg(); if (sv) sv.style.removeProperty("--tilt");
-      if (performance.now() - s.start > 1200) { floatText(...bodyVP(), pick(["♥ purrr", "*happy wheek*", "aaah ♥"]), "#e8458f", 20); play("wheek"); }
-    } else if (e.type === "pointerup" && s.moved < 14) {
-      boop(PA.g, PA.el, { clientX: s.x, clientY: s.y });
-    }
-  };
-  el.addEventListener("pointerup", end); el.addEventListener("pointercancel", end);
+  const end = e => { PA.lastEnd = e.type + ":" + e.pointerId; const st = touches.get(e.pointerId); touches.delete(e.pointerId); if (st) { stopPetting(st); dropHand(st); } };
+  el.addEventListener("pointerup", end); el.addEventListener("pointercancel", end); el.addEventListener("lostpointercapture", end);
 }
+function boopNow(x, y) { boop(PA.g, PA.el, { clientX: x, clientY: y }); }
 
 /* ---------- IDLE LIFE ---------- */
 function runIdle(force) {

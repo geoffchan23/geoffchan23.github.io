@@ -1,34 +1,31 @@
-/* Squishy Claw — Wheek World arcade claw machine (luck).
-   15 coins per go. Aim the claw, DROP, and hope the grip holds all the way to the chute.
-
-   Payout math (checked with a Node Monte-Carlo sim, 2M goes per row):
-     hold chance = base(rarity) * (1 - 0.15 * d^2), d = how far off-centre the grab was (0 = dead centre, 1 = edge);
-     grabs further off than 0.95 radius close on air.
-     commons pay 12-20 (base .888), golden 60 (base .2325), galaxy 150 (base .093), rainbow 400 (base .0349)
-     -> every squishy is worth the same EV to aim at, so going for the rainbow is pure jackpot-chasing.
-     Typical aim (offset uniform 0-0.8 radius)        RTP ≈ 90%   (90.0-90.4% for every target)
-     Perfect aim every time                           RTP ≈ 93%
-     Random flailing (offset uniform 0-1.4 radii)     RTP ≈ 60%
+/* Squishy Claw — Wheek World arcade claw machine (FREE skill game, no coins in).
+   A round is 5 grabs. Slide the claw over a squishy, DROP, and carry it to the prize chute.
+   Grip is mostly skill: how centred the claw is over the squishy (d = offset / radius):
+     d <= 0.2  -> ~97% hold ("PERFECT GRIP")      d = 0.5 -> ~64%      d = 0.95 -> ~15%
+   rarer squishies are a little smaller and slightly heavier (-3/-6/-10% hold), plus a dramatic wobble.
+   Points: common 12, golden 30, galaxy 50, rainbow 80, +5 for a perfect grip. Coins = points (cap 200),
+   paid once with api.award at the end of the round.
 */
 (function () {
   "use strict";
-  const COST = 15;
+  const ID = "squishy-claw", GRABS = 5, AIM_TIME = 12, CAP = 200;
 
   /* ---------- squishy art (canvas) ---------- */
   const KINDS = {
     mochi:      { name: "Mochi",      body: "#fff6fa", shade: "#ffc6de", val: 12, rar: "common" },
-    cloud:      { name: "Cloud",      body: "#f6fcff", shade: "#a9dcff", val: 13, rar: "common" },
-    toast:      { name: "Toast",      body: "#ffe2a6", shade: "#f0b765", crust: "#c27a35", val: 14, rar: "common" },
-    strawberry: { name: "Strawberry", body: "#ff6b86", shade: "#e0345a", val: 16, rar: "common" },
-    peach:      { name: "Peach",      body: "#ffc49a", shade: "#ff8a86", val: 17, rar: "common" },
-    cat:        { name: "Kitty",      body: "#d6c6ff", shade: "#9f86ef", val: 18, rar: "common" },
-    frog:       { name: "Froggy",     body: "#9cec74", shade: "#4fb534", val: 20, rar: "common" },
-    golden:     { name: "Golden",     body: "#ffe680", shade: "#f2a900", val: 60, rar: "rare" },
-    galaxy:     { name: "Galaxy",     body: "#6b45c9", shade: "#241056", val: 150, rar: "galaxy" },
-    rainbow:    { name: "Rainbow",    body: "#ffffff", shade: "#ffffff", val: 400, rar: "rainbow" },
+    cloud:      { name: "Cloud",      body: "#f6fcff", shade: "#a9dcff", val: 12, rar: "common" },
+    toast:      { name: "Toast",      body: "#ffe2a6", shade: "#f0b765", crust: "#c27a35", val: 12, rar: "common" },
+    strawberry: { name: "Strawberry", body: "#ff6b86", shade: "#e0345a", val: 12, rar: "common" },
+    peach:      { name: "Peach",      body: "#ffc49a", shade: "#ff8a86", val: 12, rar: "common" },
+    cat:        { name: "Kitty",      body: "#d6c6ff", shade: "#9f86ef", val: 12, rar: "common" },
+    frog:       { name: "Froggy",     body: "#9cec74", shade: "#4fb534", val: 12, rar: "common" },
+    golden:     { name: "Golden",     body: "#ffe680", shade: "#f2a900", val: 30, rar: "rare" },
+    galaxy:     { name: "Galaxy",     body: "#6b45c9", shade: "#241056", val: 50, rar: "galaxy" },
+    rainbow:    { name: "Rainbow",    body: "#ffffff", shade: "#ffffff", val: 80, rar: "rainbow" },
   };
   const COMMONS = ["mochi", "cloud", "toast", "strawberry", "peach", "cat", "frog"];
-  const BASE_HOLD = { common: 0.888, rare: 0.2325, galaxy: 0.093, rainbow: 0.0349 };
+  const HEAVY = { common: 0, rare: 0.03, galaxy: 0.06, rainbow: 0.1 };
+  const SIZE = { common: 1, rare: 0.92, galaxy: 0.86, rainbow: 0.82 };
   const INK = "#2b1640";
 
   function blobPath(c, r) {
@@ -214,10 +211,13 @@
     return cv;
   }
 
-  /* ---------- outcome model (shared by the game and the sim note above) ---------- */
+  /* ---------- grip model: skill first, a pinch of wobble ---------- */
   function holdChance(kind, d) {
-    const base = BASE_HOLD[KINDS[kind].rar];
-    return Math.max(0, base * (1 - 0.15 * Math.min(1, d) * Math.min(1, d)));
+    const base = d <= 0.2 ? 0.97 : 0.97 - ((Math.min(0.95, d) - 0.2) / 0.75) * 0.82;
+    return Math.max(0.08, base - HEAVY[KINDS[kind].rar]);
+  }
+  function gripLabel(d) {
+    return d <= 0.2 ? ["PERFECT GRIP!", "#7be04a"] : d <= 0.45 ? ["Good grip!", "#5fd3ff"] : d <= 0.7 ? ["Wobbly grip...", "#ffd84d"] : ["Uh oh, edge grab!", "#ff8fc7"];
   }
 
   const CSS = `
@@ -226,14 +226,20 @@
   .g-claw canvas.main{position:absolute;left:0;top:0;touch-action:none}
   .g-claw .hud{position:absolute;left:8px;right:8px;top:8px;height:42px;display:flex;align-items:center;justify-content:space-between;gap:8px;pointer-events:none;z-index:3}
   .g-claw .pill{background:#fff;border:3px solid var(--ink);border-radius:999px;padding:4px 12px;font-family:var(--display);font-size:18px;box-shadow:0 3px 0 var(--ink);white-space:nowrap}
-  .g-claw .pill.cost{background:var(--yellow);font-size:15px}
+  .g-claw .pill.grabs{background:var(--yellow);display:flex;align-items:center;gap:6px}
+  .g-claw .pill.grabs i{display:inline-block;width:13px;height:13px;border-radius:50%;background:var(--pink-deep);border:2.5px solid var(--ink);transition:transform .3s,opacity .3s}
+  .g-claw .pill.grabs i.used{background:#fff;opacity:.45;transform:scale(.7)}
+  .g-claw .pill.sc{min-width:74px;text-align:center}
+  .g-claw .bump{animation:gcl-bump .3s}
+  .g-claw .msg{position:absolute;left:8px;right:8px;z-index:4;text-align:center;pointer-events:none;font-family:var(--display);line-height:1.05;color:#fff;-webkit-text-stroke:1.5px var(--ink);text-shadow:0 3px 0 var(--ink);animation:gcl-pop .4s cubic-bezier(.2,1.6,.4,1)}
+  .g-claw .msg small{display:block;font-family:var(--body);font-weight:900;font-size:15px;-webkit-text-stroke:0;color:var(--ink);text-shadow:none;margin-top:4px}
+  .g-claw .msg small span{background:#fff;border:2.5px solid var(--ink);border-radius:999px;padding:2px 10px}
   .g-claw .pill.x2{background:var(--orange);animation:gcl-bob .6s ease-in-out infinite alternate}
   .g-claw .ctrl{position:absolute;left:0;right:0;bottom:0;height:112px;display:flex;align-items:center;justify-content:center;gap:12px;padding:0 12px 10px;z-index:3}
   .g-claw .ctrl .btn{touch-action:none}
   .g-claw .arrow{width:74px;height:74px;font-size:30px;border-radius:50%;padding:0;background:var(--sky)}
   .g-claw .drop{min-width:150px;height:84px;font-size:28px;border-radius:26px;background:var(--red);color:#fff;text-shadow:0 2px 0 var(--ink);flex-direction:column;gap:0;line-height:1}
   .g-claw .drop small{font-family:var(--body);font-size:13px;font-weight:900;opacity:.95}
-  .g-claw .play{min-width:220px;height:76px;font-size:26px;background:var(--slime)}
   .g-claw .hide{display:none!important}
   .g-claw .overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:16px;z-index:5;background:rgba(43,22,64,.35)}
   .g-claw .panel{background:var(--card);border:4px solid var(--ink);border-radius:26px;box-shadow:0 8px 0 var(--ink);padding:18px 18px 20px;max-width:360px;width:100%;text-align:center;animation:gcl-pop .45s cubic-bezier(.2,1.6,.4,1)}
@@ -242,7 +248,13 @@
   .g-claw .legend{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;margin:6px 0 14px}.g-claw .legend canvas{max-width:100%;height:auto!important}.g-claw .legend span{font-size:12px;white-space:nowrap}
   .g-claw .legend div{display:flex;flex-direction:column;align-items:center;font-family:var(--display);font-size:14px;line-height:1}
   .g-claw .legend .r1{color:#c78a00}.g-claw .legend .r2{color:#6b45c9}.g-claw .legend .r3{color:var(--pink-deep)}
-  .g-claw .win h2{font-size:30px}
+  .g-claw .panel .go{font-size:24px;min-width:200px;min-height:58px}
+  .g-claw .shelf{display:flex;flex-wrap:wrap;justify-content:center;gap:2px;margin:4px 0 6px;min-height:20px}
+  .g-claw .shelf canvas{animation:gcl-jelly 1.2s ease-in-out infinite}
+  .g-claw .shelf canvas:nth-child(2n){animation-delay:-.4s}
+  .g-claw .shelf .none{font-size:40px}
+  .g-claw .tot{font-family:var(--display);font-size:22px;margin:2px 0 10px}
+  .g-claw .tot b{color:#f2a900;-webkit-text-stroke:1px var(--ink)}
   .g-claw .win .big{font-family:var(--display);font-size:46px;color:#f2a900;-webkit-text-stroke:2px var(--ink);text-shadow:0 4px 0 var(--ink);margin:2px 0 8px}
   .g-claw .win .rar{display:inline-block;font-family:var(--display);font-size:16px;padding:3px 12px;border-radius:999px;border:3px solid var(--ink);background:var(--yellow);margin-top:2px}
   .g-claw .win canvas{animation:gcl-jelly 1.2s ease-in-out infinite}
@@ -251,7 +263,8 @@
   @keyframes gcl-pop{0%{transform:scale(.3);opacity:0}100%{transform:scale(1);opacity:1}}
   @keyframes gcl-jelly{0%,100%{transform:scale(1,1)}30%{transform:scale(1.12,.9)}60%{transform:scale(.94,1.06)}}
   @keyframes gcl-bob{to{transform:translateY(-3px)}}
-  @media (prefers-reduced-motion: reduce){.g-claw .win canvas{animation:none}}
+  @keyframes gcl-bump{0%{transform:scale(1)}40%{transform:scale(1.25)}100%{transform:scale(1)}}
+  @media (prefers-reduced-motion: reduce){.g-claw .shelf canvas,.g-claw .msg,.g-claw .panel{animation:none}}
   `;
 
   const LOSE_SLIP = [
@@ -267,45 +280,61 @@
     "Missed! The squishies are giggling at you.",
   ];
 
+  const WIN_LINES = { common: "Cute catch!", rare: "RARE GOLDEN!", galaxy: "GALAXY SQUISHY!!", rainbow: "RAINBOW SQUISHY!!!" };
+
   WW.registerGame({
-    id: "squishy-claw",
+    id: ID,
     name: "Squishy Claw",
     icon: "🕹️",
     place: "arcade",
-    kind: "luck",
-    blurb: "Grab a squishy! Rainbow ones pay 400!",
+    kind: "skill",
+    blurb: "5 grabs! Centre the claw to snag rare squishies.",
     mount(root, api) {
       const reduced = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
       const el = document.createElement("div");
       el.className = "g-claw";
       el.innerHTML = `<style>${CSS}</style>
         <canvas class="main"></canvas>
-        <div class="hud"><span class="pill coins">🪙 0</span><span class="pill x2 hide">x2!</span><span class="pill cost">${COST}🪙 a go</span></div>
+        <div class="hud"><span class="pill grabs">✊ <i></i><i></i><i></i><i></i><i></i></span><span class="pill x2 hide">x2!</span><span class="pill sc">⭐ 0</span></div>
+        <div class="msg hide"></div>
         <div class="ctrl">
           <button class="btn arrow left hide" aria-label="left">◀</button>
-          <button class="btn drop hide">DROP!<small class="t">15</small></button>
+          <button class="btn drop hide">DROP!<small class="t">${AIM_TIME}</small></button>
           <button class="btn arrow right hide" aria-label="right">▶</button>
-          <button class="btn play hide">PLAY · ${COST}🪙</button>
         </div>`;
       root.appendChild(el);
       const cv = el.querySelector("canvas.main");
       const ctx = cv.getContext("2d");
       const $ = (s) => el.querySelector(s);
-      const coinsEl = $(".coins"), x2El = $(".x2"), btnL = $(".left"), btnR = $(".right"), btnDrop = $(".drop"), btnPlay = $(".play"), dropT = $(".t");
+      const x2El = $(".x2"), btnL = $(".left"), btnR = $(".right"), btnDrop = $(".drop"), dropT = $(".t"), msgEl = $(".msg"), scEl = $(".sc");
+      const pips = [...el.querySelectorAll(".grabs i")];
       const timers = new Set();
       const later = (fn, ms) => { const id = setTimeout(() => { timers.delete(id); fn(); }, ms); timers.add(id); return id; };
       let raf = 0, alive = true;
       let W = 0, H = 0, dpr = 1, L = {};
       let bodies = [];
       let state = "intro"; // intro | idle | aim | drop | close | carry | release | result
-      let aimTime = 0, wins = 0;
+      let aimTime = 0, grabsLeft = GRABS, score = 0, caught = [], perfects = 0, msgTimer = 0;
       let shake = 0, flash = 0, time = 0;
       const claw = { x: 0, vx: 0, ax: 0, target: 0, len: 40, th: 0, om: 0, open: 1, held: null, grabD: 0, willHold: true, slipAt: 0, fakeAt: -1, clock: 0, wob: 0, sad: false };
       let resultInfo = null;
       const parts = []; // sparkles
 
-      function showCoins() { coinsEl.textContent = "🪙 " + api.coins(); x2El.classList.toggle("hide", !(api.multiplier > 1)); }
-      showCoins();
+      function bump(e) { e.classList.remove("bump"); void e.offsetWidth; e.classList.add("bump"); }
+      function setHud() {
+        x2El.classList.toggle("hide", !(api.multiplier > 1));
+        scEl.textContent = "⭐ " + score;
+        pips.forEach((p, i) => p.classList.toggle("used", i >= grabsLeft));
+      }
+      setHud();
+      function say(big, small, col, size) {
+        msgEl.innerHTML = `${big}${small ? `<small><span>${small}</span></small>` : ""}`;
+        msgEl.style.color = col || "#fff"; msgEl.style.fontSize = (size || 34) + "px";
+        msgEl.style.top = (L.gy + 70) + "px";
+        msgEl.classList.remove("hide"); msgEl.style.animation = "none"; void msgEl.offsetWidth; msgEl.style.animation = "";
+        if (msgTimer) { clearTimeout(msgTimer); timers.delete(msgTimer); }
+        msgTimer = later(() => msgEl.classList.add("hide"), 1500);
+      }
 
       function layout() {
         const nw = root.clientWidth || 390, nh = root.clientHeight || 700;
@@ -340,7 +369,7 @@
         return COMMONS[(Math.random() * COMMONS.length) | 0];
       }
       function addBody(kind, x, y) {
-        const r = L.r * (0.92 + Math.random() * 0.16) * (KINDS[kind].rar === "common" ? 1 : 0.95);
+        const r = L.r * (0.92 + Math.random() * 0.16) * SIZE[KINDS[kind].rar];
         bodies.push({ kind, x, y, vx: (Math.random() - 0.5) * 40, vy: 0, r, sq: 0, sqv: 0, rot: 0, held: false, chute: false, mood: "happy", blink: Math.random() * 4 });
       }
       function fillPile() {
@@ -351,8 +380,9 @@
         const kinds = [];
         for (let i = 0; i < n; i++) kinds.push(COMMONS[i % COMMONS.length]);
         kinds[2] = "golden";
-        if (Math.random() < 0.45) kinds[5] = "galaxy";
-        if (Math.random() < 0.2) kinds[8] = "rainbow";
+        if (Math.random() < 0.5) kinds[3] = "golden";
+        if (Math.random() < 0.65) kinds[5] = "galaxy";
+        if (Math.random() < 0.4) kinds[8] = "rainbow";
         kinds.sort(() => Math.random() - 0.5);
         kinds.forEach((k, i) => addBody(k, L.pileL + L.r + Math.random() * (L.pileR - L.pileL - L.r * 2), L.floor - L.r - (i / per) * L.r * 2 - Math.random() * 20));
         for (let i = 0; i < 400; i++) physics(1 / 120); // settle
@@ -409,9 +439,8 @@
 
       /* ---------- game flow ---------- */
       function setControls(mode) {
-        [btnL, btnR, btnDrop, btnPlay].forEach((b) => b.classList.add("hide"));
+        [btnL, btnR, btnDrop].forEach((b) => b.classList.add("hide"));
         if (mode === "aim") { btnL.classList.remove("hide"); btnR.classList.remove("hide"); btnDrop.classList.remove("hide"); }
-        if (mode === "play") btnPlay.classList.remove("hide");
       }
       let overlay = null;
       function closeOverlay() { if (overlay) { overlay.remove(); overlay = null; } }
@@ -427,28 +456,36 @@
         state = "intro";
         setControls("none");
         const o = openOverlay(`<h2>Squishy Claw</h2>
-          <p>Slide the claw over a squishy, hit <b>DROP!</b> and pray it doesn't slip!</p>
+          <p>Slide the claw over a squishy and hit <b>DROP!</b> Right in the <b>middle</b> = super grip. You get <b>5 grabs</b>!</p>
           <div class="legend"></div>
-          <button class="btn green go">PLAY · ${COST}🪙</button>
-          <div class="note">Aim for the middle of a squishy for a grippier grab.</div>`);
+          <button class="btn green go">Start!</button>
+          <div class="note">Free to play! Rare squishies are smaller, so aim carefully.</div>`);
         const lg = o.querySelector(".legend");
-        [["mochi", "12-20", ""], ["frog", "12-20", ""], ["golden", "60", "r1"], ["galaxy", "150", "r2"], ["rainbow", "400!", "r3"]].forEach(([k, v, c]) => {
-          const d = document.createElement("div"); d.appendChild(squishyCanvas(k, 58)); const s = document.createElement("span"); s.className = c; s.textContent = v + "🪙"; d.appendChild(s); lg.appendChild(d);
+        [["mochi", "12", ""], ["frog", "12", ""], ["golden", "30", "r1"], ["galaxy", "50", "r2"], ["rainbow", "80", "r3"]].forEach(([k, v, c]) => {
+          const d = document.createElement("div"); d.appendChild(squishyCanvas(k, 58)); const s = document.createElement("span"); s.className = c; s.textContent = "⭐" + v; d.appendChild(s); lg.appendChild(d);
         });
-        o.querySelector(".go").onclick = () => startGo();
+        o.querySelector(".go").onclick = () => startRound();
       }
-      function startGo() {
-        if (!api.spend(COST)) { api.sfx("buzz"); api.toast("You need " + COST + " coins for a go!"); flashCostPill(); return; }
-        api.sfx("coin"); api.haptic(15);
-        showCoins(); closeOverlay();
-        state = "aim"; aimTime = 15; setControls("aim");
-        claw.open = 1; claw.held = null; resultInfo = null;
+      function startRound() {
+        api.sfx("click"); api.haptic(15);
+        closeOverlay();
+        grabsLeft = GRABS; score = 0; caught = []; perfects = 0;
+        claw.x = claw.target = L.home; claw.vx = 0; claw.th = 0; claw.om = 0;
+        fillPile(); setHud();
+        say("GO!", "5 grabs - aim for the middle!", "#7be04a", 44);
         api.sfx("whoosh");
+        nextGrab();
       }
-      function flashCostPill() { const p = $(".cost"); p.animate([{ transform: "scale(1)" }, { transform: "scale(1.3)" }, { transform: "scale(1)" }], { duration: 400 }); }
+      function nextGrab() {
+        if (!alive) return;
+        if (grabsLeft <= 0) { endRound(); return; }
+        state = "aim"; aimTime = AIM_TIME; dropT.textContent = AIM_TIME; setControls("aim");
+        claw.open = 1; claw.held = null; resultInfo = null; claw.slipped = null;
+      }
       function doDrop() {
         if (state !== "aim") return;
-        state = "drop"; setControls("none"); holdDir = 0;
+        state = "drop"; setControls("none"); holdDir = 0; dragging = false;
+        grabsLeft--; setHud(); bump(pips[grabsLeft] || pips[0]);
         api.sfx("click"); api.haptic(20);
       }
       function underClaw() {
@@ -478,6 +515,9 @@
           claw.grabD = Math.abs(best.x - claw.x) / best.r;
           claw.willHold = Math.random() < holdChance(best.kind, claw.grabD);
           best.sqv -= 4;
+          const [gl, gc] = gripLabel(claw.grabD);
+          say(gl, null, gc, 30);
+          if (claw.grabD <= 0.2) { api.sfx("sparkle"); for (let i = 0; i < 12; i++) parts.push({ x: best.x, y: best.y - best.r, vx: (Math.random() - 0.5) * 360, vy: -150 - Math.random() * 300, life: 0.8, col: ["#fff", "#ffd84d", "#7be04a"][i % 3] }); }
         } else {
           claw.held = null;
           if (contact) { contact.vx += (contact.x > claw.x ? 1 : -1) * 220; contact.sqv += 5; }
@@ -513,38 +553,50 @@
         else {
           const lines = info && info.air ? LOSE_AIR : LOSE_SLIP;
           api.sfx(Math.random() < 0.5 ? "fart" : "lose");
-          const kind = info && info.kind;
-          const o = openOverlay(`<h2 style="font-size:28px">${info && info.air ? "Whiff!" : "Oh noo!"}</h2>
-            <div class="sq"></div><p>${lines[(Math.random() * lines.length) | 0]}</p>
-            <div class="row"><button class="btn green again">AGAIN · ${COST}🪙</button><button class="btn white small rest">Rest</button></div>`, "lose");
-          if (kind) o.querySelector(".sq").appendChild(squishyCanvas(kind, 90, "sad"));
-          o.querySelector(".again").onclick = () => startGo();
-          o.querySelector(".rest").onclick = () => { closeOverlay(); state = "idle"; setControls("play"); };
+          if (!(info && info.air)) { const r = cv.getBoundingClientRect(); api.gas(r.left + W / 2, r.top + L.floor - 30); }
+          say(info && info.air ? "Whiff!" : "Oh noo!", lines[(Math.random() * lines.length) | 0], "#ff8fc7", 38);
         }
+        later(nextGrab, info && info.win ? 1400 : 1700);
       }
       function celebrate(info) {
         const k = KINDS[info.kind];
-        const got = api.award(k.val, { reason: "Squishy Claw: " + k.name });
-        wins++;
-        showCoins();
+        const perfect = info.d <= 0.2;
+        const pts = k.val + (perfect ? 5 : 0);
+        score += pts; caught.push(info.kind); if (perfect) perfects++;
+        setHud(); bump(scEl);
         const big = k.rar !== "common";
         api.sfx(k.rar === "rainbow" || k.rar === "galaxy" ? "bigwin" : big ? "fanfare" : "win");
         later(() => api.sfx("sparkle"), 350);
         api.haptic(big ? 80 : 30);
         const rect = cv.getBoundingClientRect();
-        const cx = rect.left + W / 2, cy = rect.top + H * 0.45;
-        api.confetti(cx, cy, big ? 120 : 50);
-        if (k.rar === "rainbow" || k.rar === "galaxy") { later(() => api.confetti(rect.left + W * 0.25, cy - 80, 80), 300); later(() => api.confetti(rect.left + W * 0.75, cy - 80, 80), 550); }
-        api.floatText(cx, cy - 120, "+" + got, "#f2a900");
-        shake = big ? 18 : 6; flash = big ? 1 : 0.5;
-        const label = { common: "Cute catch!", rare: "RARE GOLDEN!", galaxy: "GALAXY SQUISHY!!", rainbow: "RAINBOW JACKPOT!!!" }[k.rar];
-        const o = openOverlay(`<h2>${label}</h2><div class="sq"></div>
-          <div><span class="rar">${k.name} squishy</span></div>
-          <div class="big">+${got}🪙</div>
-          <div class="row"><button class="btn green again">AGAIN · ${COST}🪙</button><button class="btn white small rest">Admire it</button></div>`, "win");
-        o.querySelector(".sq").appendChild(squishyCanvas(info.kind, 130, "joy"));
-        o.querySelector(".again").onclick = () => startGo();
-        o.querySelector(".rest").onclick = () => { closeOverlay(); state = "idle"; setControls("play"); };
+        const cx = rect.left + L.home, cy = rect.top + L.floor - 20;
+        api.confetti(cx, cy, big ? 110 : 45);
+        if (k.rar === "rainbow" || k.rar === "galaxy") { later(() => api.confetti(rect.left + W * 0.3, rect.top + H * 0.35, 80), 300); later(() => api.confetti(rect.left + W * 0.7, rect.top + H * 0.35, 80), 550); }
+        api.floatText(cx, cy - 60, "+" + pts + "⭐", "#ffd84d");
+        shake = big ? 14 : 5; flash = big ? 1 : 0.5;
+        say(WIN_LINES[k.rar], `${k.name} squishy  +${pts}⭐${perfect ? "  (perfect +5)" : ""}`, big ? "#ffd84d" : "#fff", big ? 38 : 34);
+      }
+      function endRound() {
+        state = "over"; setControls("none");
+        const coins = Math.min(CAP, score);
+        const earned = coins > 0 ? api.award(coins, { reason: "Squishy Claw" }) : 0;
+        const hs = api.highscore(ID, score);
+        const name = (api.guinea && api.guinea.name) || "Pudding";
+        const n = caught.length;
+        const best = caught.slice().sort((a, b) => KINDS[b].val - KINDS[a].val)[0];
+        const title = hs.isNew && score > 0 ? "New best!" : n >= 4 ? "Claw master!" : n >= 2 ? "Nice grabbing!" : n === 1 ? "One squishy!" : "Claw-ful!";
+        const text = n
+          ? `You caught ${n} squish${n === 1 ? "y" : "ies"}${best && KINDS[best].rar !== "common" ? `, including a ${KINDS[best].name}` : ""}! ${name} gives them all a big hug. Score ${score}. ${hs.isNew ? "New best! 🏆" : "Best: " + hs.best}`
+          : `The claw only hugged air. ${name} says try the middle! Best: ${hs.best}`;
+        api.done({ earned, title, text, score });
+        api.sfx(n ? "fanfare" : "fart");
+        const o = openOverlay(`<h2>${title}</h2><div class="shelf"></div>
+          <div class="tot">⭐ ${score} &nbsp; 🪙 <b>+${earned}</b></div>
+          <button class="btn green go">Play again!</button>`, "win");
+        const sh = o.querySelector(".shelf");
+        if (n) caught.forEach((k) => sh.appendChild(squishyCanvas(k, n > 4 ? 54 : 64, "joy")));
+        else sh.innerHTML = `<span class="none">💨</span>`;
+        o.querySelector(".go").onclick = () => startRound();
       }
 
       /* ---------- update ---------- */
@@ -579,7 +631,7 @@
         // cable
         if (state === "drop") {
           if (!claw.dropInit) { computeDropStop(); claw.dropInit = true; api.sfx("whoosh"); }
-          claw.len += 260 * dt;
+          claw.len += 330 * dt;
           if (claw.len >= dropStop) { claw.len = dropStop; claw.dropInit = false; closeClaw(); }
         } else if (state === "close") {
           claw.closeT += dt;
@@ -606,7 +658,7 @@
           if (claw.held && claw.relT > 0.1) {
             const b = claw.held, h = clawHead();
             b.held = false; b.chute = true; b.x = L.home; b.y = h.y + b.r * 1.12; b.vy = 0; b.vx = 0; b.mood = "joy";
-            claw.held = null; resultInfo = { win: true, kind: b.kind }; api.sfx("whoosh");
+            claw.held = null; resultInfo = { win: true, kind: b.kind, d: claw.grabD }; api.sfx("whoosh");
           }
           if (claw.relT > 0.35 && !bodies.some((b) => b.chute)) {
             if (!resultInfo) resultInfo = claw.slipped ? { win: false, kind: claw.slipped.kind } : { win: false, air: true };
@@ -711,14 +763,20 @@
         // prize door
         ctx.fillStyle = "#24133a"; rr(gx + 4, fy + 9, chuteW - 8, frontH - 32, 10); ctx.fill(); ctx.stroke();
         ctx.fillStyle = "rgba(255,255,255,.18)"; ctx.fillRect(gx + 8, fy + 13, chuteW - 16, 6);
-        // coin slot + stickers
-        const sx = cx + cw - 70;
-        ctx.fillStyle = "#ffd84d"; rr(sx, fy + 10, 48, frontH - 34, 10); ctx.fill(); ctx.stroke();
-        ctx.fillStyle = INK; rr(sx + 20, fy + 16, 8, frontH - 46, 3); ctx.fill();
-        ctx.font = `14px ${getComputedStyle(el).getPropertyValue("--display") || "sans-serif"}`;
-        ctx.fillStyle = "#fff"; ctx.textAlign = "center"; ctx.lineWidth = 3;
-        const midX = (gx + chuteW + sx) / 2;
-        ctx.strokeText("★ 1 GO = 15🪙 ★", midX, fy + (frontH - 14) / 2); ctx.fillText("★ 1 GO = 15🪙 ★", midX, fy + (frontH - 14) / 2);
+        // prize shelf: the squishies caught this round
+        const sx0 = gx + chuteW + 6, sx1 = cx + cw - 18, sh = frontH - 14;
+        ctx.fillStyle = "rgba(255,255,255,.35)"; rr(sx0, fy + 7, sx1 - sx0, sh - 14, 10); ctx.fill(); ctx.lineWidth = 3; ctx.stroke();
+        if (!caught.length) {
+          ctx.font = `14px ${getComputedStyle(el).getPropertyValue("--display") || "sans-serif"}`;
+          ctx.fillStyle = "#fff"; ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.lineWidth = 3;
+          ctx.strokeText("★ PRIZES ★", (sx0 + sx1) / 2, fy + sh / 2); ctx.fillText("★ PRIZES ★", (sx0 + sx1) / 2, fy + sh / 2);
+        } else {
+          const pr = Math.min((sh - 20) / 2, (sx1 - sx0 - 8) / (caught.length * 2.1));
+          caught.forEach((k, i) => {
+            const spr = sprite(k, pr, "joy", dpr), x = sx0 + 6 + pr * 1.05 + i * pr * 2.1, y = fy + sh / 2 + Math.sin(time * 4 + i) * 1.5;
+            ctx.drawImage(spr, x - spr._half, y - spr._half, spr._half * 2, spr._half * 2);
+          });
+        }
       }
       function drawBody(b) {
         let mood = b.mood;
@@ -787,7 +845,12 @@
         ctx.save(); ctx.beginPath(); ctx.rect(L.gx, L.gy, L.gw, L.floor - L.gy); ctx.clip();
         // aim guide
         if (state === "aim") {
-          ctx.strokeStyle = "rgba(255,90,140,.55)"; ctx.setLineDash([6, 8]); ctx.lineWidth = 3;
+          // aim helper: the line turns green when the claw is right over the middle of the top squishy
+          const { best, contact } = underClaw();
+          const d = best && best === contact ? Math.abs(best.x - claw.x) / best.r : 9;
+          ctx.strokeStyle = d <= 0.2 ? "rgba(70,200,40,.9)" : d <= 0.5 ? "rgba(255,190,0,.85)" : "rgba(255,90,140,.55)";
+          ctx.setLineDash([6, 8]); ctx.lineWidth = d <= 0.2 ? 5 : 3;
+          if (d <= 0.2) { ctx.save(); ctx.globalAlpha = 0.35 + 0.25 * Math.sin(time * 10); ctx.fillStyle = "#b6ff8a"; ctx.beginPath(); ctx.ellipse(best.x, best.y, best.r * 1.15, best.r * 1.05, 0, 0, 7); ctx.fill(); ctx.restore(); }
           ctx.beginPath(); ctx.moveTo(claw.x, L.railY + 60); ctx.lineTo(claw.x, L.floor); ctx.stroke(); ctx.setLineDash([]);
         }
         for (const b of bodies) if (!b.held && !b.chute) drawBody(b);
@@ -820,7 +883,6 @@
       btnL.addEventListener("pointerdown", pressDir(-1)); btnR.addEventListener("pointerdown", pressDir(1));
       [btnL, btnR].forEach((b) => { b.addEventListener("pointerup", release); b.addEventListener("pointerleave", release); b.addEventListener("pointercancel", release); });
       btnDrop.addEventListener("click", doDrop);
-      btnPlay.addEventListener("click", startGo);
       const canvasX = (e) => e.clientX - cv.getBoundingClientRect().left;
       cv.addEventListener("pointerdown", (e) => { if (state !== "aim") return; dragging = true; claw.target = canvasX(e); try { cv.setPointerCapture(e.pointerId); } catch (_) {} });
       cv.addEventListener("pointermove", (e) => { if (dragging && state === "aim") claw.target = canvasX(e); });

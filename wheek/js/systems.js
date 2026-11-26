@@ -32,15 +32,21 @@ function migrate(s) {
   const d = newGame();
   for (const k of Object.keys(d)) if (s[k] === undefined) s[k] = d[k];
   for (const k of Object.keys(d.stats)) if (s.stats[k] === undefined) s.stats[k] = 0;
-  s.guineas.forEach(g => { if (g.lost == null) g.lost = 0; if (!g.outfit) g.outfit = {}; });
+  s.guineas.forEach(g => { if (g.lost == null) g.lost = 0; if (!g.outfit) g.outfit = {}; if (g.tuftMask == null) { g.tuftMask = 0; addTuft(g, 3); } });
+  while (s.home.decor.length < 6) s.home.decor.push(null);
   return s;
 }
 
 /* ---------- helpers ---------- */
+/* Rewards grow as you level up: +3% per keeper level, up to +60%. */
+const keeperBonus = () => 1 + Math.min(.6, ((G && G.level) || 1) - 1) * .03;
+// squishies are bought directly now (no blind boxes)
+const SQ_PRICE = { common: 60, rare: 180, legendary: 600 };
+SQUISHIES.forEach(s => { ITEM["sq_" + s.id] = { id: "sq_" + s.id, sq: s.id, cat: "squishy", name: s.name, price: SQ_PRICE[s.r], ico: "🍡", desc: { common: "A squishy for your collection.", rare: "RARE squishy! Sparkly!", legendary: "LEGENDARY squishy! Super special!" }[s.r] }; });
 const activeG = () => G.guineas.find(g => g.id === G.active) || G.guineas[0];
 const hutchList = () => G.guineas.filter(g => g.home === "hutch");
 const farmList = () => G.guineas.filter(g => g.home === "farm");
-const farmCap = () => FARM_LEVELS[G.farm.level].cap;
+const farmCap = () => G.farm.level ? (typeof farmCapacity === "function" && G.farm.grid ? farmCapacity() : 4) : 0;
 const roomIn = where => where === "hutch" ? HUTCH_CAP - hutchList().length : farmCap() - farmList().length;
 function freeHome() { if (roomIn("hutch") > 0) return "hutch"; if (roomIn("farm") > 0) return "farm"; return null; }
 const hourIdx = () => Math.floor(now() / HOUR);
@@ -50,7 +56,7 @@ const minsLeftInHour = () => Math.ceil((HOUR - (now() % HOUR)) / MIN);
 function price(it) { const p = it.price || 0; return eventOn("sale") ? Math.ceil(p * .7) : p; }
 function addItem(id, n = 1) { G.inv[id] = (G.inv[id] || 0) + n; if (G.inv[id] <= 0) delete G.inv[id]; saveSoon(); }
 const has = id => (G.inv[id] || 0) > 0;
-function own(id) { const it = ITEM[id]; if (!it) return; if (it.cat === "outfit" || it.cat === "wall" || it.cat === "floor") G.owned[id] = 1; else if (it.cat === "decor") G.owned[id] = (G.owned[id] || 0) + 1; saveSoon(); }
+function own(id) { const it = ITEM[id]; if (!it) return; if (it.cat === "outfit" || it.cat === "wall" || it.cat === "floor" || it.cat === "rug") G.owned[id] = 1; else if (it.cat === "decor") G.owned[id] = (G.owned[id] || 0) + 1; saveSoon(); }
 function noteCoat(g) { const c = coatName(g.genes); if (!G.coats[c]) { G.coats[c] = { t: tierOf(g), at: now() }; } }
 
 /* ---------- time simulation ---------- */
@@ -93,7 +99,7 @@ function dailyCheck() {
   G.daily.day = k; G.daily.spun = false; G.daily.earned = 0; G.daily.claimed = false;
   const pool = shuffle(QUESTS.filter(q => !q.farm || G.farm.level > 0));
   const picked = []; for (const q of pool) { if (picked.length >= 3) break; if (!picked.some(p => p.k === q.k)) picked.push(q); }
-  G.daily.quests = picked.map(q => ({ k: q.k, n: q.n, t: q.t, r: q.r, have: 0, done: false }));
+  G.daily.quests = picked.map(q => ({ k: q.k, n: q.n, t: q.t, r: Math.round(q.r * keeperBonus()), have: 0, done: false }));
   if (G.flags.intro) queueEvent({ type: "daily" });
 }
 function questProgress(k, n = 1) {
@@ -264,7 +270,7 @@ function openBoxRewards(boxId) {
 function packageRewards(pk) {
   const c = COURIERS.find(x => x.id === pk.courier) || COURIERS[0];
   const out = [];
-  if (pk.welcome) return [{ coins: 100 }, { item: "box_squishy", n: 1 }, { item: "haycake", n: 1 }];
+  if (pk.welcome) return [{ coins: 100 }, { squishy: rollSquishy().id }, { item: "haycake", n: 1 }];
   const roll = () => {
     const k = weighted([{ k: "coins", w: 30 }, { k: "food", w: 20 }, { k: "toy", w: 10 }, { k: "kits", w: 8 }, { k: "seeds", w: G.farm.level ? 8 : 0 }, { k: "box", w: 10 }, { k: "squishy", w: 6 }, { k: "outfit", w: 4 }, { k: "decor", w: 3 }, { k: "love", w: 3 }, { k: "gold", w: 2 }, { k: "vit", w: 3 }]).k;
     if (k === "coins") out.push({ coins: rint(25, 120) });
@@ -272,7 +278,7 @@ function packageRewards(pk) {
     else if (k === "toy") out.push({ item: pick(["paperball", "chew", "squeaky", "ballpit"]), n: 1 });
     else if (k === "kits") out.push({ item: "slimekit", n: 2 });
     else if (k === "seeds") out.push({ item: pick(["seed_lettuce", "seed_carrot", "seed_straw", "seed_melon", "magicbean"]), n: 2 });
-    else if (k === "box") out.push({ item: Math.random() < .6 ? "box_snack" : "box_squishy", n: 1 });
+    else if (k === "box") { out.push({ item: weighted(FOOD_POOL()).id, n: 1 }); out.push({ item: weighted(FOOD_POOL()).id, n: 1 }); }
     else if (k === "squishy") out.push({ squishy: rollSquishy().id });
     else if (k === "outfit") out.push({ item: rollOutfit(true), n: 1 });
     else if (k === "decor") out.push({ item: rollDecor(), n: 1 });
@@ -289,7 +295,6 @@ function packageRewards(pk) {
   if (c.extra) roll();
   if (c.bonus) out.push({ item: c.bonus, n: 1 });
   if (pk.courier === "bottle") out.push({ item: "slimekit", n: 1 });
-  if (eventOn("lucky")) roll();
   return out;
 }
 function grant(rw) {
@@ -307,8 +312,8 @@ function grant(rw) {
 }
 
 /* ---------- farm ---------- */
-function plotsCount() { return FARM_LEVELS[G.farm.level].plots; }
-function ensurePlots() { while (G.farm.plots.length < plotsCount()) G.farm.plots.push({ seed: null }); }
+function plotsCount() { return 0; }
+function ensurePlots() { }
 function plotReady(p) { return p.seed && now() >= p.ready; }
 function harvest(i) {
   const p = G.farm.plots[i]; if (!plotReady(p)) return null;

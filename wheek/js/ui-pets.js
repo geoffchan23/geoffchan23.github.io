@@ -18,7 +18,7 @@ VIEWS.pets = (el) => {
     <h2 class="sec">🏠 Hutch <span class="count">${h.length}/${HUTCH_CAP}</span></h2>
     <div class="pet-list">${h.map(petCard).join("") || `<p class="muted">Empty hutch!</p>`}</div>
     <h2 class="sec">🌾 Farm ${G.farm.level ? `<span class="count">${f.length}/${farmCap()}</span>` : ""}</h2>
-    ${G.farm.level ? `<div class="pet-list">${f.map(petCard).join("") || `<p class="muted">No guineas on the farm yet. Open a guinea and tap "Move to farm".</p>`}</div>` : `<button class="card cta" data-go="place/farm">🌾 <b>Buy the Guinea Farm</b> to keep up to 50 guineas! <span>${COIN} ${fmt(FARM_LEVELS[1].cost)}</span></button>`}
+    ${G.farm.level ? `<div class="pet-list">${f.map(petCard).join("") || `<p class="muted">No guineas on the farm yet. Open a guinea and tap "Move to farm".</p>`}</div>` : `<button class="card cta" data-go="place/farm">🌾 <b>Buy the Guinea Farm</b> to keep lots more guineas and build money-making shops! <span>${COIN} ${fmt(FARM_PRICE)}</span></button>`}
     ${G.nursery.length ? `<button class="card cta" data-go="place/adopt">🍼 <b>${G.nursery.length} babies</b> waiting in the nursery at the Adoption Center!</button>` : ""}
     <div class="row-btns"><button class="btn pink" data-go="date">💕 Guinea Date</button><button class="btn sky" data-go="place/adopt">🐹 Adopt more</button></div>
     ${G.memorial.length ? `<button class="card cta" data-go="place/meadow">🌈 Rainbow Meadow: ${G.memorial.length} loved guinea${G.memorial.length > 1 ? "s" : ""}</button>` : ""}
@@ -125,7 +125,10 @@ VIEWS.bag = (el) => {
   } else if (bagTab === "decor") {
     const dec = DECOR.filter(d => G.owned[d.id]);
     const walls = WALLS.filter(w => G.owned[w.id]), floors = FLOORS.filter(w => G.owned[w.id]);
-    body = `<h3 class="sub">Hutch slots</h3><div class="slots">${G.home.decor.map((d, i) => `<button class="slot" data-slot="${i}">${d ? ITEM[d].ico : "➕"}<small>${["Back left", "Back right", "Front left", "Front right"][i]}</small></button>`).join("")}</div>
+    const rugs = RUGS.filter(r => G.owned[r.id]);
+    body = `<p class="muted center">Tap a spot to choose what goes there. Buy more at Fluff Boutique!</p><h3 class="sub">Floor spots</h3><div class="slots">${G.home.decor.slice(0, 4).map((d, i) => `<button class="slot" data-slot="${i}">${d ? ITEM[d].ico : "➕"}<small>${["Back left", "Back right", "Front left", "Front right"][i]}</small></button>`).join("")}</div>
+      <h3 class="sub">Wall spots</h3><div class="slots two">${[4, 5].map(i => { const d = G.home.decor[i]; return `<button class="slot" data-slot="${i}">${d ? ITEM[d].ico : "➕"}<small>${i === 4 ? "Wall left" : "Wall right"}</small></button>`; }).join("")}</div>
+      <h3 class="sub">Rug</h3><div class="chips"><button class="chip ${!G.home.rug ? "on" : ""}" data-rug="">No rug</button>${rugs.map(r => `<button class="chip ${G.home.rug === r.id ? "on" : ""}" data-rug="${r.id}"><span class="sw" style="background:${r.css}"></span>${esc(r.name)}</button>`).join("")}</div>
       <h3 class="sub">Wallpaper</h3><div class="chips">${walls.map(w => `<button class="chip ${G.home.wall === w.id ? "on" : ""}" data-wall="${w.id}"><span class="sw" style="background:${w.css}"></span>${esc(w.name)}</button>`).join("")}</div>
       <h3 class="sub">Floor</h3><div class="chips">${floors.map(w => `<button class="chip ${G.home.floor === w.id ? "on" : ""}" data-floor="${w.id}"><span class="sw" style="background:${w.css}"></span>${esc(w.name)}</button>`).join("")}</div>
       <h3 class="sub">Your furniture</h3>${dec.length ? `<p class="muted">Tap a spot above to put furniture in your hutch.</p><div class="bag-grid">${dec.map(d => `<div class="bag-it"><span class="ii big">${d.ico}</span><b>${esc(d.name)}</b>${G.owned[d.id] > 1 ? `<small>x${G.owned[d.id]}</small>` : ""}</div>`).join("")}</div>` : emptyBag("No furniture yet!", "Fluff Boutique sells couches, disco balls and even a golden toilet.", "shop/boutique", "🎀 Go to Fluff Boutique")}`;
@@ -134,17 +137,19 @@ VIEWS.bag = (el) => {
     const where = { box: ["shop/boxes", "🎁 Go to Blind Box Bonanza"], junk: ["place/swamp", "🎣 Go fishing in the Swamp"] }[bagTab] || ["shop/squeakmart", "🛒 Go to Squeakmart"];
     body = ids.length ? `<p class="muted center">Tap something to use it!</p><div class="bag-grid">${ids.map(id => { const it = ITEM[id]; return `<button class="bag-it" data-item="${id}">${it.cat === "box" ? `<span class="ii big">${it.ico}</span>` : `<div class="si-art">${itemIcon(id)}</div>`}<b>${esc(it.name)}</b><small>x${G.inv[id]}</small><span class="btn small ${it.cat === "box" ? "pink" : "green"}">${bagVerb(it)}</span></button>`; }).join("")}</div>` : emptyBag("Nothing here yet!", "", where[0], where[1]);
   }
-  el.innerHTML = `<div class="pad"><h1 class="page-t">🎒 My Bag</h1><div class="tabs scroll">${tabs.map(([k, n]) => `<button class="tab ${k === bagTab ? "on" : ""}" data-btab="${k}">${n}</button>`).join("")}</div>${body}</div>`;
+  el.innerHTML = `<div class="pad"><h1 class="page-t">🎒 My Bag</h1>${undoButtonHTML()}<div class="tabs scroll">${tabs.map(([k, n]) => `<button class="tab ${k === bagTab ? "on" : ""}" data-btab="${k}">${n}</button>`).join("")}</div>${body}</div>`;
   $$("[data-btab]", el).forEach(b => b.onclick = () => { bagTab = b.dataset.btab; play("click"); render(); });
+  wireUndo(el);
   $$("[data-ward]", el).forEach(b => b.onclick = () => openWardrobe(activeG()));
   $$("[data-item]", el).forEach(b => b.onclick = () => { play("click"); itemSheet(b.dataset.item); });
   $$("[data-go]", el).forEach(b => b.onclick = () => { play("click"); go(b.dataset.go); });
   $$("[data-wall]", el).forEach(b => b.onclick = () => { G.home.wall = b.dataset.wall; play("pop"); saveSoon(); render(); });
   $$("[data-floor]", el).forEach(b => b.onclick = () => { G.home.floor = b.dataset.floor; play("pop"); saveSoon(); render(); });
+  $$("[data-rug]", el).forEach(b => b.onclick = () => { G.home.rug = b.dataset.rug || null; play("pop"); saveSoon(); render(); });
   $$("[data-slot]", el).forEach(b => b.onclick = () => {
-    const i = +b.dataset.slot; const dec = DECOR.filter(d => G.owned[d.id]);
+    const i = +b.dataset.slot; const wallSpot = i >= 4; const dec = DECOR.filter(d => G.owned[d.id] && !!d.wall === wallSpot);
     const used = id => G.home.decor.filter(x => x === id).length;
-    const m = openModal(`<h2>Pick decor</h2><div class="bag-grid">${dec.map(d => `<button class="bag-it" data-place="${d.id}" ${used(d.id) >= G.owned[d.id] && G.home.decor[i] !== d.id ? "disabled" : ""}><span class="ii big">${d.ico}</span><b>${esc(d.name)}</b></button>`).join("") || `<p class="muted">No furniture yet!</p>`}</div><div class="mrow"><button class="btn white" data-clear>Empty this spot</button></div>`);
+    const m = openModal(`<h2>Pick decor</h2><div class="bag-grid">${dec.map(d => `<button class="bag-it" data-place="${d.id}" ${used(d.id) >= G.owned[d.id] && G.home.decor[i] !== d.id ? "disabled" : ""}><span class="ii big">${d.ico}</span><b>${esc(d.name)}</b></button>`).join("") || `<p class="muted">${wallSpot ? "No wall art yet! Buy some in the Wall art tab at Fluff Boutique." : "No furniture yet!"}</p>`}</div><div class="mrow"><button class="btn white" data-clear>Empty this spot</button></div>`);
     $$("[data-place]", m.el).forEach(x => x.onclick = () => { G.home.decor[i] = x.dataset.place; play("pop"); saveSoon(); m.close(); render(); });
     $("[data-clear]", m.el).onclick = () => { G.home.decor[i] = null; saveSoon(); m.close(); render(); };
   });
@@ -360,7 +365,7 @@ PLACE_VIEWS.lab = (el) => {
   initLab($("#slimeCv", el));
   $$("[data-col]", el).forEach(b => b.onclick = () => { LAB.color = b.dataset.col; $$("[data-col]", el).forEach(x => x.classList.toggle("on", x === b)); play("squelch"); if (lab) lab.vy -= 6; });
   $$("[data-add]", el).forEach(b => b.onclick = () => { const k = b.dataset.add; LAB.adds[k] = !LAB.adds[k]; b.classList.toggle("on", LAB.adds[k]); play("pop"); if (lab) { lab.vy -= 5; if (k !== "eyes" && k !== "glow") lab.adds[k] = makeAdds()[k]; } });
-  $$("[data-unlock]", el).forEach(b => b.onclick = () => { const k = b.dataset.unlock, a = ADDINS.find(x => x[0] === k); if (!spendCoins(a[2])) return; G.owned["addin_" + k] = 1; LAB.adds[k] = true; play("unlock"); toast(`${a[1]} unlocked forever!`, "🧪"); saveSoon(); render(); });
+  $$("[data-unlock]", el).forEach(b => b.onclick = () => { const k = b.dataset.unlock, a = ADDINS.find(x => x[0] === k); if (!spendCoins(a[2])) return; G.owned["addin_" + k] = 1; recordBuy({ type: "addin", id: k, price: a[2], name: a[1] }); LAB.adds[k] = true; play("unlock"); toast(`${a[1]} unlocked forever!`, "🧪"); saveSoon(); render(); });
   const ni = $("#slimeName", el); ni.oninput = () => LAB.name = ni.value;
   $("#rename", el).onclick = () => { LAB.name = slimeName(); ni.value = LAB.name; play("giggle"); };
   $("#make", el).onclick = () => {
