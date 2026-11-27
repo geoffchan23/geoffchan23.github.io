@@ -148,6 +148,7 @@ VIEWS.bag = (el) => {
   $$("[data-wall]", el).forEach(b => b.onclick = () => { G.home.wall = b.dataset.wall; play("pop"); saveSoon(); render(); });
   $$("[data-floor]", el).forEach(b => b.onclick = () => { G.home.floor = b.dataset.floor; play("pop"); saveSoon(); render(); });
   $$("[data-rug]", el).forEach(b => b.onclick = () => { G.home.rug = b.dataset.rug || null; play("pop"); saveSoon(); render(); });
+  $$("[data-sqslot]", el).forEach(b => b.onclick = () => { play("click"); sqPicker(+b.dataset.sqslot); });
   $$("[data-slot]", el).forEach(b => b.onclick = () => {
     const i = +b.dataset.slot; const wallSpot = i >= 4; const dec = DECOR.filter(d => G.owned[d.id] && !!d.wall === wallSpot);
     const used = id => G.home.decor.filter(x => x === id).length;
@@ -214,7 +215,6 @@ VIEWS.book = (el) => {
   }
   el.innerHTML = `<div class="pad"><h1 class="page-t">📖 Wheekipedia</h1><div class="tabs scroll">${tabs.map(([k, n]) => `<button class="tab ${k === bookTab ? "on" : ""}" data-ktab="${k}">${n}</button>`).join("")}</div>${body}</div>`;
   $$("[data-ktab]", el).forEach(b => b.onclick = () => { bookTab = b.dataset.ktab; play("click"); render(); });
-  $$("[data-sqslot]", el).forEach(b => b.onclick = () => { play("click"); sqPicker(+b.dataset.sqslot); });
   $$("[data-sq]", el).forEach(b => b.onclick = () => { const s = SQUISHIES.find(x => x.id === b.dataset.sq); if (!G.squishies[s.id]) { play("buzz"); return; } play("squish"); toast(`${s.name}: ${sqFxText(s.id)} ${sqPerkText(s.id)}`, "🍡"); const svg = $("svg", b); svg.classList.remove("squash"); void svg.getBoundingClientRect(); svg.classList.add("squash"); });
   const mu = $("[data-mute]", el); if (mu) mu.onclick = () => { G.settings.muted = !G.settings.muted; saveSoon(); render(); play("click"); };
   wireCloudSettings(el);
@@ -228,7 +228,7 @@ function showHelp() {
   const m = openModal(`<h2>How to play</h2><div class="help">
     <p>🐹 <b>Look after your guineas.</b> Feed them, give baths and play. Hungry, dirty or bored guineas get sick.</p>
     <p>🪙 <b>Earn coins</b> in the Arcade, Carnival and Swamp, by making slime in the Slime Lab, scooping farm poop, and caring for hungry guineas.</p>
-    <p>📦 <b>Packages arrive every hour</b> from weird couriers. Something new happens in the world every hour too!</p>
+    <p>📦 <b>Up to 6 packages a day</b> arrive from weird couriers, about one an hour. Something new happens in the world every hour too!</p>
     <p>💕 <b>Breed guineas</b> with Guinea Dates. Babies can be rare. Mutations are SUPER rare.</p>
     <p>🌾 <b>Buy the Farm</b> to keep lots more guineas, grow veggies and get poop.</p>
     <p>🎂 Guineas grow up! Babies get bigger every hour. After 2 weeks they become Golden Oldies with silver fur, and later Wise Old Legends. They never die.</p>

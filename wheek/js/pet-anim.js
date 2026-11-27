@@ -32,7 +32,8 @@ function mouthVP() {
   for (const sel of [".mouth", ".mouth-open"]) { const e = s.querySelector(sel), r = e && e.getBoundingClientRect(); if (r && r.width > 0) return [r.left + r.width / 2, r.top + r.height * (sel === ".mouth" ? .6 : .5)]; }
   const n = partPt(".nose", .5); return [n[0], n[1] + s.getBoundingClientRect().height * .07];
 }
-const bodyVP = () => { const r = petSvg().getBoundingClientRect(); return [r.left + r.width / 2, r.top + r.height * .62]; };
+const petRect = () => { const s = petSvg(); if (s) return s.getBoundingClientRect(); const e = PA.el && PA.el.isConnected ? PA.el : null; return e ? e.getBoundingClientRect() : { left: 0, top: 0, width: 0, height: 0 }; };
+const bodyVP = () => { const r = petRect(); return [r.left + r.width / 2, r.top + r.height * .62]; };
 const toRoom = ([x, y]) => { const r = roomRect(); return [x - r.left, y - r.top]; };
 function furColor() { return FUR[PA.g.genes.c] ? FUR[PA.g.genes.c].c : "#f2a65a"; }
 
@@ -177,7 +178,7 @@ async function zoomies() {
 function animCare(id, fromVP) {
   enqueue(async () => {
     if (id === "soap") {
-      const b = toRoom(bodyVP()), sv = petSvg().getBoundingClientRect();
+      const b = toRoom(bodyVP()), sv = petRect();
       pcls("happy-eyes"); play("splash");
       const subs = Array.from({ length: 18 }, (_, i) => { const a = Math.random() * Math.PI * 2, rr = Math.random(); const x = b[0] + Math.cos(a) * sv.width * .38 * rr, y = b[1] - sv.height * .1 + Math.sin(a) * sv.height * .3 * rr; const s = prop(`<span class="suds"></span>`, [x, y], 18 + Math.random() * 26); s.style.transform = T(x, y, "scale(0)"); setTimeout(() => { s.style.transition = "transform .3s cubic-bezier(.3,1.6,.5,1)"; s.style.transform = T(x, y, "scale(1)"); }, i * 45); return { s, x, y }; });
       for (let i = 0; i < 3; i++) { await wait(300); play("scrub"); pcls("chomp", 200); }
@@ -191,7 +192,7 @@ function animCare(id, fromVP) {
       for (let i = 0; i < 3; i++) { bits("dot", ...bodyVP(), 10, { c: ["#5fd3ff", "#bfefff", "#fff"], v: 6, up: 2, s: 3, dir: i % 2 ? Math.PI : 0, spread: 1.6 }); await wait(250); }
       bits("dot", ...bodyVP(), 14, { c: ["#ffd84d", "#fff"], v: 4, up: 3, s: 2.5, g: .05 }); floatText(...bodyVP(), "✨ squeaky clean!", "#3d8bff", 20);
     } else if (id === "brush") {
-      const sv = petSvg().getBoundingClientRect(), r = roomRect();
+      const sv = petRect(), r = roomRect();
       const y = sv.top - r.top + sv.height * .45, x0 = sv.left - r.left + sv.width * .2, x1 = sv.left - r.left + sv.width * .8;
       const br = prop("🪮", [x0, y], 44, "brush"); pcls("happy-eyes");
       for (let i = 0; i < 4; i++) { const a = i % 2 ? x1 : x0, bb = i % 2 ? x0 : x1; play("scrub"); await anim(br, [{ transform: T(a, y + (i % 2) * 14, "rotate(-20deg)") }, { transform: T(bb, y + (i % 2) * 14, "rotate(20deg)") }], 380); bits("dot", r.left + bb, r.top + y, 4, { c: [furColor(), "#fff"], v: 1.2, up: 1.5, g: -.02, s: 4, life: 60 }); }
