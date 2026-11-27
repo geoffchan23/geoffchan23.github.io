@@ -4,10 +4,10 @@
 /* ---------- GUINEAS ---------- */
 function petCard(g) {
   const st = stageOf(g);
-  const status = [g.preg ? `🤰 ${dur(g.preg.due - now())}` : "", g.sick ? "🤒 Sick" : "", st === "elder" ? "👴 Golden Oldie" : "", G.active === g.id ? "⭐ Buddy" : ""].filter(Boolean).join(" · ");
+  const status = [isAsleep(g) ? "💤 Asleep" : "", g.preg ? `🤰 ${dur(g.preg.due - now())}` : "", g.sick ? "🤒 Sick" : "", isOld(st) ? "👴 " + STAGES[st] : "", G.active === g.id ? "⭐ Buddy" : ""].filter(Boolean).join(" · ");
   return `<button class="pet-card card" data-pet="${g.id}" style="--tc:${TIERS[tierOf(g)].c}">
     <div class="pc-art">${guineaSVG(g, { size: 86, mood: mood(g) })}</div>
-    <div class="pc-txt"><b>${esc(g.name)} ${sexIco(g)}</b><small>${STAGES[st]} · ${esc(coatName(g.genes))}</small>${tierChip(g)}
+    <div class="pc-txt"><b>${esc(g.name)} ${sexIco(g)}</b><small>${STAGES[st]} · ${esc(coatName(g.genes))}</small>${tierChip(g)}${powerChips(g)}
       <div class="mini-bars">${["food", "joy", "clean", "health"].map(k => `<i style="--v:${Math.round(g[k])}%;--c:${g[k] > 60 ? "#7be04a" : g[k] > 30 ? "#ffd84d" : "#ff5a5f"}"></i>`).join("")}</div>
       ${status ? `<span class="pc-status">${status}</span>` : ""}</div></button>`;
 }
@@ -33,10 +33,11 @@ VIEWS.pet = (el, id) => {
   el.innerHTML = `<div class="pad">
     <button class="back" data-back>◀ Guineas</button>
     <div class="pet-hero card" style="--tc:${TIERS[tierOf(g)].c}">
-      <button class="ph-art" id="pet">${guineaSVG(g, { size: 190, mood: mood(g), cls: "idle" })}</button>
+      <button class="ph-art ${hasPower(g, "floaty") ? "floaty" : ""}" id="pet">${auraHTML(g)}${guineaSVG(g, { size: 190, mood: mood(g), cls: "idle" })}</button>
       <h1>${esc(g.name)} ${sexIco(g)}</h1>${tierChip(g)}
       <p class="muted">${esc(coatName(g.genes))} · ${EYES[g.genes.e].n}</p>
     </div>
+    ${powerCard(g)}
     <div class="facts card">
       <div><span>Age</span><b>${STAGES[st]}, ${esc(ageLabel(g))}</b></div>
       <div><span>Personality</span><b>${esc(P.n)}</b><small>${esc(P.d)}</small></div>
@@ -46,10 +47,10 @@ VIEWS.pet = (el, id) => {
       <div><span>Boops received</span><b>${fmt(g.boops || 0)}</b></div>
       ${g.kids ? `<div><span>Babies</span><b>${g.kids}</b></div>` : ""}
       ${g.preg ? `<div><span>Expecting</span><b>🤰 ${g.preg.n > 1 ? "babies" : "a baby"} in ${dur(g.preg.due - now())}</b><small>Dad: ${esc(g.preg.dadName)}</small></div>` : ""}
-      ${st === "elder" ? `<div><span>Golden Oldie</span><b>👴 Give extra love!</b><small>Vitamin C adds days of life.</small></div>` : ""}
-      ${st === "baby" || st === "kid" ? `<div><span>Grows up</span><b>Adult in ${dur(g.born + 3 * DAY - now())}</b><small>Adults can go on dates.</small></div>` : ""}
+      ${isOld(st) ? `<div><span>${STAGES[st]}</span><b>👴 Silver fur, sleepy eyes, lots of stories</b><small>Old guineas nap more and love gentle boops. They never leave you.</small></div>` : ""}
+      ${nextStageIn(g) ? `<div><span>Next birthday stage</span><b>${STAGES[{ baby: "kid", kid: "adult", adult: "elder", elder: "ancient" }[st]]} in ${dur(nextStageIn(g))}</b><small>${st === "baby" || st === "kid" ? "Growing bigger every hour! Adults can go on dates." : "Guineas grow old but never die."}</small></div>` : ""}
     </div>
-    <div class="stats card">${bar("Food", g.food, "🍽️")}${bar("Fun", g.joy, "🎈")}${bar("Clean", g.clean, "🫧")}${bar("Health", g.health, "❤️")}</div>
+    <div class="stats card">${bar("Food", g.food, "🍽️")}${bar("Fun", g.joy, "🎈")}${bar("Clean", g.clean, "🫧")}${bar("Health", g.health, "❤️")}${bar(isAsleep(g) ? `Energy (sleeping, ${dur(sleepLeft(g))})` : "Energy", g.energy ?? 80, isAsleep(g) ? "💤" : "⚡")}</div>
     <div class="row-btns wrap">
       ${G.active !== g.id ? `<button class="btn green" data-buddy>⭐ Make my buddy</button>` : `<button class="btn green" data-go="home">🏠 Play at home</button>`}
       <button class="btn white" data-rename>✏️ Rename</button>
@@ -128,13 +129,14 @@ VIEWS.bag = (el) => {
     const rugs = RUGS.filter(r => G.owned[r.id]);
     body = `<p class="muted center">Tap a spot to choose what goes there. Buy more at Fluff Boutique!</p><h3 class="sub">Floor spots</h3><div class="slots">${G.home.decor.slice(0, 4).map((d, i) => `<button class="slot" data-slot="${i}">${d ? ITEM[d].ico : "➕"}<small>${["Back left", "Back right", "Front left", "Front right"][i]}</small></button>`).join("")}</div>
       <h3 class="sub">Wall spots</h3><div class="slots two">${[4, 5].map(i => { const d = G.home.decor[i]; return `<button class="slot" data-slot="${i}">${d ? ITEM[d].ico : "➕"}<small>${i === 4 ? "Wall left" : "Wall right"}</small></button>`; }).join("")}</div>
+      <h3 class="sub">Squishy shelf</h3><p class="muted">Squishies on your shelf give bonuses and do funny things when you squish them at home.</p><div class="slots">${sqHome().items.map((id, i) => `<button class="slot" data-sqslot="${i}">${id && sqDef(id) ? `<span class="slot-sq">${squishySVG(sqDef(id))}</span>` : "➕"}<small>Spot ${i + 1}</small></button>`).join("")}</div>
       <h3 class="sub">Rug</h3><div class="chips"><button class="chip ${!G.home.rug ? "on" : ""}" data-rug="">No rug</button>${rugs.map(r => `<button class="chip ${G.home.rug === r.id ? "on" : ""}" data-rug="${r.id}"><span class="sw" style="background:${r.css}"></span>${esc(r.name)}</button>`).join("")}</div>
       <h3 class="sub">Wallpaper</h3><div class="chips">${walls.map(w => `<button class="chip ${G.home.wall === w.id ? "on" : ""}" data-wall="${w.id}"><span class="sw" style="background:${w.css}"></span>${esc(w.name)}</button>`).join("")}</div>
       <h3 class="sub">Floor</h3><div class="chips">${floors.map(w => `<button class="chip ${G.home.floor === w.id ? "on" : ""}" data-floor="${w.id}"><span class="sw" style="background:${w.css}"></span>${esc(w.name)}</button>`).join("")}</div>
       <h3 class="sub">Your furniture</h3>${dec.length ? `<p class="muted">Tap a spot above to put furniture in your hutch.</p><div class="bag-grid">${dec.map(d => `<div class="bag-it"><span class="ii big">${d.ico}</span><b>${esc(d.name)}</b>${G.owned[d.id] > 1 ? `<small>x${G.owned[d.id]}</small>` : ""}</div>`).join("")}</div>` : emptyBag("No furniture yet!", "Fluff Boutique sells couches, disco balls and even a golden toilet.", "shop/boutique", "🎀 Go to Fluff Boutique")}`;
   } else {
     const ids = Object.keys(G.inv).filter(id => ITEM[id] && G.inv[id] > 0 && (ITEM[id].cat === bagTab || (bagTab === "farm" && (ITEM[id].cat === "seed" || ITEM[id].cat === "slime"))));
-    const where = { box: ["shop/boxes", "🎁 Go to Blind Box Bonanza"], junk: ["place/swamp", "🎣 Go fishing in the Swamp"] }[bagTab] || ["shop/squeakmart", "🛒 Go to Squeakmart"];
+    const where = { box: ["shop/boxes", "🍡 Go to the Squishy Shop"], junk: ["place/swamp", "🎣 Go fishing in the Swamp"] }[bagTab] || ["shop/squeakmart", "🛒 Go to Squeakmart"];
     body = ids.length ? `<p class="muted center">Tap something to use it!</p><div class="bag-grid">${ids.map(id => { const it = ITEM[id]; return `<button class="bag-it" data-item="${id}">${it.cat === "box" ? `<span class="ii big">${it.ico}</span>` : `<div class="si-art">${itemIcon(id)}</div>`}<b>${esc(it.name)}</b><small>x${G.inv[id]}</small><span class="btn small ${it.cat === "box" ? "pink" : "green"}">${bagVerb(it)}</span></button>`; }).join("")}</div>` : emptyBag("Nothing here yet!", "", where[0], where[1]);
   }
   el.innerHTML = `<div class="pad"><h1 class="page-t">🎒 My Bag</h1>${undoButtonHTML()}<div class="tabs scroll">${tabs.map(([k, n]) => `<button class="tab ${k === bagTab ? "on" : ""}" data-btab="${k}">${n}</button>`).join("")}</div>${body}</div>`;
@@ -189,7 +191,7 @@ VIEWS.book = (el) => {
   let body = "";
   if (bookTab === "squishies") {
     const n = Object.keys(G.squishies).length;
-    body = `<p class="center"><b>${n}/32</b> collected. Find them in Squishy Blind Boxes, packages and Squishy Rain!</p><div class="sq-grid">${SQUISHIES.map(s => { const c = G.squishies[s.id]; return `<button class="sq-cell ${c ? "" : "locked"}" data-sq="${s.id}">${squishySVG(s, !c)}<small>${c ? esc(s.name) : "???"}</small>${c > 1 ? `<span class="badge">${c}</span>` : ""}</button>`; }).join("")}</div>`;
+    body = `<p class="center"><b>${n}/32</b> collected. Buy them at the Squishy Shop (new ones every day!), or find them in packages and Squishy Rain. Tap one to see its home power.</p><div class="sq-grid">${SQUISHIES.map(s => { const c = G.squishies[s.id]; return `<button class="sq-cell ${c ? "" : "locked"}" data-sq="${s.id}">${squishySVG(s, !c)}<small>${c ? esc(s.name) : "???"}</small>${c > 1 ? `<span class="badge">${c}</span>` : ""}</button>`; }).join("")}</div>`;
   } else if (bookTab === "coats") {
     const list = Object.entries(G.coats).sort((a, b) => b[1].t - a[1].t);
     body = `<p class="center"><b>${list.length}</b> guinea types discovered. Breed and adopt to find more! There are hundreds.</p><div class="list">${list.map(([n, v]) => `<div class="row card"><span class="tier" style="--tc:${TIERS[v.t].c}">${TIERS[v.t].n}</span><b>${esc(n)}</b></div>`).join("")}</div>
@@ -212,7 +214,8 @@ VIEWS.book = (el) => {
   }
   el.innerHTML = `<div class="pad"><h1 class="page-t">📖 Wheekipedia</h1><div class="tabs scroll">${tabs.map(([k, n]) => `<button class="tab ${k === bookTab ? "on" : ""}" data-ktab="${k}">${n}</button>`).join("")}</div>${body}</div>`;
   $$("[data-ktab]", el).forEach(b => b.onclick = () => { bookTab = b.dataset.ktab; play("click"); render(); });
-  $$("[data-sq]", el).forEach(b => b.onclick = () => { const s = SQUISHIES.find(x => x.id === b.dataset.sq); if (!G.squishies[s.id]) { play("buzz"); return; } play("squish"); const svg = $("svg", b); svg.classList.remove("squash"); void svg.getBoundingClientRect(); svg.classList.add("squash"); });
+  $$("[data-sqslot]", el).forEach(b => b.onclick = () => { play("click"); sqPicker(+b.dataset.sqslot); });
+  $$("[data-sq]", el).forEach(b => b.onclick = () => { const s = SQUISHIES.find(x => x.id === b.dataset.sq); if (!G.squishies[s.id]) { play("buzz"); return; } play("squish"); toast(`${s.name}: ${sqFxText(s.id)} ${sqPerkText(s.id)}`, "🍡"); const svg = $("svg", b); svg.classList.remove("squash"); void svg.getBoundingClientRect(); svg.classList.add("squash"); });
   const mu = $("[data-mute]", el); if (mu) mu.onclick = () => { G.settings.muted = !G.settings.muted; saveSoon(); render(); play("click"); };
   wireCloudSettings(el);
   const ins = $("[data-install]", el); if (ins) ins.onclick = async () => { const p = window.__installPrompt; window.__installPrompt = null; p.prompt(); try { await p.userChoice; } catch {} render(); };
@@ -228,7 +231,8 @@ function showHelp() {
     <p>📦 <b>Packages arrive every hour</b> from weird couriers. Something new happens in the world every hour too!</p>
     <p>💕 <b>Breed guineas</b> with Guinea Dates. Babies can be rare. Mutations are SUPER rare.</p>
     <p>🌾 <b>Buy the Farm</b> to keep lots more guineas, grow veggies and get poop.</p>
-    <p>🌈 Guineas grow old. Golden Oldies get white eyebrows. When their life is done they go to Rainbow Meadow.</p>
+    <p>🎂 Guineas grow up! Babies get bigger every hour. After 2 weeks they become Golden Oldies with silver fur, and later Wise Old Legends. They never die.</p>
+    <p>😴 Tired guineas take naps, any time of day. Let them sleep to fill their energy.</p>
     <p>📋 Do daily quests and come back every day for streak gifts!</p></div><div class="mrow"><button class="btn green" data-ok>Got it!</button></div>`);
   $("[data-ok]", m.el).onclick = () => m.close();
 }
@@ -386,20 +390,27 @@ function sellSlime(i) {
   const s = G.slimes[i]; if (!s) return;
   const ord = slimeOrder();
   const base = slimeBase(s);
-  const roll = weighted(APPRAISE);
+  // the appraisal is locked to the slime, so backing out and trying again can't re-roll the price
+  if (s.ap == null || !APPRAISE[s.ap]) { s.ap = APPRAISE.indexOf(weighted(APPRAISE)); saveSoon(); }
+  const roll = APPRAISE[s.ap], seen = !!s.apSeen;
   const matches = s.color === ord.color && s.adds[ord.add];
   let mult = roll.m * (matches ? 3 : 1) * (eventOn("slimetide") ? 2 : 1);
   const value = Math.max(5, Math.round(base * mult));
-  const m = openModal(`<div class="center appraise"><p class="kicker">Dr. Gloop is examining...</p><div class="ap-jar">${jarSVG(s)}</div><h2>${esc(s.name)}</h2><div class="ap-num" id="apNum">🔍</div><p class="mtext" id="apTxt">Hmmmm... *sniff* *poke* *lick*...</p><div class="mrow" id="apDone" hidden><button class="btn green" data-ok>Sell it!</button></div></div>`, { sticky: true, noClose: true });
-  play("drum");
+  const m = openModal(`<div class="center appraise"><p class="kicker">Dr. Gloop is examining...</p><div class="ap-jar">${jarSVG(s)}</div><h2>${esc(s.name)}</h2><div class="ap-num" id="apNum">🔍</div><p class="mtext" id="apTxt">Hmmmm... *sniff* *poke* *lick*...</p><div class="mrow" id="apDone" hidden><button class="btn white" data-keep>Keep it</button><button class="btn green" data-ok>Sell it!</button></div></div>`, { onClose: () => clearInterval(iv) });
   let k = 0; const num = $("#apNum", m.el);
-  const iv = setInterval(() => { num.textContent = COIN_TXT(rint(5, base * 3)); play("tick"); if (++k > 14) { clearInterval(iv); reveal(); } }, 90);
-  function reveal() {
+  let iv = 0;
+  if (seen) reveal(true);
+  else { play("drum"); iv = setInterval(() => { num.textContent = COIN_TXT(rint(5, base * 3)); play("tick"); if (++k > 14) { clearInterval(iv); reveal(); } }, 90); }
+  function reveal(quiet) {
+    s.apSeen = 1; saveSoon();
     num.innerHTML = `${COIN}<b>${fmt(value)}</b>`; num.classList.add("pop");
+    $("#apDone", m.el).hidden = false;
+    if (quiet) { $("#apTxt", m.el).innerHTML = `<b>${esc(roll.t)}</b>${matches ? " + ORDER MATCH x3!" : ""}${eventOn("slimetide") ? " + SLIME TIDE x2!" : ""}<br><small>Dr. Gloop already checked this one.</small>`; play("pop"); return; }
     $("#apTxt", m.el).innerHTML = `<b>${esc(roll.t)}</b>${matches ? " + ORDER MATCH x3!" : ""}${eventOn("slimetide") ? " + SLIME TIDE x2!" : ""}`;
     if (roll.m >= 3 || value >= 150) { play("bigwin"); confetti(innerWidth / 2, innerHeight / 2, 140); document.body.classList.add("flash"); setTimeout(() => document.body.classList.remove("flash"), 500); } else if (roll.m >= 1.5 || matches) play("win"); else play("pop");
     $("#apDone", m.el).hidden = false;
   }
+  $("[data-keep]", m.el).onclick = () => { play("click"); m.close(); };
   $("[data-ok]", m.el).onclick = () => { G.slimes.splice(i, 1); if (value > (G.stats.bigWin || 0)) G.stats.bigWin = value; addCoins(value, [innerWidth / 2, innerHeight / 2]); addXP(5); m.close(); setTimeout(render, 250); };
 }
 const COIN_TXT = n => "🪙 " + n;

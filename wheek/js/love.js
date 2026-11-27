@@ -38,11 +38,16 @@ function lovePerBoop() {
   let v = 1; LOVE_UPS.forEach(u => { if (loveHas(u.id)) { if (u.add) v += u.add; if (u.mult) v *= u.mult; } });
   if (L().frenzy > now()) v *= 7;
   if (eventOn("parade")) v *= 2;
+  if (buddyPower("lovemagnet")) v *= 2;
+  if (buddyPower("floaty")) v *= 1.5;
+  v *= 1 + sqPerk("love");
   return v;
 }
 function loveLps() {
   const l = L(); let v = 0; LOVE_HELPERS.forEach(h => v += (l.helpers[h.id] || 0) * h.lps);
   if (loveHas("f8")) v *= 2;
+  if (anyPower("hype")) v *= 1.5;
+  v *= 1 + sqPerk("helpers");
   const g = activeG(); if (g && g.joy > 70) v *= 1.2;   // happy guineas make helpers work harder
   return v;
 }

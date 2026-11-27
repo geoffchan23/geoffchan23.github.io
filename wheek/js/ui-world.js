@@ -90,6 +90,7 @@ function placeBadge(id) {
   if (id === "adopt" && G.nursery.length) return G.nursery.length;
   if (id === "home" && G.guineas.some(g => g.home === "hutch" && g.food < 30)) return "!";
   if (id === "lab" && eventOn("slimetide")) return "x2";
+  if (STOCK_N[id] && (G.flags.stockSeen || {})[id] !== dayKey()) return "NEW";
   return "";
 }
 VIEWS.map = (el) => {
@@ -149,14 +150,15 @@ const PLACE_VIEWS = {};
 
 /* ---------- SHOPS ---------- */
 const SHOPS = {
-  squeakmart: { npc: "nibbles", tabs: [["food", "Food"], ["care", "Care"], ["toy", "Toys"], ["love", "Love"], ["farm", "Farm"], ["sell", "Sell"]] },
+  squeakmart: { npc: "nibbles", tabs: [["food", "Food"], ["care", "Care"], ["toy", "Toys"], ["love", "Love"], ["farm", "Farm"], ["sell", "♻️ Recycle"]] },
   boutique: { npc: "fernando", tabs: [["hat", "Hats"], ["face", "Face"], ["neck", "Neck"], ["back", "Back"], ["feet", "Feet"], ["salon", "Salon"], ["decor", "Furniture"], ["walldecor", "Wall art"], ["rug", "Rugs"], ["wall", "Wallpaper"], ["floor", "Floors"]] },
-  boxes: { npc: "gus", tabs: [["common", "Common"], ["rare", "Rare"], ["legendary", "Legendary"]] },
+  boxes: { npc: "gus", tabs: [["common", "Common"], ["rare", "Rare"], ["legendary", "Legendary"], ["shelf", "🏠 Shelf"]] },
   merchant: { npc: "merchant", tabs: [["rare", "Rare Wares"]] },
 };
-const MERCHANT = [["youth", 1200], ["mango", 180], ["goldlettuce", 150], ["unicornhorn", 900], ["d_ufo", 1200], ["rainbowcarrot", 80], ["halo", 280], ["vitc", 60]];
+const MERCHANT = [["youth", 450], ["mango", 180], ["goldlettuce", 150], ["unicornhorn", 900], ["d_ufo", 1200], ["rainbowcarrot", 80], ["halo", 280], ["vitc", 60]];
 const shopTab = {};
 function shopItems(shop, tab) {
+  if (STOCK_N[shop]) return todayStock(shop, tab);
   if (shop === "squeakmart") {
     if (tab === "farm") return ITEMS.filter(i => (i.cat === "farm" && i.price > 0) || i.cat === "seed" || i.cat === "slime");
     return ITEMS.filter(i => i.cat === tab && i.price > 0 && !i.rare);
@@ -174,7 +176,7 @@ function shopItems(shop, tab) {
   if (shop === "merchant") return MERCHANT.map(([id, p]) => Object.assign({}, ITEM[id], { price: p, mprice: true }));
   return [];
 }
-function hatOfHour() { const r = mulberry(hourIdx() * 17 + 3); const pool = OUTFITS.filter(o => o.price > 0); return pool[Math.floor(r() * pool.length)].id; }
+function hatOfHour() { const r = mulberry(hourIdx() * 17 + 3); const pool = todayStock("boutique", "hat"); return pool[Math.floor(r() * pool.length)].id; }
 function itemPrice(it, shop) {
   let p = it.mprice ? it.price : price(it);
   if (shop === "boutique" && it.id === hatOfHour()) p = Math.ceil(p * .75);
@@ -185,19 +187,21 @@ VIEWS.shop = (el, shop) => {
   if (shop === "merchant" && !eventOn("merchant")) { el.innerHTML = placeHeader("merchant") + `<div class="pad">${npcBox("merchant", "I have moved on to far-off lands... Look for me in another hour, maybe!")}</div>`; wireCommon(el); return; }
   const tab = shopTab[shop] || S.tabs[0][0];
   const sale = eventOn("sale");
-  const items = tab === "sell" ? [] : shopItems(shop, tab);
+  const items = tab === "sell" || tab === "shelf" ? [] : shopItems(shop, tab);
+  if (STOCK_N[shop]) { G.flags.stockSeen = G.flags.stockSeen || {}; G.flags.stockSeen[shop] = dayKey(); }
   const ownedFlat = it => ((it.cat === "outfit" || it.cat === "wall" || it.cat === "floor" || it.cat === "rug") && G.owned[it.id]) || (it.cat === "squishy" && G.squishies[it.sq]);
   el.innerHTML = placeHeader(shop === "merchant" ? "merchant" : shop, sale && shop !== "merchant" ? `<span class="sale-tag">30% OFF!</span>` : "") + `
     <div class="pad">
       ${npcBox(S.npc)}
       ${undoButtonHTML()}
+      ${stockBanner(shop)}
       ${shop === "boutique" ? `<div class="deal">⏰ Hat of the Hour: <b>${esc(ITEM[hatOfHour()].name)}</b> is 25% off for ${minsLeftInHour()} more minutes!</div>` : ""}
       ${S.tabs.length > 1 ? `<div class="tabs">${S.tabs.map(([k, n]) => `<button class="tab ${k === tab ? "on" : ""}" data-tab="${k}">${n}</button>`).join("")}</div>` : ""}
-      ${tab === "sell" ? sellList() : `<div class="shop-grid">${items.map(it => {
+      ${tab === "shelf" ? shelfShopHTML() : tab === "sell" ? recycleList() : !items.length ? `<p class="muted center sold-out">${shop === "boxes" && tab === "legendary" ? "😮 The legendary squishy is SOLD OUT today! Gus gets one in some days. Check back tomorrow!" : "Sold out today! New stock tomorrow."}</p>` : `<div class="shop-grid">${items.map(it => {
         const p = itemPrice(it, shop), owned = ownedFlat(it), cnt = it.cat === "decor" ? G.owned[it.id] || 0 : G.inv[it.id] || 0;
-        return `<div class="si-card ${owned ? "owned" : ""} ${it.cat === "box" ? "boxcard" : ""}" style="${it.color ? `--bc:${it.color}` : ""}">
+        return `<div class="si-card ${owned ? "owned" : ""} ${it._tag === "limited" ? "limited" : ""} ${it.cat === "box" ? "boxcard" : ""}" style="${it.color ? `--bc:${it.color}` : ""}">
           <div class="si-art">${it.cat === "box" ? `<span class="ii big">${it.ico}</span>` : itemIcon(it.id)}</div>
-          <b class="si-n">${esc(it.name)}</b><small class="si-d">${esc(it.desc || (it.cat === "outfit" ? "Wear it in the Wardrobe" : it.cat === "decor" ? "Place it in your Hutch" : "Decorate your Hutch"))}</small>
+          ${stockTag(it)}<b class="si-n">${esc(it.name)}</b><small class="si-d">${esc(it.cat === "squishy" ? sqFxText(it.sq) : it.desc || (it.cat === "outfit" ? "Wear it in the Wardrobe" : it.cat === "decor" ? "Place it in your Hutch" : "Decorate your Hutch"))}</small>
           ${cnt && !owned ? `<span class="si-have">You have ${cnt}</span>` : ""}
           ${owned ? `<span class="si-own">✓ Owned</span>` : `<button class="btn small ${G.coins < p ? "white" : "green"}" data-buy="${it.id}" data-p="${p}">${COIN} ${fmt(p)}${it.price !== p ? ` <s>${it.price}</s>` : ""}</button>`}
         </div>`;
@@ -207,7 +211,9 @@ VIEWS.shop = (el, shop) => {
   $$("[data-tab]", el).forEach(b => b.onclick = () => { shopTab[shop] = b.dataset.tab; play("click"); render(); });
   wireUndo(el);
   $$("[data-buy]", el).forEach(b => b.onclick = () => buy(b.dataset.buy, +b.dataset.p, b, shop));
-  $$("[data-sell]", el).forEach(b => b.onclick = () => { const id = b.dataset.sell, it = ITEM[id]; if (!has(id)) return; addItem(id, -1); addCoins(it.sell, b); play("coin"); render(); });
+  $$("[data-recycle]", el).forEach(b => b.onclick = () => doRecycle(b.dataset.recycle, b));
+  $$("[data-sqbuy]", el).forEach(b => b.onclick = () => { play("click"); buySqSlot(); });
+  $$("[data-gohome]", el).forEach(b => b.onclick = () => { play("click"); go("home"); });
 };
 function sellList() {
   const ids = Object.keys(G.inv).filter(id => ITEM[id] && ITEM[id].sell > 0);
@@ -236,9 +242,9 @@ PLACE_VIEWS.adopt = (el) => {
     <p class="room-note">🏠 Hutch: <b>${hutchList().length}/${HUTCH_CAP}</b> &nbsp; 🌾 Farm: <b>${G.farm.level ? farmList().length + "/" + farmCap() : "not bought yet"}</b></p>
     <h2 class="sec">Guineas looking for a home</h2><p class="muted">New guineas arrive in ${dur(left * MIN)}.</p>
     <div class="adopt-grid">${st.list.map((o, i) => { const sold = st.sold[o.key]; const tc = TIERS[tierOf(o)]; return `<div class="ad-card ${sold ? "sold" : ""}" style="--tc:${tc.c}">
-      <div class="ad-art">${guineaSVG({ genes: o.genes, born: now() - 4 * DAY, life: 20 }, { size: 110 })}</div>
+      <div class="ad-art">${auraHTML(o)}${guineaSVG({ genes: o.genes, born: now() - 4 * DAY }, { size: 110 })}</div>
       <b>${esc(o.name)}</b> <span style="color:${SEX[o.sex].c}">${SEX[o.sex].ico} ${SEX[o.sex].n}</span>
-      <small>${esc(coatName(o.genes))} · ${esc(PERSONALITIES[o.pers].n)}</small>${tierChip(o)}
+      <small>${esc(coatName(o.genes))} · ${esc(PERSONALITIES[o.pers].n)}</small>${tierChip(o)}${powersOf(o).length ? `<small class="ad-pw">⚡ ${powersOf(o).map(k => POWERS[k].ico + " " + esc(POWERS[k].n)).join(", ")}</small>` : ""}
       ${sold ? `<span class="si-own">Adopted! 💕</span>` : `<button class="btn small green" data-adopt="${i}">${COIN} ${fmt(o.price)}</button>`}</div>`; }).join("")}</div>
     ${G.nursery.length ? `<h2 class="sec">Nursery (${G.nursery.length})</h2><p class="muted">These babies were born when your homes were full. Make room, then bring them home!</p><div class="adopt-grid">${G.nursery.map((b, i) => `<div class="ad-card" style="--tc:${TIERS[tierOf(b)].c}"><div class="ad-art">${guineaSVG(b, { size: 100 })}</div><b>${esc(b.name)}</b> ${sexIco(b)}<small>${esc(coatName(b.genes))}</small>${tierChip(b)}<button class="btn small green" data-claim="${i}">Bring home</button><button class="btn small white" data-rehomen="${i}">Rehome +${rehomeValue(b)}</button></div>`).join("")}</div>` : ""}
     <div class="card note"><b>Need space?</b> Rehome a guinea from its page in Guineas. Auntie Clover finds them a loving family and the family sends you a thank-you gift of coins. ${G.farm.level ? "" : "Or buy the <b>Guinea Farm</b> for room for 8 more!"}</div>
@@ -268,7 +274,7 @@ PLACE_VIEWS.vet = (el) => {
     <div class="list">${G.guineas.map(g => `<div class="row card"><div class="row-art">${guineaSVG(g, { size: 56, mood: mood(g) })}</div><div class="row-txt"><b>${esc(g.name)}</b><small>${STAGES[stageOf(g)]} · ${esc(ageLabel(g))}${g.preg ? " · 🤰 expecting" : ""}</small><div class="mini-bars">${["food", "joy", "clean", "health"].map(k => `<i title="${k}" style="--v:${Math.round(g[k])}%;--c:${g[k] > 60 ? "#7be04a" : g[k] > 30 ? "#ffd84d" : "#ff5a5f"}"></i>`).join("")}</div></div></div>`).join("")}</div>
     <h2 class="sec">Pharmacy</h2>
     <div class="shop-grid">${["gummies", "vitc", "sitter", "youth"].map(id => { const it = ITEM[id], p = price(it); return `<div class="si-card"><div class="si-art">${itemIcon(id)}</div><b class="si-n">${esc(it.name)}</b><small class="si-d">${esc(it.desc)}</small>${G.inv[id] ? `<span class="si-have">You have ${G.inv[id]}</span>` : ""}<button class="btn small green" data-buy="${id}" data-p="${p}">${COIN} ${fmt(p)}</button></div>`; }).join("")}</div>
-    <div class="card note">💡 <b>Dr. Hootsworth's tip:</b> Guineas get sick when they're hungry, dirty or bored for a long time. Sick guineas lose life time! Golden Oldies (white eyebrows) are near the end of their life. Vitamin C adds days.</div>
+    <div class="card note">💡 <b>Dr. Hootsworth's tip:</b> Guineas get sick when they're hungry, dirty or bored for a long time. Sick guineas feel awful, so get them better fast! Old guineas are extra sleepy and need gentle care. The Youth Smoothie makes a guinea look younger.</div>
   </div>`;
   wireCommon(el);
   $$("[data-treat]", el).forEach(b => b.onclick = () => { const g = G.guineas.find(x => x.id === b.dataset.treat); if (!spendCoins(cost)) return; g.sick = false; g.sickNote = 0; g.health = 100; play("sparkle"); const [x, y] = centerOf(b); hearts(x, y, 10); toast(`${g.name} feels all better!`, "💚"); addXP(10); saveSoon(); render(); });
@@ -289,7 +295,7 @@ PLACE_VIEWS.meadow = (el) => {
 PLACE_VIEWS.post = (el) => {
   el.innerHTML = placeHeader("post") + `<div class="pad">
     ${npcBox("pidge")}
-    <div class="card next-pk">📬 Next delivery in <b>${minsLeftInHour()} min</b>. A new package arrives every hour (up to 3 wait for you).</div>
+    ${(() => { const left = pkgsLeftToday(); return `<div class="card next-pk">${left ? `📬 Next delivery in <b>${minsLeftInHour()} min</b>.` : `😴 The couriers are done for today. <b>New packages tomorrow!</b>`}<br><small>Up to <b>${PKG_PER_DAY} packages a day</b>, one per hour. <b>${PKG_PER_DAY - left}/${PKG_PER_DAY}</b> delivered today. Up to 3 wait for you.</small></div>`; })()}
     <h2 class="sec">Waiting for you</h2>
     ${G.packages.length ? `<div class="list">${G.packages.map((p, i) => { const c = COURIERS.find(x => x.id === p.courier) || COURIERS[0]; return `<div class="row card"><span class="big-emoji sm">${c.ico}</span><div class="row-txt"><b>${p.welcome ? "Welcome Package" : esc(c.name)}</b><small>Arrived ${dur(now() - p.at)} ago</small></div><button class="btn small pink" data-open="${i}">Open 📦</button></div>`; }).join("")}</div>` : `<p class="muted center">No packages right now. Come back next hour!</p>`}
     <h2 class="sec">Couriers of Wheek World</h2>
@@ -357,14 +363,14 @@ VIEWS.play = (el, id) => {
   const api = {
     coins: () => G.coins,
     spend(n) { if (G.coins < n) { play("buzz"); return false; } G.coins -= n; G.stats.spent += n; renderCoins(); count(); saveSoon(); return true; },
-    award(n, opts = {}) { n = Math.max(0, Math.round(n * mult * keeperBonus())); if (!n) return 0; G.coins += n; G.stats.earned += n; G.daily.earned = (G.daily.earned || 0) + n; questProgress("earn", n); if (n > (G.stats.bigWin || 0)) G.stats.bigWin = n; renderCoins(); bumpCoins(); count(); saveSoon(); checkAchievements(); return n; },
+    award(n, opts = {}) { n = Math.max(0, Math.round(n * mult * keeperBonus() * (buddyPower("champ") ? 1.25 : 1))); tireOut(activeG(), 5); if (!n) return 0; G.coins += n; G.stats.earned += n; G.daily.earned = (G.daily.earned || 0) + n; questProgress("earn", n); if (n > (G.stats.bigWin || 0)) G.stats.bigWin = n; renderCoins(); bumpCoins(); count(); saveSoon(); checkAchievements(); return n; },
     multiplier: mult,
     get muted() { return !!G.settings.muted; },
     best: gid => G.best[gid] || 0,
     sfx: play, confetti, gas, floatText, toast: m => toast(m, def.icon), haptic,
     guinea: Object.assign({ name: g.name, color: FUR[g.genes.c].c, color2: FUR[g.genes.c2].c }, { id: g.id, genes: g.genes }),
-    guineaSVG(o = {}) { return guineaSVG(g, Object.assign({ size: 100, mood: o.mood || "", flip: o.flip }, o)); },
-    randomGuineaSVG(seed, o = {}) { const r = mulberry(seed * 977 + 1); const gn = randGenes(r, { mut: .05 }); return guineaSVG({ id: "rg" + seed, genes: gn }, Object.assign({ size: 100 }, o)); },
+    guineaSVG(o = {}) { return standaloneSVG(guineaSVG(g, Object.assign({ size: 100, mood: o.mood || "", flip: o.flip }, o)), o.mood); },
+    randomGuineaSVG(seed, o = {}) { const r = mulberry(seed * 977 + 1); const gn = randGenes(r, { mut: .05 }); return standaloneSVG(guineaSVG({ id: "rg" + seed, genes: gn }, Object.assign({ size: 100 }, o)), o.mood); },
     highscore(gid, score) { const b = G.best[gid] || 0; if (score > b) { G.best[gid] = score; saveSoon(); return { best: score, isNew: true }; } return { best: b, isNew: false }; },
     done(s = {}) {
       count(); if (ended) return; ended = true;

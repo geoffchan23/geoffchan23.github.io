@@ -38,8 +38,8 @@ function intro() {
   const g = activeG();
   const slides = [
     { art: guineaSVG(g, { size: 170, mood: "happy" }), t: "Welcome to Wheek World!", p: `This is <b>${esc(g.name)}</b>, your guinea pig! ${esc(g.name)} loves boops, snacks and being VERY dramatic.` },
-    { art: `<div class="big-emoji">🗺️</div>`, t: "A whole world to explore", p: "Play games at the Arcade and Carnival to win coins. Shop for snacks, hats and blind boxes. Make slime. Visit the Stinky Swamp (hold your nose)." },
-    { art: `<div class="big-emoji">💕🌾</div>`, t: "Grow your herd", p: "Adopt more guineas, send them on dates and raise babies. Some babies are super rare! Save up to buy the <b>Guinea Farm</b>." },
+    { art: `<div class="big-emoji">🗺️</div>`, t: "A whole world to explore", p: "Play games at the Arcade and Carnival to win coins. Shop for snacks, hats and squishies (the shops get new stuff every day!). Make slime. Visit the Stinky Swamp (hold your nose)." },
+    { art: `<div class="big-emoji">💕🌾</div>`, t: "Grow your herd", p: "Adopt more guineas, send them on dates and raise babies. Some babies are super rare, and the rarest have SUPER POWERS! Save up to buy the <b>Guinea Farm</b>." },
     { art: `<div class="big-emoji">📦⏰</div>`, t: "Something new every hour", p: "A weird courier brings a package every hour, and something wild happens in the world. Come back often!" },
   ];
   let i = 0;

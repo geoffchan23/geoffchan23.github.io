@@ -65,18 +65,21 @@ function tick() {
   G.last = t;
   // sim in chunks so long absences behave
   let left = hrs;
-  while (left > 0) { const step = Math.min(left, .5); G.guineas.forEach(g => simGuinea(g, step)); left -= step; }
+  const t0 = t - hrs * HOUR;
+  while (left > 0) { const step = Math.min(left, .5); left -= step; SIM_NOW = t0 + (hrs - left) * HOUR; G.guineas.forEach(g => simGuinea(g, step)); }
+  SIM_NOW = 0;
+  sleepTick();
   // pregnancies
   for (const g of G.guineas.slice()) if (g.preg && t >= g.preg.due) giveBirth(g);
-  // natural passing
-  for (const g of G.guineas.slice()) if (lifeLeft(g) <= 0) passAway(g);
+  // guineas grow up and grow old (they never die)
+  for (const g of G.guineas) { const st = stageOf(g); if (!g.stage) g.stage = st; else if (g.stage !== st) { const from = g.stage; g.stage = st; if (G.flags.intro) queueEvent({ type: "grew", id: g.id, from, to: st }); } }
   if (!G.guineas.length) grandmaRescue();
   if (!G.guineas.find(g => g.id === G.active)) G.active = G.guineas[0].id;
-  // packages: one per new hour, max 3 waiting
+  // packages: one per new hour, max 3 waiting, max PKG_PER_DAY a day
   const h = hourIdx();
   if (h > G.lastPkgHour) {
     const n = Math.min(3, h - G.lastPkgHour);
-    for (let i = 0; i < n && G.packages.length < 3; i++) G.packages.push({ id: uid(), courier: weighted(COURIERS).id, at: t });
+    for (let i = 0; i < n && G.packages.length < 3 && pkgsLeftToday() > 0; i++) { G.packages.push({ id: uid(), courier: weighted(COURIERS).id, at: t }); G.pkgDay.n++; }
     G.lastPkgHour = h;
     if (n) refreshBadges();
   }
@@ -84,12 +87,12 @@ function tick() {
   if (G.eventSeen !== h) { G.eventSeen = h; if (G.flags.intro) queueEvent({ type: "worldEvent" }); }
   // daily
   dailyCheck();
-  // elder warnings (once)
-  for (const g of G.guineas) if (stageOf(g) === "elder" && !g.elderNote) { g.elderNote = 1; queueEvent({ type: "elder", id: g.id }); }
   // sickness note
   for (const g of G.guineas) if (g.sick && !g.sickNote) { g.sickNote = 1; queueEvent({ type: "sick", id: g.id }); }
   saveSoon();
 }
+const PKG_PER_DAY = 6;
+function pkgsLeftToday() { const k = dayKey(); if (!G.pkgDay || G.pkgDay.d !== k) G.pkgDay = { d: k, n: 0 }; return Math.max(0, PKG_PER_DAY - G.pkgDay.n); }
 const dayKey = (t = now()) => { const d = new Date(t); return d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate(); };
 function dailyCheck() {
   const k = dayKey();
@@ -126,7 +129,9 @@ function useOn(g, id) {
   if (it.cat === "food") {
     if (g.food >= 98 && !it.joy) return { full: true };
     const wasHungry = g.food < 70;
-    g.food = clamp(g.food + (it.food || 0), 0, 100); g.joy = clamp(g.joy + (it.joy || 0) + (g.fav === id ? 15 : 0), 0, 100);
+    const magic = hasPower(g, "snackmagic");
+    g.food = clamp(g.food + (it.food || 0) * (magic ? 2 : 1), 0, 100);
+    if (magic && Math.random() < .25) { res.refund = true; addItem(id, 1); setTimeout(() => toast(`Snack Magic! The ${it.name} came back!`, "🍓"), 900); } g.joy = clamp(g.joy + (it.joy || 0) + (g.fav === id ? 15 : 0), 0, 100);
     if (it.health) g.health = clamp(g.health + it.health, 0, 100);
     if (it.clean) g.clean = clamp(g.clean + it.clean, 0, 100);
     if (it.xp) addXP(it.xp);
@@ -139,12 +144,13 @@ function useOn(g, id) {
     if (it.clean) { g.clean = clamp(g.clean + it.clean, 0, 100); questProgress("bath"); if (g.clean < 60) res.care = 3; }
     if (it.health) g.health = clamp(g.health + it.health, 0, 100);
     if (it.health && g.health > 40) g.sick = false;
-    if (it.life) { g.vit = (g.vit || 0); if (it.id === "vitc" && g.vit >= 5) return { maxed: true }; if (it.id === "vitc") g.vit++; g.life += it.life; res.text = `+${it.life} day${it.life > 1 ? "s" : ""} of life!`; }
+    if (it.younger) { if (ageMs(g) <= AGE_ADULT + DAY) return { pointless: true }; g.born = Math.min(now() - AGE_ADULT, g.born + it.younger * DAY); g.stage = stageOf(g); res.text = `${g.name} looks ${it.younger} days younger!`; }
     if (it.joy) g.joy = clamp(g.joy + it.joy, 0, 100);
     if (it.sitter) { G.settings.sitter = Math.max(now(), G.settings.sitter || 0) + it.sitter * HOUR; res.text = "Granny is babysitting for 24 hours!"; }
   } else if (it.cat === "toy") {
     const targets = it.all ? G.guineas : [g];
     targets.forEach(t => t.joy = clamp(t.joy + it.joy, 0, 100));
+    tireOut(g, 3);
     questProgress("toy"); if (g.joy < 60) res.care = 3;
   } else return null;
   addItem(id, -1); addXP(2); saveSoon();
@@ -162,7 +168,7 @@ function startDate(sow, boar) {
   let n = weighted([{ v: 1, w: 25 }, { v: 2, w: 40 }, { v: 3, w: 25 }, { v: 4, w: 10 }]).v;
   if (potion) n++; if (eventOn("love") && Math.random() < .3) n++;
   const mango = has("mango"); if (mango) addItem("mango", -1);
-  sow.preg = { due: now() + hrs * HOUR, dad: boar.id, dadName: boar.name, dadGenes: boar.genes, dadGen: boar.gen || 1, n: Math.min(n, 5), mut: (mango ? 6 : 1) * (eventOn("babyboom") ? 2 : 1) };
+  sow.preg = { due: now() + hrs * HOUR, dad: boar.id, dadName: boar.name, dadGenes: boar.genes, dadGen: boar.gen || 1, n: Math.min(n, 5), mut: (mango ? 6 : 1) * (eventOn("babyboom") ? 2 : 1) * (hasPower(sow, "babymagic") || hasPower(boar, "babymagic") ? 3 : 1) };
   addXP(15); saveSoon();
   return true;
 }
@@ -193,7 +199,7 @@ function grandmaRescue() {
   b.home = "hutch"; G.guineas.push(b); G.active = b.id; noteCoat(b);
   queueEvent({ type: "rescue", id: b.id });
 }
-function rehomeValue(g) { const t = TIERS[tierOf(g)]; const st = stageOf(g); return Math.round(t.v * (st === "baby" ? .5 : st === "kid" ? .8 : st === "elder" ? .4 : 1)); }
+function rehomeValue(g) { const t = TIERS[tierOf(g)]; const st = stageOf(g); return Math.round(t.v * (st === "baby" ? .5 : st === "kid" ? .8 : isOld(st) ? .7 : 1)); }
 
 /* ---------- adoption center stock (refreshes every 3 hours) ---------- */
 function adoptStock() {
@@ -212,6 +218,7 @@ function adoptStock() {
 }
 function adoptGuinea(o, home) {
   const g = makeGuinea({ genes: o.genes, sex: o.sex, name: o.name, pers: o.pers, born: now() - (3.2 + Math.random()) * DAY, life: 18 + Math.random() * 7 });
+  g.pw = powersOf(o).slice();
   g.home = home; G.guineas.push(g); noteCoat(g); addXP(30); checkAchievements(); saveSoon();
   return g;
 }

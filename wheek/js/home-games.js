@@ -45,8 +45,9 @@ function hgFinish(quit) {
   if (!HG || HG.ending) return; HG.ending = true;
   const { def, g, score } = HG;
   const coins = Math.min(def.cap, Math.round(HG.coins));
-  const paid = quit && !score ? 0 : Math.round(coins * keeperBonus());
+  const paid = quit && !score ? 0 : Math.round(coins * keeperBonus() * (buddyPower("champ") ? 1.25 : 1));
   hgStop();
+  tireOut(g, 8);
   if (paid) { addCoins(paid, centerOf($("#pet"))); }
   G.stats.homeGames = (G.stats.homeGames || 0) + 1; questProgress("homegame"); addXP(6);
   g.joy = clamp(g.joy + 15, 0, 100); refreshStatBars(g);

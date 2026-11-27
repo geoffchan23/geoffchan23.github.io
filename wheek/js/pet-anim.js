@@ -19,7 +19,7 @@ function paInit(g) {
   setupPetting(live);
   const blink = () => { if (PA.live !== live) return; if (!PA.busy && !PA.napping) { pcls("blink", 140); $$(".pal svg").forEach(s => { s.classList.add("blink"); setTimeout(() => s.classList.remove("blink"), 140); }); } PA.blinkT = setTimeout(blink, 2200 + Math.random() * 3200); };
   PA.blinkT = setTimeout(blink, 1500);
-  const idle = () => { if (PA.live !== live) return; if (!PA.busy && !PA.petting && !document.hidden && !modalStack.length) runIdle(); PA.idleT = setTimeout(idle, 3200 + Math.random() * 3800); };
+  const idle = () => { if (PA.live !== live) return; if (!PA.busy && !PA.petting && !document.hidden && !modalStack.length && !isAsleep(PA.g)) runIdle(); PA.idleT = setTimeout(idle, 3200 + Math.random() * 3800); };
   PA.idleT = setTimeout(idle, 2500);
 }
 function paStop() { PA.live++; clearTimeout(PA.idleT); clearTimeout(PA.blinkT); stopPurr(); PA.el = null; }
@@ -53,7 +53,7 @@ function fly(el, [fx, fy], [tx, ty], ms = 550, arc = 70, spin = 0) {
 function enqueue(fn) {
   if (!PA.el) return;
   if (PA.queued >= 3) return;
-  PA.queued++; wake();
+  PA.queued++; if (isAsleep(PA.g)) wakeUp(PA.g, "action"); wake();
   const live = PA.live;
   PA.chain = PA.chain.then(async () => { if (PA.live !== live) return; PA.busy = true; try { await walkTo(0, 300); await fn(); } catch (e) { console.error(e); } finally { PA.busy = false; PA.queued--; if (PA.live === live && petSvg()) puncls("munch", "chew", "stuffed", "sleepy", "happy-eyes", "walking", "giggle"); } });
 }
@@ -279,7 +279,7 @@ function boopNow(x, y) { boop(PA.g, PA.el, { clientX: x, clientY: y }); }
 function runIdle(force) {
   const g = PA.g, sleepy = g.pers === "sleepy", zoomy = g.pers === "zoomy" || g.pers === "dramatic";
   if (!force && (g.sick || mood(g) === "sad")) { if (Math.random() < .5) { pcls("look-" + pick(["l", "r"]), 1200); } return; }
-  const k = weighted([{ k: "look", w: 24 }, { k: "ears", w: 12 }, { k: "sniff", w: 14 }, { k: "wander", w: 18 }, { k: "popcorn", w: zoomy ? 14 : 5 }, { k: "yawn", w: sleepy ? 12 : 5 }, { k: "nap", w: sleepy ? 9 : 2 }, { k: "groom", w: 9 }, { k: "zoomies", w: zoomy ? 5 : 1 }]).k;
+  const k = weighted([{ k: "look", w: 24 }, { k: "ears", w: 12 }, { k: "sniff", w: 14 }, { k: "wander", w: 18 }, { k: "popcorn", w: zoomy ? 14 : 5 }, { k: "yawn", w: sleepy || (g.energy ?? 80) < 30 ? 14 : 5 }, { k: "nap", w: 0 }, { k: "groom", w: 9 }, { k: "zoomies", w: zoomy ? 5 : 1 }]).k;
   if (force) return runIdleK(force);
   runIdleK(k);
 }

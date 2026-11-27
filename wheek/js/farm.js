@@ -41,7 +41,7 @@ const FB = {
 };
 const FB_TABS = [["home", "🏠 Homes"], ["shop", "💰 Shops"], ["food", "🥕 Food"], ["fun", "🎈 Fun"], ["decor", "🌷 Decor"]];
 const FARM_COLS = 6;
-const shopRate = s => { const b = FB[s.t]; let r = b.rate * (1 + .6 * ((s.lv || 1) - 1)); if (b.perGuinea) r *= Math.max(1, farmList().length); return r; };
+const shopRate = s => { const b = FB[s.t]; let r = b.rate * (1 + .6 * ((s.lv || 1) - 1)); if (b.perGuinea) r *= Math.max(1, farmList().length); if (anyPower("shopboss", farmList())) r *= 1.25; return r; };
 const shopCapH = s => 6 + 2 * ((s.lv || 1) - 1);
 const shopStored = s => Math.min(shopRate(s) * shopCapH(s), shopRate(s) * Math.max(0, now() - (s.last || now())) / HOUR);
 const upgradeCost = s => Math.round(FB[s.t].price * .9 * Math.pow(1.75, (s.lv || 1) - 1));
@@ -139,13 +139,15 @@ function farmPoopHTML(tile, H, occ) {
   // each poop gets its own spot: spread across free tiles, up to 4 per tile in the corners
   const order = free.map((f, i) => [f, hashStr("t" + i) % 997]).sort((a, b) => a[1] - b[1]).map(a => a[0]);
   const half = tile / 2;
-  return poops.slice(0, order.length * 4).map((id, k) => { const [x, y] = order[k % order.length], c = Math.floor(k / order.length); return `<button class="poop" data-poop="${id}" style="left:${x * tile + (c % 2) * half + 2}px;top:${y * tile + Math.floor(c / 2) * half + 2}px;width:${half - 4}px;height:${half - 4}px">💩</button>`; }).join("");
+  const goldIds = new Set(farmList().filter(g => hasPower(g, "goldpoop")).map(g => g.id));
+  return poops.slice(0, order.length * 4).map((id, k) => { const [x, y] = order[k % order.length], c = Math.floor(k / order.length); return `<button class="poop${goldIds.has(id) ? " gold" : ""}" data-poop="${id}" style="left:${x * tile + (c % 2) * half + 2}px;top:${y * tile + Math.floor(c / 2) * half + 2}px;width:${half - 4}px;height:${half - 4}px">💩</button>`; }).join("");
 }
 function scoopPoop(b) {
   const g = G.guineas.find(x => x.id === b.dataset.poop); if (!g || !g.poop) return;
   g.poop--; G.stats.poop++; G.farm.poopN = (G.farm.poopN || 0) + 1; questProgress("poop");
   const [x, y] = centerOf(b); play("splat"); b.remove();
-  if (Math.random() < .01) { addCoins(50, [x, y]); toast("A GOLDEN POOP! +50 coins!", "✨"); play("bigwin"); } else addCoins(1, [x, y]);
+  if (hasPower(g, "goldpoop")) { addCoins(10, [x, y]); floatText(x, y - 20, "Golden poop! +10", "#e0a800", 18); play("coin"); }
+  else if (Math.random() < .01) { addCoins(50, [x, y]); toast("A GOLDEN POOP! +50 coins!", "✨"); play("bigwin"); } else addCoins(1, [x, y]);
   if (G.farm.poopN >= 10) { G.farm.poopN -= 10; addItem("fertilizer", 1); toast("10 poops = 1 Poop Fertilizer!", "💩"); }
   saveSoon(); checkAchievements();
 }

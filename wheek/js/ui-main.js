@@ -95,22 +95,23 @@ VIEWS.home = (el) => {
   const need = { food: g.food < 40, toy: g.joy < 40, care: g.clean < 40 || g.sick || tuftCount(g) >= 5 };
   const act = (k, ico, label, attr) => `<button class="act ${need[k] ? "need" : ""}" ${attr}><span>${ico}</span>${label}${need[k] ? `<i class="badge">!</i>` : ""}</button>`;
   el.innerHTML = `
-    <section class="room" style="--wall:${wall.css};--floor:${floor.css}">
+    <section class="room has-shelf" style="--wall:${wall.css};--floor:${floor.css}">
       <div class="wall"></div><div class="floor"></div>
       ${G.home.rug && ITEM[G.home.rug] ? `<div class="rug" style="background:${ITEM[G.home.rug].css}"></div>` : ""}
       ${G.home.decor.map((d, i) => d && ITEM[d] ? `<div class="decor d${i}">${ITEM[d].ico}</div>` : "").join("")}
       <button class="deco-btn" data-deco aria-label="Decorate your hutch">✏️</button>
       ${others.map(o => `<button class="pal" data-pal="${o.id}" aria-label="Switch to ${esc(o.name)}">${guineaSVG(o, { size: 84, mood: mood(o) })}<span class="pal-n">${esc(o.name)}</span></button>`).join("")}
-      <div class="pet-name"><span>${esc(g.name)}</span> ${sexIco(g)}</div>
+      <div class="pet-name" ${powersOf(g).length ? "data-powers" : ""}><span>${esc(g.name)}</span> ${sexIco(g)}${powersOf(g).length ? `<span class="pw-chips"><span class="pw-chip">⚡${powersOf(g).length > 1 ? powersOf(g).length : ""}</span></span>` : ""}</div>
       <div class="bubble" id="bubble">${esc(needLine(g))}</div>
-      <button class="pet-main" id="pet" aria-label="Boop ${esc(g.name)}">${guineaSVG(g, { size: 210, mood: mood(g), cls: "idle" })}</button>
+      <button class="pet-main ${hasPower(g, "floaty") ? "floaty" : ""}" id="pet" aria-label="Boop ${esc(g.name)}">${auraHTML(g)}${guineaSVG(g, { size: 210, mood: mood(g), cls: "idle" + (isAsleep(g) ? " napping" : "") })}</button>
       ${G.stats.boops < 15 || (G.stats.pets || 0) < 10 ? `<div class="tap-tip">👆 Tap: boop · 🤚 Swipe: pet</div>` : ""}
+      ${shelfHTML()}
       ${courier ? `<button class="courier" id="courier" aria-label="Open package"><span class="c-ico">${courier.ico}</span><span class="c-box">📦</span><span class="c-tip">Tap to open!</span></button>` : ""}
       ${G.settings.sitter > now() ? `<div class="sitter">👵 Granny sitting: ${dur(G.settings.sitter - now())}</div>` : ""}
     </section>
     <div id="suggest"></div>
     <section class="stats card mini">
-      ${bar("Food", g.food, "🍽️")}${bar("Fun", g.joy, "🎈")}${bar("Clean", g.clean, "🫧")}${bar("Health", g.health, "❤️")}
+      ${bar("Food", g.food, "🍽️")}${bar("Fun", g.joy, "🎈")}${bar("Clean", g.clean, "🫧")}${bar("Health", g.health, "❤️")}${bar("Energy", g.energy ?? 80, "⚡")}
     </section>
     <section class="actions">
       ${act("food", "🥕", "Feed", 'data-tray="food"')}
@@ -125,15 +126,18 @@ VIEWS.home = (el) => {
   $$("[data-tray]", el).forEach(b => b.onclick = () => { play("click"); openTray(b.dataset.tray, g); });
   $$("[data-go]", el).forEach(b => b.onclick = () => { play("click"); go(b.dataset.go); });
   $("#dress", el).onclick = () => { play("click"); openWardrobe(g); };
+  const pn = $("[data-powers]", el); if (pn) pn.onclick = () => { play("sparkle"); powerToast(g); };
   $("[data-deco]", el).onclick = () => { play("click"); bagTab = "decor"; go("bag"); };
-  $("[data-homegames]", el).onclick = () => { play("click"); openHomeGames(g); };
+  $("[data-homegames]", el).onclick = () => { play("click"); if (isAsleep(g)) { wakeUp(g, "action"); setTimeout(() => openHomeGames(g), 900); return; } openHomeGames(g); };
   const cr = $("#courier", el); if (cr) cr.onclick = () => openPackage(G.packages[0]);
   renderSuggest();
   paInit(g);
   const loveStop = loveHomeInit();
-  const iv = setInterval(() => { const b = $("#bubble"); if (b && Math.random() < .5) { b.textContent = needLine(g); b.classList.remove("pop"); void b.offsetWidth; b.classList.add("pop"); } if (g.pers === "gassy" && Math.random() < .15) toot(g, petBtn); }, 9000);
+  const sleepStop = sleepHomeInit(g);
+  sqShelfInit(g, $(".room", el));
+  const iv = setInterval(() => { const b = $("#bubble"); if (b && !isAsleep(g) && Math.random() < .5) { b.textContent = needLine(g); b.classList.remove("pop"); void b.offsetWidth; b.classList.add("pop"); } if (g.pers === "gassy" && Math.random() < .15) toot(g, petBtn); }, 9000);
   const statIv = setInterval(() => { tick(); refreshStatBars(g); renderSuggest(); }, 30000);
-  return () => { clearInterval(iv); clearInterval(statIv); hgStop(); paStop(); loveStop(); };
+  return () => { clearInterval(iv); clearInterval(statIv); hgStop(); paStop(); loveStop(); sleepStop(); };
 };
 
 /* ---------- "what should I do next?" helper ---------- */
@@ -160,7 +164,7 @@ function tutMark(id) {
     saveSoon(); renderSuggest();
   }, 600);
 }
-const QUEST_GO = { comb: "home:care", homegame: "home:games", collect: "place/farm", build: "place/farm", squishy: "shop/boxes", pet: "home", play: "place/arcade", luck: "place/carnival", boop: "home", feed: "home:food", bath: "home:care", toy: "home:toy", earn: "place/arcade", package: "place/post", slime: "place/lab", box: "shop/boxes", poop: "place/farm", harvest: "place/farm" };
+const QUEST_GO = { squishhome: "home", comb: "home:care", homegame: "home:games", collect: "place/farm", build: "place/farm", squishy: "shop/boxes", pet: "home", play: "place/arcade", luck: "place/carnival", boop: "home", feed: "home:food", bath: "home:care", toy: "home:toy", earn: "place/arcade", package: "place/post", slime: "place/lab", box: "shop/boxes", poop: "place/farm", harvest: "place/farm" };
 function goQuest(k) {
   const r = QUEST_GO[k] || "map";
   if (r.startsWith("home")) { const t = r.split(":")[1]; if (ROUTE.name !== "home") go("home"); if (t === "games") setTimeout(() => openHomeGames(activeG()), 400); else if (t) setTimeout(() => openTray(t, activeG()), ROUTE.name === "home" ? 50 : 350); else setTimeout(() => TUT[0].act(), 400); }
@@ -169,6 +173,7 @@ function goQuest(k) {
 function suggestion() {
   const g = activeG();
   if (g.sick) return { ico: "🤒", t: `${g.name} is sick! Take them to the Vet`, go: "place/vet", hot: true };
+  if (isAsleep(g)) return { ico: "💤", label: g.sleep.why === "tired" ? `Tired out! Sleeping · ${dur(sleepLeft(g))}` : `Napping · ${dur(sleepLeft(g))}`, t: `Shh! ${g.name} is asleep. Boops are OK!`, act: () => wakeUp(g, "button"), btn: "☀️ Wake", sleep: true };
   G.tut = G.tut || {};
   if (!G.tut.all) { const s = TUT.find(s => !G.tut[s.id] && !(s.skip && s.skip())); if (s) return { ico: s.ico, t: s.t(g), go: s.go, act: s.act, label: "First steps" }; }
   if (G.packages.length) return { ico: "📦", t: "A package arrived! Open it!", act: () => openPackage(G.packages[0]) };
@@ -189,7 +194,7 @@ function suggestion() {
 function renderSuggest() {
   const box = $("#suggest"); if (!box) return;
   const s = suggestion();
-  box.innerHTML = `<button class="suggest ${s.hot ? "hot" : ""}"><span class="sg-ico">${s.ico}</span><span class="sg-t">${s.label ? `<small>${esc(s.label)}</small>` : ""}${esc(s.t)}</span><span class="sg-go">GO ▶</span></button>`;
+  box.innerHTML = `<button class="suggest ${s.hot ? "hot" : ""} ${s.sleep ? "sleepy" : ""}"><span class="sg-ico">${s.ico}</span><span class="sg-t">${s.label ? `<small>${esc(s.label)}</small>` : ""}${esc(s.t)}</span><span class="sg-go">${s.btn || "GO ▶"}</span></button>`;
   $("button", box).onclick = () => { play("click"); if (s.go) go(s.go); else if (s.act) s.act(activeG()); };
 }
 function petAnim(btn, cls, ms = 700) { const s = btn && btn.querySelector("svg"); if (!s) return; s.classList.remove("squish", "spin", "sneeze", "munch", "happy", "gassy", "hop"); void s.getBoundingClientRect(); s.classList.add(cls); clearTimeout(s._t); s._t = setTimeout(() => s.classList.remove(cls), ms); }
@@ -207,8 +212,10 @@ function boop(g, btn, e) {
   const t = performance.now();
   boopState.combo = t - boopState.last < 700 ? boopState.combo + 1 : 1; boopState.last = t;
   g.boops = (g.boops || 0) + 1; G.stats.boops++; questProgress("boop");
+  if (isAsleep(g)) { haptic(5); sleepBoop(g, btn, x, y); loveBoop(x, y, false); saveSoon(); checkAchievements(); tutMark("boop"); return; }
   const joyGain = eventOn("parade") ? 3 : 1.5; g.joy = clamp(g.joy + joyGain, 0, 100);
   haptic(8);
+  if (nose && hasPower(g, "coinsneeze") && Math.random() < .6) { setTimeout(() => { addCoins(rint(2, 6), [x, y]); floatText(x, y - 56, "COIN SNEEZE!", "#e0a800", 22); play("coin"); }, 250); }
   if (nose) { play("sneeze"); petAnim(btn, "sneeze", 900); floatText(x, y - 30, "ACHOO!", "#5fd3ff", 26); say(pick(["ACHOO! Hey, that's my nose!", "*sneeze* Bless me.", "My nose is VERY boopable and VERY sneezy."])); confetti(x, y, 10, false); }
   else { play("boop"); petAnim(btn, boopState.combo % 5 === 0 ? "spin" : "squish", 500); }
   loveBoop(x, y, nose);
@@ -222,7 +229,7 @@ function boop(g, btn, e) {
 }
 function refreshStatBars(g) {
   const s = $(".stats"); if (!s) return;
-  const bars = $$(".stat", s); const vals = [g.food, g.joy, g.clean, g.health];
+  const bars = $$(".stat", s); const vals = [g.food, g.joy, g.clean, g.health, g.energy ?? 80];
   bars.forEach((b, i) => { const v = vals[i], c = v > 60 ? "#7be04a" : v > 30 ? "#ffd84d" : "#ff5a5f"; const iEl = $("i", b); iEl.style.width = Math.round(v) + "%"; iEl.style.background = c; });
 }
 function openTray(cat, g) {
@@ -435,15 +442,25 @@ EVENT_VIEWS.rescue = (e, done) => {
   const m = openModal(`<div class="center"><div class="big-emoji">👵</div><h2>Grandma Wheek is here!</h2><p class="mtext">"Oh sweetie, your hutch is so quiet. I brought you someone special who needs a friend."</p>${g ? guineaSVG(g, { size: 140, mood: "happy" }) : ""}<p class="mtext">Meet <b>${g ? esc(g.name) : "your new friend"}</b>!</p><div class="mrow"><button class="btn green" data-ok>Hello!</button></div></div>`, { onClose: () => { done(); render(); } });
   $("[data-ok]", m.el).onclick = () => m.close();
 };
-EVENT_VIEWS.elder = (e, done) => {
-  const g = G.guineas.find(x => x.id === e.id); if (!g) return done();
-  const m = openModal(`<div class="center">${guineaSVG(g, { size: 130, mood: "happy" })}<h2>${esc(g.name)} is a Golden Oldie now</h2><p class="mtext">${esc(g.name)} has white eyebrows and lots of wisdom. Golden Oldies don't have forever left, so give lots of boops, snacks and cuddles! Vitamin C Drops add extra days.</p><div class="mrow"><button class="btn green" data-ok>I'll take good care of ${esc(g.name)}</button></div></div>`, { onClose: done });
+EVENT_VIEWS.elder = (e, done) => done();
+const GREW_TEXT = {
+  kid: n => `${n} isn't a tiny baby any more! Kids are bigger, zoomier and VERY curious.`,
+  adult: n => `${n} is all grown up! Grown-ups can go on Guinea Dates and have babies of their own.`,
+  elder: n => `${n} is a Golden Oldie now! Silver fur, sleepy eyes and lots of stories. Old guineas nap more and love gentle boops. They'll be with you forever.`,
+  ancient: n => `${n} is a Wise Old Legend! Fancy spectacles, a fluffy white beard and the best stories in Wheek World.`,
+};
+EVENT_VIEWS.grew = (e, done) => {
+  const g = G.guineas.find(x => x.id === e.id); if (!g || !GREW_TEXT[e.to]) return done();
+  play("fanfare");
+  const before = guineaSVG(Object.assign({}, g, { born: now() - ({ kid: .5, adult: 2, elder: 10, ancient: 30 }[e.to]) * DAY }), { size: 92, mood: "happy" });
+  const m = openModal(`<div class="center grew"><p class="kicker">Happy birthday!</p><div class="grew-row"><span class="grew-a">${before}</span><span class="grew-arrow">➜</span><span class="grew-b">${guineaSVG(g, { size: 130, mood: "happy" })}</span></div><h2>${esc(g.name)} grew into a ${STAGES[e.to]}!</h2><p class="mtext">${GREW_TEXT[e.to](esc(g.name))}</p><div class="mrow"><button class="btn green" data-ok>Yay, ${esc(g.name)}! 🎂</button></div></div>`, { onClose: () => { done(); if (ROUTE.name === "home") render(); } });
+  setTimeout(() => confetti(innerWidth / 2, innerHeight * .35, 90), 250);
   $("[data-ok]", m.el).onclick = () => m.close();
 };
 EVENT_VIEWS.sick = (e, done) => {
   const g = G.guineas.find(x => x.id === e.id); if (!g || !g.sick) return done();
   play("sad");
-  const m = openModal(`<div class="center">${guineaSVG(g, { size: 130, mood: "sad" })}<h2>${esc(g.name)} is sick!</h2><p class="mtext">Being hungry, dirty or bored for too long made ${esc(g.name)} poorly. Sick guineas lose life time, so get them better fast! Use Get-Well Gummies or visit Dr. Hootsworth at the Vet.</p><div class="mrow"><button class="btn white" data-ok>Later</button><button class="btn green" data-vet>To the Vet!</button></div></div>`, { onClose: done });
+  const m = openModal(`<div class="center">${guineaSVG(g, { size: 130, mood: "sad" })}<h2>${esc(g.name)} is sick!</h2><p class="mtext">Being hungry, dirty or bored for too long made ${esc(g.name)} poorly. Sick guineas feel awful, so get them better fast! Use Get-Well Gummies or visit Dr. Hootsworth at the Vet.</p><div class="mrow"><button class="btn white" data-ok>Later</button><button class="btn green" data-vet>To the Vet!</button></div></div>`, { onClose: done });
   $("[data-ok]", m.el).onclick = () => m.close();
   $("[data-vet]", m.el).onclick = () => { m.close(); go("place/vet"); };
 };

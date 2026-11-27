@@ -64,8 +64,8 @@ const ITEMS = [
   // care
   { id: "soap", name: "Bubble Bath", ico: "🧼", cat: "care", price: 12, clean: 60, joy: 5, desc: "Scrub-a-dub-wheek." },
   { id: "gummies", name: "Get-Well Gummies", ico: "💊", cat: "care", price: 45, cure: true, health: 50, desc: "Cures sickness. Tastes like grape." },
-  { id: "vitc", name: "Vitamin C Drops", ico: "🍊", cat: "care", price: 80, health: 30, life: 1, desc: "+30 health and +1 day of life (max 5 per guinea)." },
-  { id: "youth", name: "Fountain of Youth Smoothie", ico: "🥤", cat: "care", price: 1500, life: 4, health: 100, desc: "+4 whole days of life. Very rare, very slurpy." },
+  { id: "vitc", name: "Vitamin C Drops", ico: "🍊", cat: "care", price: 40, health: 30, joy: 10, desc: "+30 health. Zingy! Keeps guineas strong." },
+  { id: "youth", name: "Fountain of Youth Smoothie", ico: "🥤", cat: "care", price: 600, younger: 5, health: 100, desc: "Makes a grown-up guinea look 5 days younger! Very slurpy." },
   { id: "sitter", name: "Granny Sitter (24h)", ico: "👵", cat: "care", price: 150, sitter: 24, desc: "Granny looks after everyone for 24 hours. Needs drop way slower." },
   // toys
   { id: "paperball", name: "Paper Ball", ico: "🧻", cat: "toy", price: 5, joy: 12, desc: "Rustly. Thrilling." },
@@ -200,14 +200,14 @@ const WORLD_EVENTS = [
 const NPCS = {
   nibbles: { name: "Mrs. Nibbles", ico: "👵", role: "Squeakmart owner", lines: ["Welcome, dearie! Fresh hay, crunchy veggies, all the good stuff!", "Back in my day, a carrot cost 1 coin. And we were GRATEFUL.", "Don't feed them only strawberries, dear. Trust me. The TOOTS."] },
   fernando: { name: "Fabulous Fernando", ico: "🕺", role: "Fluff Boutique designer", lines: ["Darling! Your guinea deserves to be FABULOUS!", "A hat is not a hat. It is a STATEMENT.", "This season, everyone is wearing... banana. Trust me."] },
-  gus: { name: "Gacha Gus", ico: "🦝", role: "Blind Box Bonanza", lines: ["Step right up! What's inside? Even I don't know! That's the FUN!", "One more box. One more. The next one's a legendary, I can feel it!", "Don't ask where I get the boxes. Trash cans. I get them from trash cans."] },
+  gus: { name: "Squishy Gus", ico: "🦝", role: "Squishy Shop", lines: ["Fresh squishies every day! Pick the one you love, it's yours!", "Put squishies on your shelf at home. Squish 'em and see what happens to your guinea!", "The legendary squishy only shows up some days. Keep checking!", "Don't ask where I get them. Trash cans. Very CLEAN trash cans."] },
   clover: { name: "Auntie Clover", ico: "🐰", role: "Guinea Adoption Center", lines: ["Every guinea deserves a loving home! And lots of veggies!", "Ooh, looking to grow your herd? I have just the cutie!", "If you ever need to rehome a guinea, I'll find them a lovely family."] },
   gloop: { name: "Dr. Gloop", ico: "🧑‍🔬", role: "Slime Scientist", lines: ["SCIENCE! But slimier!", "Make me a slime and I'll pay you! If it's rare... I'll pay you A LOT.", "I once made a slime so good it asked for a job."] },
   hoot: { name: "Dr. Hootsworth", ico: "🦉", role: "Guinea Vet", lines: ["Hoo's feeling poorly? Let me have a look.", "An apple a day keeps... me away. Actually, guineas need bell peppers.", "Remember: fed, clean, happy. That's the recipe for a long life."] },
   skunk: { name: "Toot McGee", ico: "🦨", role: "Fun Fair", lines: ["STEP RIGHT UP! Games of SKILL! Win coins with your brain and your thumbs!", "Practice makes perfect! Also practice makes toots. Not sure why.", "Beat your best score and the coins come rolling in!"], oldLines: ["STEP RIGHT UP! Win big! Lose small! Smell... medium.", "The odds are good! Probably! I'm a skunk, not a math teacher!", "Feeling lucky? I'm feeling LUCKY. Also gassy."] },
   pixel: { name: "Pixel", ico: "🤖", role: "Arcade Burrow", lines: ["BEEP BOOP. HIGH SCORE DETECTED? NOT YET. TRY HARDER.", "INSERT GUINEA TO CONTINUE.", "MY FAVOURITE GAME IS LETTUCE CATCH. I HAVE NO HANDS."] },
   swampy: { name: "Old Swampy", ico: "🐸", role: "Stinky Swamp", lines: ["Ribbit. The swamp gives... and the swamp takes.", "Treasure's under the mud. So are the stink bombs. Ribbit.", "Breathe through your mouth, kid. Trust me."] },
-  pidge: { name: "Postmaster Pidge", ico: "🐦", role: "Post Office", lines: ["Coo! Packages arrive every hour, rain or shine or fart storm!", "If you're away, I'll hold up to 3 packages. Then I eat them. Kidding! Mostly.", "Some couriers are weird. That raccoon? Not employed here."] },
+  pidge: { name: "Postmaster Pidge", ico: "🐦", role: "Post Office", lines: ["Coo! Packages arrive every hour, rain or shine or fart storm!", "We deliver up to 6 packages a day. After that the couriers nap. Even raccoons need sleep!", "Some couriers are weird. That raccoon? Not employed here."] },
   hayley: { name: "Farmer Hayley", ico: "👩‍🌾", role: "Guinea Farm", lines: ["Plant seeds, grow veggies, scoop poops. Farm life!", "Keep the hay rack full and the herd feeds itself!", "Poop is just fertilizer that hasn't found its purpose yet."] },
   butterfly: { name: "Flutter", ico: "🦋", role: "Rainbow Meadow keeper", lines: ["Everyone here was loved very much.", "The flowers grow a little brighter for each guinea who rests here.", "They're running through the softest grass now, eating all the dandelions."] },
   wisher: { name: "The Wishing Well", ico: "⛲", role: "Town Square", lines: ["Toss a coin... make a wish... *blub blub*", "I grant wishes. Sometimes. When I feel like it. *blub*"] },
@@ -241,6 +241,7 @@ const QUESTS = [
   { k: "bath", n: 2, t: "Give 2 bubble baths", r: 40 }, { k: "squishy", n: 1, t: "Buy a squishy at the Squishy Shop", r: 50 },
   { k: "comb", n: 3, t: "Comb out 3 messy fur tufts", r: 40 }, { k: "homegame", n: 2, t: "Play 2 games with your guinea at home", r: 60 }, { k: "collect", n: 1, t: "Collect coins from your farm shops", r: 50, farm: true }, { k: "build", n: 1, t: "Build something on your farm", r: 60, farm: true }, { k: "poop", n: 15, t: "Scoop 15 poops at the farm", r: 60, farm: true },
   { k: "harvest", n: 2, t: "Harvest 2 plants", r: 60, farm: true }, { k: "toy", n: 2, t: "Play with toys 2 times", r: 40 },
+  { k: "squishhome", n: 10, t: "Squish the squishies on your home shelf 10 times", r: 40 },
 ];
 const STREAK_GIFTS = [
   { coins: 50 }, { coins: 75, item: ["lettuce", 3] }, { coins: 100, item: ["slimekit", 2] }, { coins: 125, item: ["haycake", 1] },

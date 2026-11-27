@@ -10,17 +10,19 @@ function undoLabel(rec) { return rec.type === "love" ? `❤️${fmtBig(rec.price
 function showUndoBar(rec) {
   let bar = $("#undoBar");
   if (!bar) { bar = document.createElement("div"); bar.id = "undoBar"; document.body.appendChild(bar); }
-  bar.innerHTML = `<span>Bought <b>${esc(rec.name)}</b></span><button class="btn small white" id="undoBtn">↩️ Undo</button>`;
+  bar.innerHTML = `<span>${rec.verb || "Bought"} <b>${esc(rec.name)}</b></span><button class="btn small white" id="undoBtn">↩️ Undo</button>`;
   bar.classList.remove("show"); void bar.offsetWidth; bar.classList.add("show");
   $("#undoBtn", bar).onclick = () => { bar.classList.remove("show"); undoBuy(); };
   clearTimeout(bar._t); bar._t = setTimeout(() => bar.classList.remove("show"), 7000);
 }
 function undoButtonHTML() {
   const r = G.lastBuy; if (!r) return "";
+  if (r.type === "recycle") return `<button class="undo-link" data-undo>↩️ Undo recycling: get your ${esc(r.name)} back (costs ${undoLabel(r)})</button>`;
   return `<button class="undo-link" data-undo>↩️ Undo last buy: ${esc(r.name)} (${undoLabel(r)} back)</button>`;
 }
 function wireUndo(el) { $$("[data-undo]", el).forEach(b => b.onclick = () => { play("click"); undoBuy(); }); }
 function undoBuy() {
+  const ub = document.getElementById("undoBar"); if (ub) ub.classList.remove("show");
   const r = G.lastBuy; if (!r) { toast("Nothing to undo!", "↩️"); return; }
   const fail = msg => { play("buzz"); toast(msg, "↩️"); };
   const it = ITEM[r.id];
@@ -53,6 +55,13 @@ function undoBuy() {
       break;
     }
     case "addin": delete G.owned["addin_" + r.id]; if (typeof LAB !== "undefined") LAB.adds[r.id] = false; break;
+    case "sqslot": { const H = sqHome(); if (H.slots <= 2 || H.items[H.slots - 1]) return fail("Can't undo: a squishy is sitting in that spot!"); H.slots--; H.items.pop(); break; }
+    case "recycle": {
+      if (G.coins < r.price) return fail("Not enough coins to buy it back!");
+      if (r.k === "inv") addItem(r.id, 1); else if (r.k === "own") G.owned[r.id] = 1; else if (r.k === "decor") G.owned[r.id] = (G.owned[r.id] || 0) + 1; else if (r.k === "sq") G.squishies[r.sq] = (G.squishies[r.sq] || 0) + 1;
+      G.coins -= r.price; G.stats.earned = Math.max(0, G.stats.earned - r.price); renderCoins();
+      G.lastBuy = null; play("pop"); toast(`Got your ${r.name} back!`, "↩️"); saveSoon(); render(); return;
+    }
     case "love": {
       const l = L();
       if (r.kind === "up") { delete l.ups[r.id]; } else { if (!l.helpers[r.id]) return fail("Can't undo that."); l.helpers[r.id]--; }

@@ -145,7 +145,9 @@ function guineaSVG(g, opts = {}) {
   const eyeC = EYES[gn.e].c;
   const baby = stage === "baby" || stage === "kid";
   const er = baby ? 11 : 9;
-  const elder = stage === "elder";
+  const elder = isOld(stage), ancient = stage === "ancient";
+  // grey hairs: older guineas' fur fades towards silver
+  if (elder && !gn.m && !skinny) { const k = ancient ? .42 : .24; const mix = (a, b) => { const p = x => parseInt(x, 16); const A = [1, 3, 5].map(i => p(a.substr(i, 2))), B = [1, 3, 5].map(i => p(b.substr(i, 2))); return "#" + A.map((v, i) => Math.round(v + (B[i] - v) * k).toString(16).padStart(2, "0")).join(""); }; if (bodyFill === base) bodyFill = mix(base, "#e9e6ef"); base = mix(base, "#e9e6ef"); patch = mix(patch, "#e9e6ef"); ear = mix(ear, "#d9d4e2"); }
   const sick = g.sick;
   const fur = shadeHex(typeof bodyFill === "string" && bodyFill[0] === "#" ? bodyFill : base, -.05);
   const outfit = opts.noOutfit ? "" : outfitLayers(g.outfit);
@@ -154,7 +156,7 @@ function guineaSVG(g, opts = {}) {
   const mask = opts.noTufts ? 0 : (g.tuftMask || 0);
   const tufts = mask ? `<g class="tufts">${TUFT_SPOTS.map(([x, y, a], i) => (mask >> i) & 1 ? `<path class="tuft" data-t="${i}" transform="translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${a.toFixed(0)})" d="M-8 3L-6 -9L-2 -2L0 -14L3 -2L8 -11L8 3Z" fill="${tuftFill}" stroke="#2b1640" stroke-width="3" stroke-linejoin="round"/>` : "").join("")}</g>` : "";
   const mood = opts.mood || "";
-  const sc = stage === "baby" ? .62 : stage === "kid" ? .8 : 1;
+  const sc = opts.stage ? (stage === "baby" ? .62 : stage === "kid" ? .8 : 1) : growScale(g);
   const preg = g.preg ? ' transform="translate(100 160) scale(1.07 1.02) translate(-100 -160)"' : "";
   const flip = opts.flip ? ` transform="translate(200 0) scale(-1 1)"` : "";
   const size = opts.size || 160;
@@ -171,7 +173,7 @@ function guineaSVG(g, opts = {}) {
     ${tufts}${wrinkles}${peruFringe}
     <ellipse class="foot foot-l" cx="70" cy="160" rx="12" ry="6" fill="#ffc9b0" stroke="#2b1640" stroke-width="4"/>
     <ellipse class="foot foot-r" cx="130" cy="160" rx="12" ry="6" fill="#ffc9b0" stroke="#2b1640" stroke-width="4"/>${feetL}
-    <g class="eyes-n"><circle cx="74" cy="92" r="${er}" fill="${eyeC}"/><circle cx="126" cy="92" r="${er}" fill="${eyeC}"/>${gn.e !== "dark" ? `<circle cx="74" cy="92" r="${er * .45}" fill="#2b1640"/><circle cx="126" cy="92" r="${er * .45}" fill="#2b1640"/>` : ""}<circle cx="77.5" cy="88.5" r="${er / 3}" fill="#fff"/><circle cx="129.5" cy="88.5" r="${er / 3}" fill="#fff"/><circle cx="71" cy="96" r="1.4" fill="#fff"/><circle cx="123" cy="96" r="1.4" fill="#fff"/></g>
+    <g class="eyes-n"><circle cx="74" cy="92" r="${er}" fill="${eyeC}"/><circle cx="126" cy="92" r="${er}" fill="${eyeC}"/>${gn.e !== "dark" ? `<circle cx="74" cy="92" r="${er * .45}" fill="#2b1640"/><circle cx="126" cy="92" r="${er * .45}" fill="#2b1640"/>` : ""}<circle cx="77.5" cy="88.5" r="${er / 3}" fill="#fff"/><circle cx="129.5" cy="88.5" r="${er / 3}" fill="#fff"/><circle cx="71" cy="96" r="1.4" fill="#fff"/><circle cx="123" cy="96" r="1.4" fill="#fff"/>${elder ? `<path d="M${74 - er - 1} 91a${er + 1} ${er + 1} 0 0 1 ${2 * er + 2} 0z" fill="${typeof bodyFill === "string" && bodyFill[0] === "#" ? bodyFill : base}" stroke="#2b1640" stroke-width="3"/><path d="M${126 - er - 1} 91a${er + 1} ${er + 1} 0 0 1 ${2 * er + 2} 0z" fill="${typeof bodyFill === "string" && bodyFill[0] === "#" ? bodyFill : base}" stroke="#2b1640" stroke-width="3"/>` : ""}</g>
     <g class="eyes-h" fill="none" stroke="#2b1640" stroke-width="5.5" stroke-linecap="round"><path d="M64 96q10 -13 20 0"/><path d="M116 96q10 -13 20 0"/></g>
     <g class="eyes-o" fill="none" stroke="#2b1640" stroke-width="5.5" stroke-linecap="round"><path d="M66 86l14 8l-14 8"/><path d="M134 86l-14 8l14 8"/></g>
     <g class="eyes-s" fill="none" stroke="#2b1640" stroke-width="5" stroke-linecap="round"><path d="M64 92q10 6 20 0"/><path d="M116 92q10 6 20 0"/></g>
@@ -183,11 +185,20 @@ function guineaSVG(g, opts = {}) {
     <path class="mouth" d="M89 117q5.5 7 11 0q5.5 7 11 0" stroke="#2b1640" stroke-width="4" fill="none" stroke-linecap="round"/>
     <ellipse class="mouth-open" cx="100" cy="121" rx="8" ry="6" fill="#8a2448" stroke="#2b1640" stroke-width="3"/>
     <path class="tongue" d="M95 121q5 12 10 0z" fill="#ff7aa8" stroke="#2b1640" stroke-width="2.5" stroke-linejoin="round"/>
-    <g class="whisk"><path class="wh-l" d="M84 108l-26 -4M84 113l-26 4" stroke="#2b1640" stroke-width="2" stroke-linecap="round" opacity=".6"/><path class="wh-r" d="M116 108l26 -4M116 113l26 4" stroke="#2b1640" stroke-width="2" stroke-linecap="round" opacity=".6"/></g>
+    ${ancient ? `<path d="M90 124q10 22 20 0q-4 6 -10 6q-6 0 -10 -6z" fill="#f4f2f8" stroke="#2b1640" stroke-width="2.5" stroke-linejoin="round"/>` : ""}
+    <g class="whisk"><path class="wh-l" d="M84 108l-26 -4M84 113l-26 4" stroke="${elder ? "#9a94a8" : "#2b1640"}" stroke-width="${elder ? 2.6 : 2}" stroke-linecap="round" opacity=".7"/><path class="wh-r" d="M116 108l26 -4M116 113l26 4" stroke="${elder ? "#9a94a8" : "#2b1640"}" stroke-width="${elder ? 2.6 : 2}" stroke-linecap="round" opacity=".7"/></g>
+    ${ancient && !(g.outfit && g.outfit.face) && !opts.noOutfit ? `<g fill="#ffffff" fill-opacity=".2" stroke="#8a6a3a" stroke-width="3"><circle cx="74" cy="93" r="13"/><circle cx="126" cy="93" r="13"/><path d="M87 92q13 -6 26 0" fill="none"/></g>` : ""}
     ${sick ? `<g transform="translate(140 66) rotate(30)"><rect x="-14" y="-6" width="28" height="12" rx="5" fill="#ffd9b0" stroke="#2b1640" stroke-width="2.5"/><path d="M-3 -3v6M3 -3v6" stroke="#d9a070" stroke-width="2"/></g>` : ""}
     ${outfit}
     <circle class="nose-hit" cx="100" cy="106" r="15" fill="transparent"/>
   </g></g></g>${gn.m === "golden" || gn.m === "galaxy" || gn.m === "rainbow" || gn.m === "disco" ? sparkles(rnd) : ""}</svg>`;
+}
+/* Games draw guineas onto canvases as images, where the page CSS can't reach, so bake the face rules in. */
+function standaloneSVG(svg, mood) {
+  const show = { happy: "eyes-h", wow: "eyes-o", sleepy: "eyes-s", sad: "eyes-sad" }[mood || ""];
+  const id = "sg" + (++svgN), p = ":where(#" + id + ") ";  // zero-specificity: page CSS still wins when the SVG is in the page
+  const css = ["eyes-h", "eyes-o", "eyes-s", "eyes-sad", "mouth-open", "tongue"].map(c => p + "." + c).join(",") + "{display:none}" + (show ? `${p}.eyes-n{display:none}${p}.${show}{display:inline}` : "");
+  return svg.replace(/^<svg /, `<svg id="${id}" `).replace(/<defs>/, `<defs><style>${css}</style>`);
 }
 function sparkles(rnd) {
   return Array.from({ length: 3 }, (_, i) => { const x = [18, 182, 172][i], y = [20, 30, 150][i], r = 7 - i; return `<path class="spk" style="animation-delay:${(i * .4).toFixed(1)}s" d="M${x} ${y - r}L${x + r * .3} ${y - r * .3}L${x + r} ${y}L${x + r * .3} ${y + r * .3}L${x} ${y + r}L${x - r * .3} ${y + r * .3}L${x - r} ${y}L${x - r * .3} ${y - r * .3}Z" fill="#ffd84d" stroke="#2b1640" stroke-width="1.6"/>`; }).join("");
@@ -199,16 +210,23 @@ function outfitLayers(o) {
 }
 
 /* ---------- life ---------- */
-const STAGES = { baby: "Baby", kid: "Kid", adult: "Adult", elder: "Golden Oldie" };
+const STAGES = { baby: "Baby", kid: "Kid", adult: "Adult", elder: "Golden Oldie", ancient: "Wise Old Legend" };
+/* Guineas grow up and grow old, but never die. */
+const AGE_KID = 1 * DAY, AGE_ADULT = 3 * DAY, AGE_ELDER = 14 * DAY, AGE_ANCIENT = 40 * DAY;
+const isOld = st => st === "elder" || st === "ancient";
 function ageMs(g) { return now() - g.born; }
 function lifeLeft(g) { return g.born + g.life * DAY - (g.lost || 0) * HOUR - now(); }
 function stageOf(g) {
   const a = ageMs(g);
-  if (a < 1 * DAY) return "baby";
-  if (a < 3 * DAY) return "kid";
-  if (lifeLeft(g) < g.life * DAY * .18) return "elder";
-  return "adult";
+  if (a < AGE_KID) return "baby";
+  if (a < AGE_ADULT) return "kid";
+  if (a < AGE_ELDER) return "adult";
+  if (a < AGE_ANCIENT) return "elder";
+  return "ancient";
 }
+/* babies grow a little bigger every hour until they're grown up */
+function growScale(g) { if (!g.born) return 1; const t = Math.min(1, Math.max(0, ageMs(g) / AGE_ADULT)); return .56 + .44 * (1 - Math.pow(1 - t, 1.6)); }
+function nextStageIn(g) { const a = ageMs(g); for (const t of [AGE_KID, AGE_ADULT, AGE_ELDER, AGE_ANCIENT]) if (a < t) return t - a; return 0; }
 function ageLabel(g) { const d = ageMs(g) / DAY; return d < 1 ? Math.max(1, Math.floor(d * 24)) + " hours old" : Math.floor(d) + (Math.floor(d) === 1 ? " day old" : " days old"); }
 
 function makeGuinea(o = {}) {
@@ -229,6 +247,9 @@ function simGuinea(g, hrs, farm) {
   const st = stageOf(g);
   let food = st === "baby" ? 7 : 5.5, joy = 4, clean = 2.4;
   if (g.home === "farm" && G.farm.grid) { joy *= 1 - Math.min(.6, .12 * Math.min(5, G.farm.grid.filter(s => FB[s.t] && FB[s.t].cat === "fun").length)); clean *= 1 - Math.min(.5, .25 * G.farm.grid.filter(s => s.t === "fountain").length); }
+  if (g.sleep) { food *= .6; joy *= .3; clean *= .5; }
+  if (typeof sqPerk === "function") { food *= 1 - sqPerk("food"); joy *= 1 - sqPerk("joy"); clean *= 1 - sqPerk("clean"); }
+  if (typeof hasPower === "function") { if (hasPower(g, "selfclean")) clean = 0; if (anyPower("aura")) joy *= .6; }
   if (g.pers === "greedy") food *= 1.2;
   if (g.pers === "cuddly") joy *= 1.2;
   if (G.settings.sitter && G.settings.sitter > now()) { food *= .25; joy *= .25; clean *= .25; }
@@ -245,9 +266,10 @@ function simGuinea(g, hrs, farm) {
   else g.health = clamp(g.health + 4 * hrs, 0, 100);
   if (g.health < 40) g.sick = true;
   if (g.sick) g.lost = (g.lost || 0) + hrs * 1.5;
+  simSleep(g, hrs);
   // fur gets messy: a new tuft every ~90 minutes
   g.tuftT = (g.tuftT || 0) + hrs;
-  while (g.tuftT >= 1.5) { g.tuftT -= 1.5; addTuft(g); }
+  while (g.tuftT >= 1.5) { g.tuftT -= 1.5; if (!clean) continue; addTuft(g); }
   // poop! one every 40 minutes, max 8 waiting per guinea
   if (g.home === "farm") {
     const p = Math.floor((now() - g.lastPoop) / (40 * MIN));
@@ -257,6 +279,7 @@ function simGuinea(g, hrs, farm) {
 function addTuft(g, n = 1) { for (let k = 0; k < n; k++) { const free = TUFT_SPOTS.map((_, i) => i).filter(i => !((g.tuftMask || 0) >> i & 1)); if (!free.length) return; g.tuftMask = (g.tuftMask || 0) | (1 << pick(free)); } }
 const tuftCount = g => { let n = 0, m = g.tuftMask || 0; while (m) { n += m & 1; m >>= 1; } return n; };
 function mood(g) {
+  if (g.sleep) return "sleepy";
   if (g.sick) return "sad";
   const m = Math.min(g.food, g.joy, g.clean);
   if (m < 25) return "sad";
@@ -268,8 +291,12 @@ function needLine(g) {
   if (g.sick) return pick(["I feel icky... can we go to the Vet?", "*weak wheek* I need medicine...", "My tummy is doing backflips. Not the fun kind."]);
   if (g.preg) return pick(["There are BABIES in my tummy! Tiny ones!", "I'm eating for five. Snacks please.", "The babies are kicking. Or farting. Hard to tell."]);
   if (g.food < 30) return pick(P === "dramatic" ? ["I am STARVING. This is the WORST DAY OF MY LIFE.", "I haven't eaten in like... 20 minutes. Tragic."] : ["WHEEK WHEEK WHEEK! (That means FOOD.)", "My tummy is rumbling louder than my toots.", "Feed me or I'll toot on your pillow."]);
+  if (g.sleep) return pick(["Zzzzz...", "*tiny snores*", "*snore* ...cucumbers... *snore*"]);
+  if ((g.energy ?? 80) < 25) return pick(["*yaaawn* I'm getting sleeeepy...", "My eyes keep closing by themselves...", "Can we do something calm? I'm sooo tired.", "*yawn* ...what were we doing?"]);
   if (g.clean < 30) return pick(["I smell like a sock that ate a sock.", "Bath please. I'm crusty.", "There's hay in places hay should not be."]);
   if (g.joy < 30) return pick(["I'm bored. Boop me? Play with me?", "*sad wheek* Nobody plays with me...", "I need fun! Games! Boops! Anything!"]);
+  if (isOld(stageOf(g)) && Math.random() < .45) return pick(["Back in my day, hay was HAY. Not this fancy stuff.", "*creaky stretch* Ooh, my little paws.", "Have I told you about the Great Cucumber of '22?", "I'm not old. I'm VINTAGE.", "Young ones these days, always zooming...", "A nap sounds lovely right about now.", "When I was a baby I was THIS small. Imagine!"]);
+  if (stageOf(g) === "baby" && Math.random() < .5) return pick(["*tiny wheek*", "Is that a GIANT? Oh, it's you!", "I'm gonna be SO big one day.", "Milk? No? Lettuce? OK!"]);
   const lines = {
     greedy: ["Is that a snack? Is EVERYTHING a snack?", "I dreamed I was a cucumber. It was delicious."],
     sleepy: ["*yawn* Five more minutes...", "I nap professionally. Also amateurly."],
